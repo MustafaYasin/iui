@@ -1,3 +1,4 @@
+# Android Studio
 *.iml
 .gradle
 /local.properties
@@ -7,9 +8,22 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
-.DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
+
+# Local config
 local.properties
+
+# OSX files
+.DS_Store
+
+#built application files
+*.apk
+*.ap_
+*.aab
+                            
+# generated files
+bin/
+gen/
