@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+import re
 
 import exercise
 import muscle_group
@@ -40,4 +41,45 @@ class ScrapWebsite:
             sub_exercises.append(title.text)
         return sub_exercises
     
+    def exercise_title():
+        return soup.find("h1", class_= "entry-title").text
+
+    def muscle_image():
+        return soup.find("img", class_="muskelbild").get('src')
+
+    def equipment():
+        return soup.find(string=re.compile("Benötigtes Equipment:")).parent.next_sibling.next_sibling.text
+
+    def exercise_level():
+        return soup.find(string=re.compile("Schwierigkeitsgrad:")).parent.next_sibling.next_sibling.text
+
+    def target_muscles():
+        return soup.find(string=re.compile("Zielmuskeln:")).parent.next_sibling.next_sibling.text
+
+    def supporting_muscles():
+        return soup.find(string=re.compile("Unterstützende Muskulatur:")).parent.next_sibling.next_sibling.text
+
+    def synonym_titles():
+        return soup.find(string=re.compile("Weitere Bezeichnungen:")).parent.next_sibling.next_sibling.text
+
+    # make better solution to get whole text
+    def exercise_description():
+        description = soup.find(string=re.compile("Erklärung der Übung")).parent
+        description_text = []
+
+        sibling1 = description.next_sibling.next_sibling
+        if sibling1.name != "div":
+            description_text.append(sibling1.text)
+
+        sibling2 = sibling1.next_sibling.next_sibling
+        if sibling2.name != "div":
+            description_text.append(sibling2.text)
+        
+        return description_text
+
+    def exercise_execution():
+        return ""
+
+    def video_links():
+        return ""
 
