@@ -33,7 +33,7 @@ def record_audio(ask=False):
             speak('I did not get that')
         except sr.RequestError:
             speak('Sorry, the service is down') # error: recognizer is not connected
-        print(f">> {voice_data.lower()}") # print what user said
+        print(">> {}.".format(voice_data.lower())) # print what user said
         return voice_data.lower()
 
 # get string and make a audio file to be played
@@ -43,13 +43,13 @@ def speak(audio_string):
     audio_file = 'audio' + str(r) + '.mp3'
     tts.save(audio_file) # save as mp3
     playsound.playsound(audio_file) # play the audio file
-    print(f"kiri: {audio_string}") # print what app said
+    print("kiri: {}.".format(audio_string)) # print what app said
     os.remove(audio_file) # remove audio file
 
 def respond(voice_data):
     # 1: greeting
     if there_exists(['hey','hi','hello']):
-        greetings = [f"hey, how can I help you {person_obj.name}", f"hey, what's up? {person_obj.name}", f"I'm listening {person_obj.name}", f"how can I help you? {person_obj.name}", f"hello {person_obj.name}"]
+        greetings = ["hey, how can I help you {}.", "hey, what's up? {}.", "I'm listening {}.", "how can I help you? {}.", "hello {}.".format(person_obj.name)]
         greet = greetings[random.randint(0,len(greetings)-1)]
         speak(greet)
 
@@ -62,12 +62,12 @@ def respond(voice_data):
 
     if there_exists(["my name is"]):
         person_name = voice_data.split("is")[-1].strip()
-        speak(f"okay, i will remember that {person_name}")
+        speak("okay, i will remember that {}.".format(person_name))
         person_obj.setName(person_name) # remember name in person object
 
     # 3: greeting
     if there_exists(["how are you","how are you doing"]):
-        speak(f"I'm very well, thanks for asking {person_obj.name}")
+        speak("I'm very well, thanks for asking {}".format(person_obj.name))
 
     # 4: time
     if there_exists(["what's the time","tell me the time","what time is it"]):
@@ -77,22 +77,22 @@ def respond(voice_data):
         else:
             hours = time[0]
         minutes = time[1]
-        time = f'{hours} {minutes}'
+        time = '{} {}'.format(hours, minutes=minutes)
         speak(time)
 
     # 5: search google
     if there_exists(["search for"]) and 'youtube' not in voice_data:
         search_term = voice_data.split("for")[-1]
-        url = f"https://google.com/search?q={search_term}"
+        url = "https://google.com/search?q={}".format(search_term)
         webbrowser.get().open(url)
-        speak(f'Here is what I found for {search_term} on google')
+        speak('Here is what I found for {}. on google'.format(search_term))
 
     # 6: search youtube
     if there_exists(["youtube"]):
         search_term = voice_data.split("for")[-1]
-        url = f"https://www.youtube.com/results?search_query={search_term}"
+        url = "https://www.youtube.com/results?search_query={}".format(search_term)
         webbrowser.get().open(url)
-        speak(f'Here is what I found for {search_term} on youtube')
+        speak('Here is what I found for {} on youtube'.format(search_term))
         exit()
 
 
