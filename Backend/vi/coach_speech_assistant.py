@@ -36,6 +36,7 @@ def record_audio(ask=False):
         print(">> {}.".format(voice_data.lower())) # print what user said
         return voice_data.lower()
 
+
 # get string and make a audio file to be played
 def speak(audio_string):
     tts = gTTS(text=audio_string, lang='en') # text to speech(voice)
@@ -52,6 +53,7 @@ def respond(voice_data):
         greetings = ["hey, how can I help you {}.", "hey, what's up? {}.", "I'm listening {}.", "how can I help you? {}.", "hello {}.".format(person_obj.name)]
         greet = greetings[random.randint(0,len(greetings)-1)]
         speak(greet)
+
 
     # 2: name
     if there_exists(["what is your name","what's your name","tell me your name"]):
@@ -96,6 +98,7 @@ def respond(voice_data):
         exit()
 
 
+``
 time.sleep(1)
 
 person_obj = person()
