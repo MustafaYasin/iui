@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">CoachApp</string>
+    <string name="coach">"Hi I'm your coach!"</string>
+    <string name="help_you">"How may I help you?"</string>
+</resources>
