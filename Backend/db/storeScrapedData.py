@@ -1,7 +1,7 @@
-import pymongo
 from pymongo import MongoClient
-from Backend.objects import *
-from Backend.objects.scrap_website import ScrapWebsite
+import Backend
+
+
 
 
 
