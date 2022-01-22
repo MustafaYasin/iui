@@ -68,18 +68,41 @@ class ScrapWebsite:
         description_text = []
 
         sibling1 = description.next_sibling.next_sibling
-        if sibling1.name != "div":
+        if sibling1.name == "p":
             description_text.append(sibling1.text)
 
         sibling2 = sibling1.next_sibling.next_sibling
-        if sibling2.name != "div":
+        if sibling2.name == "p":
             description_text.append(sibling2.text)
+
+        description_text = list(filter(None, description_text))
+        return "\n".join(description_text)
         
-        return description_text
+ 
 
     def exercise_execution(self):
-        return ""
+        execution = soup.find(string=re.compile("Die richtige Ausführung")).parent
+        execution_text = []
+
+        sibling1 = execution.next_sibling.next_sibling
+        if sibling1.name != "div":
+            execution_text.append(sibling1.text)
+
+        sibling2 = sibling1.next_sibling.next_sibling
+        if sibling2.name != "div":
+            execution_text.append(sibling2.text)
+        
+        sibling3 = sibling2.next_sibling.next_sibling
+        if sibling3.name != "div":
+            execution_text.append(sibling3.text)
+        
+        execution_text = list(filter(None, execution_text))
+        return "\n".join(execution_text)
 
     def video_links(self):
-        return ""
+        urls = []
+        iframes = soup.select("iframe[gesture='media']")
+        for item in iframes:
+            urls.append(item.get('src'))
+        return urls
 
