@@ -1,9 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-from Backend.objects.exercise import Exercise
-from Backend.objects.muscle_group import MuscleGroup
-
 
 
 class ScrapWebsite:

@@ -9,9 +9,9 @@ import certifi
 import time
 import os # to remove created audio files
 
-class person:
+class Person:
     name = ''
-    def setName(self, name):
+    def set_name(self, name):
         self.name = name
 
 def there_exists(terms):
@@ -98,10 +98,10 @@ def respond(voice_data):
         exit()
 
 
-``
+
 time.sleep(1)
 
-person_obj = person()
-while(1):
+person_obj = Person()
+while 1:
     voice_data = record_audio() # get the voice input
     respond(voice_data) # respond
