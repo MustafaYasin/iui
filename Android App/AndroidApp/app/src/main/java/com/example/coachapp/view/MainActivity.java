@@ -2,6 +2,7 @@ package com.example.coachapp.view;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -9,6 +10,9 @@ import android.widget.Toast;
 import com.example.coachapp.R;
 import com.example.coachapp.connection.RetrofitInterface;
 import com.example.coachapp.speech.SpeechToText;
+import com.example.coachapp.speech.TextToSpeech;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 
@@ -22,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "";
+    private String BASE_URL = "http://10.0.2.2:3000"; // for emulator on port 3000
     private String location = "";
     private String spokenText = "hello again";
 
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         findViewById(R.id.sendBtn).setOnClickListener(view -> {
+            System.out.println("PRessed");
             HashMap<String, String> map = new HashMap<>();
             map.put("spokenText", spokenText);
             map.put("location", location);
@@ -54,8 +59,15 @@ public class MainActivity extends AppCompatActivity {
             call.enqueue(new Callback<SpeechToText>() {
                 @Override
                 public void onResponse(Call<SpeechToText> call, Response<SpeechToText> response) {
+                    if (response.code() == 200) {
+                        System.out.println("REsponded ");
+                        SpeechToText respondSpeech = response.body();
+                        speechText.setText(respondSpeech.getSpokenText());
+                    System.out.println("test " + respondSpeech);
+                    }
 
                 }
+                // Todo: error handling for status code 400
 
                 @Override
                 public void onFailure(Call<SpeechToText> call, Throwable t) {
