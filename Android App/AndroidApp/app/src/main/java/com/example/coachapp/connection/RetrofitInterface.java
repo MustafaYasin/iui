@@ -16,8 +16,8 @@ public interface RetrofitInterface {
     Call<User> sendUser(@Body HashMap<String, String> map);
 
     @POST("/spokenText")
-    Call<SpeechToText> sendSpokenText(@Body HashMap<String, String> map);
+    Call<SpeechToText> sendSpokenText(@Body String map);
 
-    @POST("/location")
-    Call<GPSLocation> sendGPSLocation(@Body HashMap<String, String> map);
+    @POST("/currentLocation")
+    Call<GPSLocation> sendGPSLocation(@Body String map);
 }

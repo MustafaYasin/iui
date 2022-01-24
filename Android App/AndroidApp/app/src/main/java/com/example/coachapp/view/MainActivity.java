@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import com.example.coachapp.R;
 import com.example.coachapp.connection.RetrofitInterface;
+import com.example.coachapp.connection.RetrofitRoutes;
+import com.example.coachapp.gps.GPSLocation;
 import com.example.coachapp.speech.SpeechToText;
 import com.example.coachapp.speech.TextToSpeech;
 
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
     private String BASE_URL = "http://10.0.2.2:3000"; // for emulator on port 3000
-    private String location = "";
+    private String location = "123456";
     private String spokenText = "hello again";
 
     @Override
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        RetrofitRoutes retrofitRoutes = new RetrofitRoutes();
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -47,15 +50,11 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.coachButton).setOnClickListener(view -> {
             speechText.setVisibility(View.VISIBLE);
-            // Send spokenText after finished recognition
-        });
-
-        findViewById(R.id.sendBtn).setOnClickListener(view -> {
             System.out.println("PRessed");
-            HashMap<String, String> map = new HashMap<>();
-            map.put("spokenText", spokenText);
-            map.put("location", location);
-            Call<SpeechToText> call = retrofitInterface.sendSpokenText(map);
+//            HashMap<String, String> map = new HashMap<>();
+//            map.put("spokenText", spokenText);
+//            map.put("location", location);
+            Call<SpeechToText> call = retrofitInterface.sendSpokenText("map");
             call.enqueue(new Callback<SpeechToText>() {
                 @Override
                 public void onResponse(Call<SpeechToText> call, Response<SpeechToText> response) {
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("REsponded ");
                         SpeechToText respondSpeech = response.body();
                         speechText.setText(respondSpeech.getSpokenText());
-                    System.out.println("test " + respondSpeech);
+                        System.out.println("test " + respondSpeech.toString());
                     }
 
                 }
@@ -75,7 +74,32 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
+//             Send spokenText after finished recognition
+        });
 
+        findViewById(R.id.sendBtn).setOnClickListener(view -> {
+            System.out.println("PRessed location");
+//            Call<GPSLocation> call = retrofitInterface.sendGPSLocation(location);
+//            call.enqueue(new Callback<GPSLocation>() {
+//                @Override
+//                public void onResponse(Call<GPSLocation> call, Response<GPSLocation> response) {
+//                    if (response.code() == 200) {
+//                        System.out.println("REsponded ");
+//                        GPSLocation respondLocation = response.body();
+//                        speechText.setText(respondLocation.getLocation());
+//                        System.out.println("test " + respondSpeech.toString());
+//                    }
+//
+//                }
+//                // Todo: error handling for status code 400
+//
+//                @Override
+//                public void onFailure(Call<GPSLocation> call, Throwable t) {
+//                    Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+//
+//                }
+//            });
+//
         });
     }
 }
