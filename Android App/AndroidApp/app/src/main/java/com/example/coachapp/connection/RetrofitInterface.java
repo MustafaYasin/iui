@@ -1,6 +1,5 @@
 package com.example.coachapp.connection;
 
-import com.example.coachapp.gps.GPSLocation;
 import com.example.coachapp.view.User;
 
 import java.util.HashMap;
@@ -16,7 +15,4 @@ public interface RetrofitInterface {
 
     @POST("/spokenText")
     Call<String> sendSpokenText(@Body String body);
-
-    @POST("/currentLocation")
-    Call<GPSLocation> sendGPSLocation(@Body String map);
 }

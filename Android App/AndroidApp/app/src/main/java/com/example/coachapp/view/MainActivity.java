@@ -45,19 +45,15 @@ public class MainActivity extends AppCompatActivity {
         voiceButton = findViewById(R.id.voiceButton);
         speechRecognizerSetup = new SpeechRecognizerSetup(this);
         gpsLocation = new GPSLocation(this);
-
+        gpsLocation.getLastLocation();
         recognizeSpeech();
+        new RetrofitInstance();
 
         voiceButton.setOnClickListener(view -> {
             speechToTextView.setVisibility(View.VISIBLE);
+            textToSpeechView.setVisibility(View.INVISIBLE);
             voiceButton.setImageResource(R.mipmap.voice_recorder);
-            new RetrofitInstance();
             speechRecognizerSetup.speechRecognizer.startListening(speechRecognizerSetup.speechRecognizerIntent);
-        });
-
-        findViewById(R.id.sendBtn).setOnClickListener(view -> {
-            System.out.println("PRessed location");
-            gpsLocation.getLastLocation();
         });
     }
 
@@ -116,29 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 spokenText = data.get(0);
                 speechToTextView.setText(spokenText);
-                System.out.println("Response message: " + spokenText);
-                Call<String> call = RetrofitInstance.retrofitInterface.sendSpokenText(spokenText);
-                call.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        if (response.isSuccessful()) {
-                            speechToTextView.setVisibility(View.INVISIBLE);
-                            String responseMsg = response.body();
-                            textToSpeechView.setVisibility(View.VISIBLE);
-                            textToSpeechView.setText(responseMsg);
-                            voiceButton.setImageResource(R.mipmap.microphone);
-                            System.out.println("Response message: " + responseMsg);
-                        } else {
-                            Log.e(TAG, "Response was not successful");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-                        Log.e(TAG, t.getMessage());
-                    }
-                });
+                sendSpokenText(spokenText);
             }
 
             @Override
@@ -148,6 +122,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onEvent(int i, Bundle bundle) {
                 Log.d(TAG, "onEndOfSpeech");
+            }
+        });
+    }
+
+    private void sendSpokenText(String spokenText) {
+        speechToTextView.setText(spokenText);
+        System.out.println("Response message: " + spokenText);
+        Call<String> call = RetrofitInstance.retrofitInterface.sendSpokenText(spokenText);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    speechToTextView.setVisibility(View.INVISIBLE);
+                    String responseMsg = response.body();
+                    textToSpeechView.setVisibility(View.VISIBLE);
+                    textToSpeechView.setText(responseMsg);
+                    voiceButton.setImageResource(R.mipmap.microphone);
+                    System.out.println("Response message: " + responseMsg);
+                } else {
+                    Log.e(TAG, "Response was not successful");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                Log.e(TAG, t.getMessage());
             }
         });
     }

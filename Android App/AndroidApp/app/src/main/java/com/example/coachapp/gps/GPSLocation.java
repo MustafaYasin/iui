@@ -23,8 +23,8 @@ import com.google.android.gms.location.LocationServices;
 public class GPSLocation {
 
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private int PERMISSION_ID = 44;
-    private Activity activity;
+    private final int PERMISSION_ID = 44;
+    private final Activity activity;
     private Double longitude;
     private Double latitude;
 
