@@ -10,12 +10,13 @@ app.listen(PORT, () => {
 app.use(express.json())
 
 app.post('/spokenText', (req, res)=> {
-    const newSpokenText = {
-        spokenText: req.body.spokenText,
-    }
-
-    const test = "Hello you"
-    const query = {spokenText: newSpokenText.spokenText}
+    console.log("start response")
+    //const newSpokenText = {
+    //    spokenText: req.body.spokenText,
+    //}
+    const test = "Gut und dir?"
+    //const query = {spokenText: newSpokenText.spokenText}
+    console.log("responde", test)
 
     res.status(200).send(JSON.stringify(test))
 })

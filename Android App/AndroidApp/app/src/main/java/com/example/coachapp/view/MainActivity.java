@@ -1,80 +1,59 @@
 package com.example.coachapp.view;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.speech.RecognitionListener;
+import android.speech.RecognizerIntent;
+import android.speech.SpeechRecognizer;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.coachapp.R;
-import com.example.coachapp.connection.RetrofitInterface;
-import com.example.coachapp.connection.RetrofitRoutes;
-import com.example.coachapp.gps.GPSLocation;
-import com.example.coachapp.speech.SpeechToText;
-import com.example.coachapp.speech.TextToSpeech;
+import com.example.coachapp.connection.RetrofitInstance;
 
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Retrofit retrofit;
-    private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http://10.0.2.2:3000"; // for emulator on port 3000
-    private String location = "123456";
-    private String spokenText = "hello again";
+    private static final String TAG = "RecognitionListener";
+
+    public static final Integer RecordAudioRequestCode = 1;
+    private SpeechRecognizer speechRecognizer;
+    private Intent speechRecognizerIntent;
+    private RetrofitInstance retrofitRoutes = new RetrofitInstance();
+
+    private TextView speechText;
+    private String spokenText;
+    private String responseMessage;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        RetrofitRoutes retrofitRoutes = new RetrofitRoutes();
+        speechText = findViewById(R.id.speechText);
+        ImageButton voiceButton = findViewById(R.id.voiceButton);
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            checkPermission();
+        }
+        setUpSpeechToText();
 
-        retrofitInterface = retrofit.create(RetrofitInterface.class);
-
-        TextView speechText = findViewById(R.id.speechText);
-
-        findViewById(R.id.coachButton).setOnClickListener(view -> {
+        voiceButton.setOnClickListener(view -> {
             speechText.setVisibility(View.VISIBLE);
-            System.out.println("PRessed");
-//            HashMap<String, String> map = new HashMap<>();
-//            map.put("spokenText", spokenText);
-//            map.put("location", location);
-            Call<SpeechToText> call = retrofitInterface.sendSpokenText("map");
-            call.enqueue(new Callback<SpeechToText>() {
-                @Override
-                public void onResponse(Call<SpeechToText> call, Response<SpeechToText> response) {
-                    if (response.code() == 200) {
-                        System.out.println("REsponded ");
-                        SpeechToText respondSpeech = response.body();
-                        speechText.setText(respondSpeech.getSpokenText());
-                        System.out.println("test " + respondSpeech.toString());
-                    }
-
-                }
-                // Todo: error handling for status code 400
-
-                @Override
-                public void onFailure(Call<SpeechToText> call, Throwable t) {
-                    Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-
-                }
-            });
-//             Send spokenText after finished recognition
+            voiceButton.setImageResource(R.mipmap.voice_recorder);
+            speechRecognizer.startListening(speechRecognizerIntent);
+//            retrofitRoutes.sendSpokenText(spokenText, MainActivity.this);
+//            speechText.setText(responseMessage);
+            System.out.println("msg set text " + responseMessage);
         });
 
         findViewById(R.id.sendBtn).setOnClickListener(view -> {
@@ -99,7 +78,67 @@ public class MainActivity extends AppCompatActivity {
 //
 //                }
 //            });
-//
+// 
         });
+    }
+
+    private void setUpSpeechToText() {
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+        speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+
+        speechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle bundle) {
+                Log.d(TAG, "onReadyForSpeech");
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+                Log.d(TAG, "onBeginningOfSpeech");
+                speechText.setText("");
+                speechText.setHint("Listening...");
+            }
+
+            @Override
+            public void onRmsChanged(float v) {
+            }
+
+            @Override
+            public void onBufferReceived(byte[] bytes) {
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+            }
+
+            @Override
+            public void onError(int i) {
+                Log.d(TAG, "SpeechRecognizer does not work " + i);
+            }
+
+            @Override
+            public void onResults(Bundle bundle) {
+                ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                spokenText = data.get(0);
+                retrofitRoutes.sendSpokenText(spokenText, MainActivity.this);
+                speechText.setText(spokenText);
+            }
+
+            @Override
+            public void onPartialResults(Bundle bundle) {
+            }
+
+            @Override
+            public void onEvent(int i, Bundle bundle) {
+            }
+        });
+    }
+
+    private void checkPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, RecordAudioRequestCode);
+        }
     }
 }
