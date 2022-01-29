@@ -7,7 +7,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
-import android.support.v4.app.ActivityCompat;
+
+import androidx.core.app.ActivityCompat;
 
 import java.util.Locale;
 
