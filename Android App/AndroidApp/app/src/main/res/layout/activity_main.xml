@@ -35,7 +35,21 @@
         app:srcCompat="@mipmap/microphone" />
 
     <TextView
-        android:id="@+id/speechText"
+        android:id="@+id/speechToText"
+        android:layout_width="212dp"
+        android:layout_height="95dp"
+        android:layout_marginTop="64dp"
+        android:text=""
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/voiceButton" />
+
+    <TextView
+        android:id="@+id/textToSpeech"
         android:layout_width="212dp"
         android:layout_height="95dp"
         android:layout_marginTop="64dp"

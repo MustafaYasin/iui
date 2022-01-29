@@ -1,7 +1,6 @@
 package com.example.coachapp.connection;
 
 import com.example.coachapp.gps.GPSLocation;
-import com.example.coachapp.speech.SpeechToText;
 import com.example.coachapp.view.User;
 
 import java.util.HashMap;

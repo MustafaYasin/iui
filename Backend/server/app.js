@@ -11,10 +11,11 @@ app.use(express.json())
 
 app.post('/spokenText', (req, res)=> {
     console.log("start response")
-    //const newSpokenText = {
-    //    spokenText: req.body.spokenText,
-    //}
+    const newSpokenText = {
+        spokenText: req.body.spokenText,
+    }
     const test = "Gut und dir?"
+    // make right response
     //const query = {spokenText: newSpokenText.spokenText}
     console.log("responde", test)
 
