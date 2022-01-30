@@ -18,7 +18,7 @@ public class SpeechRecognizerSetup {
     public final Integer RecordAudioRequestCode = 1;
     public SpeechRecognizer speechRecognizer;
     public Intent speechRecognizerIntent;
-    private Activity activity;
+    private final Activity activity;
 
     public SpeechRecognizerSetup(Activity activity) {
         this.activity = activity;

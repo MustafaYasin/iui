@@ -11,27 +11,73 @@ app.use(express.json())
 
 app.post('/spokenText', (req, res)=> {
     console.log("start response")
+
+    // gets input
     const newSpokenText = {
         spokenText: req.body.spokenText,
     }
-    const test = "Gut und dir?"
-    // make right response
-    //const query = {spokenText: newSpokenText.spokenText}
-    console.log("responde", test)
 
-    res.status(200).send(JSON.stringify(test))
+    // ToDo: check input text, send right response
+    // response variable
+    const response = "Gut und dir?"
+
+    console.log("responde", response)
+    res.status(200).send(JSON.stringify(response))
 })
 
-app.post('/currentLocation', (req, res)=> {
-    const currentLocation = {
-        location: req.body.location
+app.post('/user', (req, res)=> {
+    const newUser = {
+        name: req.body.name,
+        age: req.body.age,
+        weight: req.body.weight,
+        height: req.body.height,
+        experience: req.body.experience,
+        trainingsGoal: req.body.trainingsGoal
     }
 
-    const test = "Hello you I got your location"
-    const query = {location: currentLocation.location}
-
-    res.status(200).send(JSON.stringify(test))
+    // Todo: save in database
+    // send result of database:
+//    if() {
+//        res.status(200).send()
+//    } else {
+//        res.status(400).send()
+//    }
 })
 
+app.post('/trainingsSettings', (req, res)=> {
+    const newTrainingsSettings = {
+        preferredTrainingsLocation: req.body.preferredTrainingsLocation,
+        trainingsPreferenceGym: req.body.trainingsPreferenceGym,
+        trainingsEquipment: req.body.trainingsEquipment,
+        weatherPreference: req.body.weatherPreference,
+        experience: req.body.experience,
+        cardioPreference: req.body.cardioPreference
+    }
 
+    // Todo: save in database
+    // send result of database:
+//    if() {
+//        res.status(200).send()
+//    } else {
+//        res.status(400).send()
+//    }
+})
+
+app.post('/trainingsPlanSettings', (req, res)=> {
+    const newTrainingsSettings = {
+        weekLength: req.body.weekLength,
+        daysFrequency: req.body.daysFrequency,
+        maxTrainingsTime: req.body.maxTrainingsTime,
+        cardio: req.body.cardio,
+        weightTraining: req.body.weightTraining,
+    }
+
+    // Todo: save in database
+    // send result of database:
+//    if() {
+//        res.status(200).send()
+//    } else {
+//        res.status(400).send()
+//    }
+})
 
