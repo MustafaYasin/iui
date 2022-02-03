@@ -49,8 +49,14 @@ public class MainActivity extends AppCompatActivity {
     private TextView textToSpeechView;
 
     private String speechToText;
-    private String textToSpeech;
+    private String myTextToSpeech;
     private TextToSpeech tts;
+
+    private String voice1 = "Hi i am Coach Sam. What is your name?";
+    private String voice2 = "Hi nice to meet you. Thanks for using me as your coach. For your first use I have some questions for you.";
+    private String voice3 = "What is your trainingsgoal?";
+    private String voice4 = "Are you a beginner, advanced or expert at sport in general";
+    private String voice5 = "Do you want to train at the gym, at home or outdoor?";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
         speechRecognizerSetup = new SpeechRecognizerSetup(this);
         gpsLocation = new GPSLocation(this);
         gpsLocation.getLastLocation();
+
+        textToSpeech(voice1);
+
         recognizeSpeech();
         new RetrofitInstance();
 
@@ -146,44 +155,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendSpokenText() {
+
         Call<String> call = RetrofitInstance.retrofitInterface.sendSpokenText(speechToText);
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (response.isSuccessful()) {
-                    textToSpeech = response.body();
+                    myTextToSpeech = response.body();
                     setTexToSpeechText();
                     // Todo: start text to speech
                     //  at variable textToSpeech is response of server saved
                     // Todo: start listening again after text to speech is finished
                     //TextToSpeech tts = null;
-                    //speach
-                    if(tts == null){
-                        tts = new TextToSpeech(MainActivity.this, new TextToSpeech.OnInitListener() {
-
-                            @Override
-                            public void onInit(int status) {
-                                if (status == TextToSpeech.SUCCESS) {
-                                    int result = tts.setLanguage(Locale.GERMAN);
-                                    tts.setPitch(1.0f);
-                                    tts.setSpeechRate(1.0f);
-
-                                    speak(textToSpeech);
-
-                                    if (tts.isSpeaking()) {
-                                        tts.shutdown();
-                                        tts = null;
-                                    } else {
-                                        speak(textToSpeech);
-                                    }
-                                }
-                            }
-                        });
-                    }
-                    else{
-                        tts.shutdown();
-                        tts = null;
-                    }
+                    textToSpeech(myTextToSpeech);
 
 //                    speechToText();
                 } else {
@@ -288,10 +272,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void setTexToSpeechText() {
         speechToTextView.setVisibility(View.INVISIBLE);
-        textToSpeechView.setText(textToSpeech);
+        textToSpeechView.setText(myTextToSpeech);
         voiceButton.setImageResource(R.mipmap.microphone);
         textToSpeechView.setVisibility(View.VISIBLE);
-        System.out.println("Response textToSpeech: " + textToSpeech);
+        System.out.println("Response textToSpeech: " + myTextToSpeech);
     }
 
     private void setSpeechToTextText() {
@@ -301,8 +285,40 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("Input speechToText: " + speechToText);
     }
 
-    private void speak(String speechText) {
 
+    private void textToSpeech(String myTextToSpeech){
+        //speach
+        if(tts == null){
+            tts = new TextToSpeech(MainActivity.this, new TextToSpeech.OnInitListener() {
+
+                @Override
+                public void onInit(int status) {
+                    if (status == TextToSpeech.SUCCESS) {
+                        int result = tts.setLanguage(Locale.ENGLISH);
+                        tts.setPitch(1.0f);
+                        tts.setSpeechRate(1.0f);
+
+                        speak(myTextToSpeech);
+
+                        if (tts.isSpeaking()) {
+                            tts.shutdown();
+                            tts = null;
+                        } else {
+                            speak(myTextToSpeech);
+                        }
+                    }
+                }
+            });
+        }
+        else{
+            tts.shutdown();
+            tts = null;
+        }
+    }
+
+
+
+    private void speak(String speechText) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             tts.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, null);
         else
