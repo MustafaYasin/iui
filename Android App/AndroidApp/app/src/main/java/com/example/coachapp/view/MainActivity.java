@@ -1,9 +1,11 @@
 package com.example.coachapp.view;
 
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -23,6 +25,7 @@ import com.example.coachapp.model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String speechToText;
     private String textToSpeech;
+    private TextToSpeech tts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,6 +156,35 @@ public class MainActivity extends AppCompatActivity {
                     // Todo: start text to speech
                     //  at variable textToSpeech is response of server saved
                     // Todo: start listening again after text to speech is finished
+                    //TextToSpeech tts = null;
+                    //speach
+                    if(tts == null){
+                        tts = new TextToSpeech(MainActivity.this, new TextToSpeech.OnInitListener() {
+
+                            @Override
+                            public void onInit(int status) {
+                                if (status == TextToSpeech.SUCCESS) {
+                                    int result = tts.setLanguage(Locale.GERMAN);
+                                    tts.setPitch(1.0f);
+                                    tts.setSpeechRate(1.0f);
+
+                                    speak(textToSpeech);
+
+                                    if (tts.isSpeaking()) {
+                                        tts.shutdown();
+                                        tts = null;
+                                    } else {
+                                        speak(textToSpeech);
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    else{
+                        tts.shutdown();
+                        tts = null;
+                    }
+
 //                    speechToText();
                 } else {
                     Log.e(TAG, "Response was not successful");
@@ -266,5 +299,13 @@ public class MainActivity extends AppCompatActivity {
         speechToTextView.setText(speechToText);
         speechToTextView.setVisibility(View.VISIBLE);
         System.out.println("Input speechToText: " + speechToText);
+    }
+
+    private void speak(String speechText) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+            tts.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, null);
+        else
+            tts.speak(speechText, TextToSpeech.QUEUE_FLUSH, null);
     }
 }

@@ -7,7 +7,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class RetrofitInstance {
 
     public static RetrofitInterface retrofitInterface;
-    private final String device_url = "http://192.168.178.33";
+    //private final String device_url = "http://192.168.178.33";
+    private final String device_url = "http://192.168.0.196";
     // Real device: connect both to same internet connection, search on windows for IP via terminal >ipconfig
     private final String emulator_url = "http://10.0.2.2";
     private final String port = "3000";

@@ -19,7 +19,7 @@ app.post('/spokenText', (req, res)=> {
 
     // ToDo: check input text, send right response
     // response variable
-    const response = "Gut und dir?"
+    const response = "Blubberdiblubb?"
 
     console.log("responde", response)
     res.status(200).send(JSON.stringify(response))
