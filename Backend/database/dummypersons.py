@@ -3,7 +3,7 @@ person_1 = {
     "workouts": 3,
     "level": "beginner",
     "age": 25,
-    "sex": "male",
+    "sex": "female",
     "goal": "gain muscle",
     "trainingplan": "tp_1"
 }
@@ -23,7 +23,7 @@ person_3 = {
     "workouts": 4,
     "level": "advanced",
     "age": 18,
-    "sex": "male",
+    "sex": "female",
     "goal": "gain muscle",
     "trainingplan": "tp_3"
 }
@@ -43,7 +43,7 @@ person_5 = {
     "workouts": 5,
     "level": "advanced",
     "age": 25,
-    "sex": "male",
+    "sex": "female",
     "goal": "gain muscle",
     "trainingplan": "tp_5"
 }
@@ -72,7 +72,7 @@ person_8 = {
     "workouts": 4,
     "level": "beginner",
     "age": 20,
-    "sex": "male",
+    "sex": "female",
     "goal": "gain muscle",
     "trainingplan": "tp_2"
 }
@@ -92,7 +92,7 @@ person_10 = {
     "workouts": 5,
     "level": "beginner",
     "age": 43,
-    "sex": "male",
+    "sex": "female",
     "goal": "gain muscle",
     "trainingplan": "tp_4"
 }
@@ -112,7 +112,7 @@ person_12 = {
     "workouts": 6,
     "level": "advanced",
     "age": 43,
-    "sex": "male",
+    "sex": "female",
     "goal": "gain muscle",
     "trainingplan": "tp_6"
 }
