@@ -271,4 +271,4 @@ client = MongoClient("mongodb+srv://mustafayasin:nisani2404@cluster0.oxj2y.mongo
 db = client['iui']
 collection = db['user']
 
-collection.insert(trainingplan_1s)
+collection.insert_one(trainingplan_1)
