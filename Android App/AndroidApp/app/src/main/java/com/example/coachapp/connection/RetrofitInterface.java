@@ -26,8 +26,4 @@ public interface RetrofitInterface {
 
     @POST("/spokenText")
     Call<String> sendSpokenText(@Body String body);
-
-    @GET("/testi")
-    public Call<String> getUsers();
-
 }

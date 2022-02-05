@@ -69,9 +69,7 @@ public class MainActivity extends AppCompatActivity {
         gpsLocation = new GPSLocation(this);
         gpsLocation.getLastLocation();
 
-//        textToSpeech(voice1);
-
-
+        textToSpeech(voice1);
 
         voiceButton.setOnClickListener(view -> {
             recognizeSpeech();
