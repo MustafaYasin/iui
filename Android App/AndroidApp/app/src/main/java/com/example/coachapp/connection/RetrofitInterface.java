@@ -26,4 +26,15 @@ public interface RetrofitInterface {
 
     @POST("/spokenText")
     Call<String> sendSpokenText(@Body String body);
+
+/*
+    @POST("/spokenText")
+    Call<String> sendSpokenText(@Body String post);
+
+ */
+
+    @POST("/myText")
+    Call<String> sendMyText(@Body String post);
+
+
 }

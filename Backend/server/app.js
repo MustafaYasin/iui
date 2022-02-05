@@ -11,18 +11,32 @@ app.use(express.json())
 
 app.post('/spokenText', (req, res)=> {
     console.log("start response")
-
+/*
     // gets input
-    // const newSpokenText = {
-    //     spokenText: req.body.spokenText,
-    // }
+    const newSpokenText = {
+        spokenText: req.body.spokenText,
+    }
+    */
+    
+   // console.log("req Body", req.body);
+    //console.log("newspokentext", req.body.spokenText);
+    const test = "Test"
+    console.log(test)
 
     // ToDo: check input text, send right response
     // response variable
-    const response = "Gut und dir?"
+    if(req.body == "Hello"){
+        const response = "You are a maschine!!!"
+    }
+    const response = "Blubberdiblubb?"
 
     console.log("responde", response)
     res.status(200).send(JSON.stringify(response))
+})
+
+
+app.get('/spokenText/text', (req, res, next) =>{
+    console.log("req get", req.params.text);
 })
 
 app.post('/user', (req, res)=> {

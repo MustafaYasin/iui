@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -18,14 +19,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.coachapp.R;
 import com.example.coachapp.SpeechRecognizerSetup;
 import com.example.coachapp.connection.RetrofitInstance;
+import com.example.coachapp.connection.RetrofitInterface;
 import com.example.coachapp.gps.GPSLocation;
 import com.example.coachapp.model.TrainingsPlanSettings;
 import com.example.coachapp.model.TrainingsSettings;
 import com.example.coachapp.model.User;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
         gpsLocation.getLastLocation();
 
         textToSpeech(voice1);
+
+        recognizeSpeech();
+        new RetrofitInstance();
+        sendMyText();
 
         voiceButton.setOnClickListener(view -> {
             recognizeSpeech();
@@ -139,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 speechToText = data.get(0);
                 setSpeechToTextText();
+
                 sendSpokenText();
             }
 
@@ -179,6 +189,24 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<String> call, Throwable t) {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
                 Log.e(TAG, t.getMessage());
+            }
+        });
+    }
+
+    //test
+    private void sendMyText(){
+        String post = "Das habe ich gesagt";
+        Call<String> call = RetrofitInstance.retrofitInterface.sendMyText(post);
+
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String postResponse = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
             }
         });
     }
@@ -289,23 +317,38 @@ public class MainActivity extends AppCompatActivity {
     private void textToSpeech(String myTextToSpeech){
         //speach
         if(tts == null){
-            tts = new TextToSpeech(MainActivity.this, new TextToSpeech.OnInitListener() {
+            tts = new TextToSpeech(MainActivity.this, status -> {
+                if (status == TextToSpeech.SUCCESS) {
+                    /*
+                    int result = tts.setLanguage(Locale.ENGLISH);
+                    tts.setPitch(1.0f);
+                    tts.setSpeechRate(1.0f);
+                    //tts.setLanguage(new Locale("en_EN"));
+*/
 
-                @Override
-                public void onInit(int status) {
-                    if (status == TextToSpeech.SUCCESS) {
-                        int result = tts.setLanguage(Locale.ENGLISH);
-                        tts.setPitch(1.0f);
-                        tts.setSpeechRate(1.0f);
+/*
+                    Set<String> a=new HashSet<>();
+                    a.add("male");
+                    Voice voice = new Voice("en-us-x-sfg#male_1-local",new Locale("en","US"),400,200,true,a);
+                    tts.setVoice(voice);
+                    */
 
+
+                    //choose male voice
+                    Log.i("Voices", String.valueOf(tts.getVoices()));
+                    Set<Voice> list = tts.getVoices();
+                    Voice[] voices = tts.getVoices().toArray(new Voice[0]);
+                    tts.setVoice(voices[11]);
+
+
+
+                    speak(myTextToSpeech);
+
+                    if (tts.isSpeaking()) {
+                        tts.shutdown();
+                        tts = null;
+                    } else {
                         speak(myTextToSpeech);
-
-                        if (tts.isSpeaking()) {
-                            tts.shutdown();
-                            tts = null;
-                        } else {
-                            speak(myTextToSpeech);
-                        }
                     }
                 }
             });
