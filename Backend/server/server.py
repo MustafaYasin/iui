@@ -12,10 +12,12 @@ class Server(BaseHTTPRequestHandler):
     #     self.send_response(200)
     #     self.end_headers()
     #     self.wfile.write(b'Test!')
+    print("get")
     return
     
   def do_POST(self):
     if self.path == "/spokenText":
+        print("post")
         self.send_response(200)
         self.end_headers()
         self.wfile.write(b'Blubberdiblubb?')
@@ -37,5 +39,6 @@ class Server(BaseHTTPRequestHandler):
     return bytes(route_content, "UTF-8")
     
   def respond(self):
+    print("response")
     content = self.handle_http(200, 'text/html')
     self.wfile.write(content)

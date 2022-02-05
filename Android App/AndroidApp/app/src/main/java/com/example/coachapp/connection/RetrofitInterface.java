@@ -4,10 +4,14 @@ import com.example.coachapp.model.TrainingsSettings;
 import com.example.coachapp.model.User;
 
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RetrofitInterface {
 
@@ -22,4 +26,8 @@ public interface RetrofitInterface {
 
     @POST("/spokenText")
     Call<String> sendSpokenText(@Body String body);
+
+    @GET("/testi")
+    public Call<String> getUsers();
+
 }

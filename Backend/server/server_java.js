@@ -13,13 +13,13 @@ app.post('/spokenText', (req, res)=> {
     console.log("start response")
 
     // gets input
-    const newSpokenText = {
-        spokenText: req.body.spokenText,
-    }
+    // const newSpokenText = {
+    //     spokenText: req.body.spokenText,
+    // }
 
     // ToDo: check input text, send right response
     // response variable
-    const response = "Blubberdiblubb?"
+    const response = "Gut und dir?"
 
     console.log("responde", response)
     res.status(200).send(JSON.stringify(response))

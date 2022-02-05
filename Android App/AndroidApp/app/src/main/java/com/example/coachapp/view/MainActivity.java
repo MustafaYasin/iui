@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     // Todo: send settings
     // Todo: check if first time app started
 
-    private static final String TAG = "RecognitionListener";
+    private static final String TAG = "MainActivity";
     private GPSLocation gpsLocation;
     private SpeechRecognizerSetup speechRecognizerSetup;
     private User user = new User();
@@ -69,12 +69,13 @@ public class MainActivity extends AppCompatActivity {
         gpsLocation = new GPSLocation(this);
         gpsLocation.getLastLocation();
 
-        textToSpeech(voice1);
+//        textToSpeech(voice1);
 
-        recognizeSpeech();
-        new RetrofitInstance();
+
 
         voiceButton.setOnClickListener(view -> {
+            recognizeSpeech();
+            new RetrofitInstance();
             speechToText();
         });
     }
@@ -160,6 +161,7 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
+
                 if (response.isSuccessful()) {
                     myTextToSpeech = response.body();
                     setTexToSpeechText();
