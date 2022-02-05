@@ -261,14 +261,3 @@ trainingplan_6 = {
         "exercises":0
       },
 }
-
-
-
-from pymongo import MongoClient
-
-# Create connection to MongoDB
-client = MongoClient("mongodb+srv://mustafayasin:nisani2404@cluster0.oxj2y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
-db = client['iui']
-collection = db['user']
-
-collection.insert_one(trainingplan_1)
