@@ -1,7 +1,7 @@
-from operator import ne
 from pymongo import MongoClient
 import pandas as pd
 import random
+import pprint
 client = MongoClient("mongodb+srv://mustafayasin:nisani2404@cluster0.oxj2y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = client['iui']
 
@@ -56,7 +56,7 @@ print(recommended_plan)
 trainingprogramms = db['trainingprogramm']
 
 tp = trainingprogramms.find_one({'title': recommended_plan})
-
+tp = pd.DataFrame.from_dict(tp)
 
 
 # find some exercises for the muscle groups for the days
@@ -64,19 +64,34 @@ uebungen = db['ubungen']
 
 # day_1
 # save muscles and number of exercises per muscle 
-muscles = tp.day1.area
-num_ex = tp.day1.exercises
+muscles = tp.day_1.area
+num_ex = tp.day_1.exercises
+muscles = muscles.split(", ")
 
 # get random exercises for muscle
 for muscle in muscles:
+    print(muscle.capitalize())    
+    # find all exercises for specific muscle or muscle group --> depends on trainingsplan specifics
+    exercises_for_muscle = uebungen.find({ "subset_muscles" : muscle.capitalize()})
+    exercises_for_area = uebungen.find({ "muscle_group" : muscle.capitalize()})
 
-    # find all exercises for specific muscle
-    exercises_for_muscle = uebungen.find({ any : muscle})
+    # format pymongo cursor vektor to pandas dataframe
+    df_exercises_for_muscle =  pd.DataFrame(list(exercises_for_muscle))
+    df_exercises_for_area =  pd.DataFrame(list(exercises_for_area))
 
+    # put all exercises in one Dataframe for specific muscle group
+    exercises_all = [df_exercises_for_area, df_exercises_for_muscle]
+    exercises_all = pd.concat(exercises_all)
+    
     # get number of exercises for specific muscle
-    num_exercises = exercises_for_muscle.count()
+    num_exercises = len(exercises_all)
 
     # get num_ex random int in range of num_exercises
-    exercises = random.sample(range(1, num_exercises), num_ex)
+    exercises = random.sample(range(0, num_exercises), num_ex)
+    print(exercises_all[["exercise_title"]])
+    print(exercises)
+    # select exercises and store in output Structure for App
+    #"exerxise_execution"
+     #   "exercise_title"
 
 # analog day_2 - 7
