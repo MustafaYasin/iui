@@ -1,5 +1,7 @@
 from http.server import BaseHTTPRequestHandler
 from routes import routes
+from cgi import parse_header, parse_multipart
+from urllib.parse import parse_qs
 import json
 
 class Server(BaseHTTPRequestHandler):
@@ -20,6 +22,8 @@ class Server(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b'Blubberdiblubb?')
         print("in spokenText")
+        postvars = self.parse_POST()
+        print(postvars)
 
     if self.path == "/user":
         content_length = int(self.headers['Content-Length'])
@@ -35,6 +39,19 @@ class Server(BaseHTTPRequestHandler):
         print("in do_POST")
 
     return
+  
+  def parse_POST(self):
+    ctype, pdict = parse_header(self.headers['content-type'])
+    if ctype == 'multipart/form-data':
+        postvars = parse_multipart(self.rfile, pdict)
+    elif ctype == 'application/x-www-form-urlencoded':
+        length = int(self.headers['content-length'])
+        postvars = parse_qs(
+                self.rfile.read(length), 
+                keep_blank_values=1)
+    else:
+        postvars = {}
+    return postvars
     
   def handle_http(self, status, content_type):
     self.send_response(status)

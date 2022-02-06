@@ -172,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (response.isSuccessful()) {
                     myTextToSpeech = response.body();
+                    Log.i("UNSERERROR",myTextToSpeech);
                     setTexToSpeechText();
                     // Todo: start text to speech
                     //  at variable textToSpeech is response of server saved
