@@ -1,10 +1,13 @@
 package com.example.coachapp.view;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
 import android.speech.tts.TextToSpeech;
+import android.speech.tts.Voice;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +15,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.coachapp.R;
-import com.example.coachapp.connection.speech.SpeechFromText;
-import com.example.coachapp.connection.speech.SpeechRecognizerSetup;
+import com.example.coachapp.speech.SpeechFromText;
+import com.example.coachapp.speech.SpeechRecognizerSetup;
 import com.example.coachapp.connection.RetrofitInstance;
+
+import java.util.Set;
 
 public class VoiceView extends Fragment {
     //change IP adress in RetrofitInstance
@@ -30,8 +35,6 @@ public class VoiceView extends Fragment {
     private TextView speechToTextView;
     private TextView textToSpeechView;
 
-    private String speechToText;
-    private String myTextToSpeech;
     private TextToSpeech tts;
 
     private String voice1 = "Hi i am Coach Sam. What is your name?";
@@ -42,7 +45,6 @@ public class VoiceView extends Fragment {
 
     public VoiceView() {
         super(R.layout.fragment_voice_view);
-        // Required empty public constructor
     }
 
     @Override
@@ -53,12 +55,9 @@ public class VoiceView extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_voice_view, container, false);
     }
 
-    // This event is triggered soon after onCreateView().
-    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         speechToTextView = view.findViewById(R.id.speechToText);
@@ -66,10 +65,11 @@ public class VoiceView extends Fragment {
         voiceButton = view.findViewById(R.id.voiceButton);
         speechRecognizerSetup = new SpeechRecognizerSetup(getActivity());
         speechFromText = new SpeechFromText(getActivity());
-//        speechFromText.textToSpeech(voice1);
+
         new RetrofitInstance();
 
         voiceButton.setOnClickListener(view1 -> {
+//            speechFromText.textToSpeech(voice1);
             speechToTextView.setText("");
             speechToTextView.setVisibility(View.VISIBLE);
             textToSpeechView.setVisibility(View.INVISIBLE);

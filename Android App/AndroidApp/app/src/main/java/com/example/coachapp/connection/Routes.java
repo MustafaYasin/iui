@@ -10,6 +10,9 @@ import com.example.coachapp.model.TrainingsPlanSettings;
 import com.example.coachapp.model.TrainingsSettings;
 import com.example.coachapp.model.User;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -24,6 +27,7 @@ public class Routes {
     private TrainingsSettings trainingsSettings = new TrainingsSettings();
     private TrainingsPlanSettings trainingsPlanSettings = new TrainingsPlanSettings();
     private TextView textToSpeech;
+    private String myTextToSpeech;
 
     public Routes(Activity activity) {
         this.activity = activity;
@@ -31,25 +35,20 @@ public class Routes {
     }
 
     public void sendSpokenText(String speechToText) {
-        System.out.println("sends " + speechToText);
-        Call<String> call = RetrofitInstance.retrofitInterface.sendSpokenText(speechToText);
+        Call<String> call = RetrofitInstance.retrofitInterface.sendSpokenText(speechToText, "1");
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                System.out.println("on response");
                 if (response.isSuccessful()) {
-                    String responseText = response.body();
-                    textToSpeech.setText(responseText);
-                    System.out.println("responde " + responseText);
 //                    myTextToSpeech = response.body();
-//                    setTexToSpeechText();
-                    // Todo: start text to speech
-                    //  at variable textToSpeech is response of server saved
-                    // Todo: start listening again after text to speech is finished
-                    //TextToSpeech tts = null;
-//                    textToSpeech(myTextToSpeech);
-
-//                    speechToText();
+                    try {
+                        JSONObject obj = new JSONObject(response.body());
+                        myTextToSpeech = obj.getString("key");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.i("UNSERERROR",myTextToSpeech);
+                    textToSpeech.setText(myTextToSpeech);
                 } else {
                     Log.e(TAG, "Response was not successful");
                 }

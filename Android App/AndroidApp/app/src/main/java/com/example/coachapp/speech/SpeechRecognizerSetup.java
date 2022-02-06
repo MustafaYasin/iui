@@ -1,4 +1,4 @@
-package com.example.coachapp.connection.speech;
+package com.example.coachapp.speech;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,7 +10,6 @@ import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 

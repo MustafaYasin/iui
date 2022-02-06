@@ -8,6 +8,8 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -24,8 +26,9 @@ public interface RetrofitInterface {
     @POST("/trainingsPlanSettings")
     Call<Void> sendTrainingsPlanSettings(@Body HashMap<String, Integer> map);
 
+    @FormUrlEncoded
     @POST("/spokenText")
-    Call<String> sendSpokenText(@Body String body);
+    Call<String> sendSpokenText(@Field("mySpokenText") String mySpokenText, @Field("userId") String userId);
 
 /*
     @POST("/spokenText")

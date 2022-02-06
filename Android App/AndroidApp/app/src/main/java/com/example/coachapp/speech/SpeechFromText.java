@@ -1,4 +1,4 @@
-package com.example.coachapp.connection.speech;
+package com.example.coachapp.speech;
 
 import android.app.Activity;
 import android.os.Build;
@@ -6,6 +6,7 @@ import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
 import android.util.Log;
 
+import java.util.Locale;
 import java.util.Set;
 
 public class SpeechFromText {
@@ -20,6 +21,12 @@ public class SpeechFromText {
         if (tts == null) {
             tts = new TextToSpeech(activity, status -> {
                 if (status == TextToSpeech.SUCCESS) {
+                    int result = tts.setLanguage(Locale.US);
+                    if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("error", "This Language is not supported");
+                    } else {
+                        speak(myTextToSpeech);
+                    }
                     /*
                     int result = tts.setLanguage(Locale.ENGLISH);
                     tts.setPitch(1.0f);
@@ -37,11 +44,11 @@ public class SpeechFromText {
 
                     //choose male voice
                     Log.i("Voices", String.valueOf(tts.getVoices()));
-                    Set<Voice> list = tts.getVoices();
-                    Voice[] voices = tts.getVoices().toArray(new Voice[0]);
-                    tts.setVoice(voices[11]);
+//                    Set<Voice> list = tts.getVoices();
+//                    Voice[] voices = tts.getVoices().toArray(new Voice[0]);
+//                    tts.setVoice(voices[11]);
 
-
+                    System.out.println("Speeeek: " + String.valueOf(tts.getVoices()));
                     speak(myTextToSpeech);
 
                     if (tts.isSpeaking()) {
@@ -50,6 +57,8 @@ public class SpeechFromText {
                     } else {
                         speak(myTextToSpeech);
                     }
+                } else {
+                    Log.e("error", "Failed to Initialize");
                 }
             });
         } else {
