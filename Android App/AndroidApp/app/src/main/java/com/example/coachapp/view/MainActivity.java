@@ -25,6 +25,9 @@ import com.example.coachapp.model.TrainingsPlanSettings;
 import com.example.coachapp.model.TrainingsSettings;
 import com.example.coachapp.model.User;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -165,13 +168,19 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendSpokenText() {
 
-        Call<String> call = RetrofitInstance.retrofitInterface.sendSpokenText(speechToText);
+        Call<String> call = RetrofitInstance.retrofitInterface.sendSpokenText(speechToText, "1");
         call.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
 
                 if (response.isSuccessful()) {
-                    myTextToSpeech = response.body();
+                    // myTextToSpeech = response.body();
+                    try {
+                        JSONObject obj = new JSONObject(response.body());
+                        myTextToSpeech = obj.getString("key");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     Log.i("UNSERERROR",myTextToSpeech);
                     setTexToSpeechText();
                     // Todo: start text to speech
