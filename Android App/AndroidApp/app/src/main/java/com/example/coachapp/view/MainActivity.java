@@ -1,96 +1,35 @@
 package com.example.coachapp.view;
 
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.speech.RecognitionListener;
-import android.speech.SpeechRecognizer;
-import android.speech.tts.TextToSpeech;
-import android.speech.tts.Voice;
-import android.util.Log;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.coachapp.R;
-import com.example.coachapp.SpeechRecognizerSetup;
-import com.example.coachapp.connection.RetrofitInstance;
-import com.example.coachapp.connection.RetrofitInterface;
-import com.example.coachapp.gps.GPSLocation;
-import com.example.coachapp.model.TrainingsPlanSettings;
-import com.example.coachapp.model.TrainingsSettings;
-import com.example.coachapp.model.User;
+import com.example.coachapp.location.GPSLocation;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+    BottomNavigationView bottomNavigationView;
+    VoiceView voiceView = new VoiceView();
+    TrainingsplanView trainingsplanView = new TrainingsplanView();
 
-public class MainActivity extends AppCompatActivity {
-    //change IP adress in RetrofitInstance
-    // start server with node app.js via terminal
-    // Todo: send settings
-    // Todo: check if first time app started
-
-    private static final String TAG = "MainActivity";
     private GPSLocation gpsLocation;
-    private SpeechRecognizerSetup speechRecognizerSetup;
-    private User user = new User();
-    private TrainingsSettings trainingsSettings = new TrainingsSettings();
-    private TrainingsPlanSettings trainingsPlanSettings = new TrainingsPlanSettings();
-
-    private ImageButton voiceButton;
-    private TextView speechToTextView;
-    private TextView textToSpeechView;
-
-    private String speechToText;
-    private String myTextToSpeech;
-    private TextToSpeech tts;
-
-    private String voice1 = "Hi i am Coach Sam. What is your name?";
-    private String voice2 = "Hi nice to meet you. Thanks for using me as your coach. For your first use I have some questions for you.";
-    private String voice3 = "What is your trainingsgoal?";
-    private String voice4 = "Are you a beginner, advanced or expert at sport in general";
-    private String voice5 = "Do you want to train at the gym, at home or outdoor?";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        speechToTextView = findViewById(R.id.speechToText);
-        textToSpeechView = findViewById(R.id.textToSpeech);
-        voiceButton = findViewById(R.id.voiceButton);
-        speechRecognizerSetup = new SpeechRecognizerSetup(this);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
+        bottomNavigationView.setSelectedItemId(R.id.voiceNav);
+
         gpsLocation = new GPSLocation(this);
         gpsLocation.getLastLocation();
-
-        textToSpeech(voice1);
-
-        recognizeSpeech();
-        new RetrofitInstance();
-        sendMyText();
-
-        voiceButton.setOnClickListener(view -> {
-            recognizeSpeech();
-            new RetrofitInstance();
-            speechToText();
-        });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-//        speechToText();
     }
 
     @Override
@@ -111,260 +50,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void recognizeSpeech() {
-        speechRecognizerSetup.checkPermission();
-        speechRecognizerSetup.speechRecognizer.setRecognitionListener(new RecognitionListener() {
-            @Override
-            public void onReadyForSpeech(Bundle bundle) {
-                Log.d(TAG, "onReadyForSpeech");
-            }
-
-            @Override
-            public void onBeginningOfSpeech() {
-                Log.d(TAG, "onBeginningOfSpeech");
-                speechToTextView.setText("");
-                speechToTextView.setHint("Listening...");
-            }
-
-            @Override
-            public void onRmsChanged(float v) {
-            }
-
-            @Override
-            public void onBufferReceived(byte[] bytes) {
-            }
-
-            @Override
-            public void onEndOfSpeech() {
-            }
-
-            @Override
-            public void onError(int i) {
-                Log.d(TAG, "SpeechRecognizer does not work " + i);
-            }
-
-            @Override
-            public void onResults(Bundle bundle) {
-                ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                speechToText = data.get(0);
-                setSpeechToTextText();
-
-                sendSpokenText();
-            }
-
-            @Override
-            public void onPartialResults(Bundle bundle) {
-            }
-
-            @Override
-            public void onEvent(int i, Bundle bundle) {
-                Log.d(TAG, "onEndOfSpeech");
-            }
-        });
-    }
-
-    private void sendSpokenText() {
-
-        Call<String> call = RetrofitInstance.retrofitInterface.sendSpokenText(speechToText);
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-
-                if (response.isSuccessful()) {
-                    myTextToSpeech = response.body();
-                    setTexToSpeechText();
-                    // Todo: start text to speech
-                    //  at variable textToSpeech is response of server saved
-                    // Todo: start listening again after text to speech is finished
-                    //TextToSpeech tts = null;
-                    textToSpeech(myTextToSpeech);
-
-//                    speechToText();
-                } else {
-                    Log.e(TAG, "Response was not successful");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.e(TAG, t.getMessage());
-            }
-        });
-    }
-
-    //test
-    private void sendMyText(){
-        String post = "Das habe ich gesagt";
-        Call<String> call = RetrofitInstance.retrofitInterface.sendMyText(post);
-
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String postResponse = response.body();
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-            }
-        });
-    }
-
-    private void sendUser() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("name", user.getName());
-        map.put("age", String.valueOf(user.getAge()));
-        map.put("weight", String.valueOf(user.getWeight()));
-        map.put("height", String.valueOf(user.getHeight()));
-        map.put("experience", String.valueOf(user.getExperience()));
-        map.put("trainingsGoal", user.getTrainingsGoal());
-
-        Call<Void> call = RetrofitInstance.retrofitInterface.sendUser(map);
-        call.enqueue(new Callback<Void>() {
-
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Saved user data successfully", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.e(TAG, t.getMessage());
-            }
-        });
-    }
-
-    private void sendTrainingsPlanSettings() {
-        HashMap<String, Integer> map = new HashMap<>();
-        map.put("weekLength", trainingsPlanSettings.getWeekLength());
-        map.put("daysFrequency", trainingsPlanSettings.getDaysFrequency());
-        map.put("maxTrainingsTime", trainingsPlanSettings.getMaxTrainingsTime());
-        map.put("cardio", trainingsPlanSettings.getCardio());
-        map.put("weightTraining", trainingsPlanSettings.getWeightTraining());
-
-        Call<Void> call = RetrofitInstance.retrofitInterface.sendTrainingsPlanSettings(map);
-        call.enqueue(new Callback<Void>() {
-
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Saved trainings plan settings successfully", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.e(TAG, t.getMessage());
-            }
-        });
-    }
-
-    private void sendTrainingsSettings() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("preferredTrainingsLocation", String.valueOf(trainingsSettings.getPreferredTrainingsLocation()));
-        map.put("trainingsPreferenceGym", String.valueOf(trainingsSettings.getTrainingsPreferenceGym()));
-        map.put("trainingsEquipment", String.valueOf(trainingsSettings.getTrainingsEquipment()));
-        map.put("weatherPreference", String.valueOf(trainingsSettings.getWeatherPreference()));
-        map.put("cardioPreference", String.valueOf(trainingsSettings.getCardioPreference()));
-
-        Call<Void> call = RetrofitInstance.retrofitInterface.sendTrainingsSettings(map);
-        call.enqueue(new Callback<Void>() {
-
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Saved trainings settings successfully", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.e(TAG, t.getMessage());
-            }
-        });
-    }
-
-    private void speechToText() {
-        speechToTextView.setText("");
-        speechToTextView.setVisibility(View.VISIBLE);
-        textToSpeechView.setVisibility(View.INVISIBLE);
-        voiceButton.setImageResource(R.mipmap.voice_recorder);
-        speechRecognizerSetup.speechRecognizer.startListening(speechRecognizerSetup.speechRecognizerIntent);
-    }
-
-    private void setTexToSpeechText() {
-        speechToTextView.setVisibility(View.INVISIBLE);
-        textToSpeechView.setText(myTextToSpeech);
-        voiceButton.setImageResource(R.mipmap.microphone);
-        textToSpeechView.setVisibility(View.VISIBLE);
-        System.out.println("Response textToSpeech: " + myTextToSpeech);
-    }
-
-    private void setSpeechToTextText() {
-        textToSpeechView.setVisibility(View.INVISIBLE);
-        speechToTextView.setText(speechToText);
-        speechToTextView.setVisibility(View.VISIBLE);
-        System.out.println("Input speechToText: " + speechToText);
-    }
-
-
-    private void textToSpeech(String myTextToSpeech){
-        //speach
-        if(tts == null){
-            tts = new TextToSpeech(MainActivity.this, status -> {
-                if (status == TextToSpeech.SUCCESS) {
-                    /*
-                    int result = tts.setLanguage(Locale.ENGLISH);
-                    tts.setPitch(1.0f);
-                    tts.setSpeechRate(1.0f);
-                    //tts.setLanguage(new Locale("en_EN"));
-*/
-
-/*
-                    Set<String> a=new HashSet<>();
-                    a.add("male");
-                    Voice voice = new Voice("en-us-x-sfg#male_1-local",new Locale("en","US"),400,200,true,a);
-                    tts.setVoice(voice);
-                    */
-
-
-                    //choose male voice
-                    Log.i("Voices", String.valueOf(tts.getVoices()));
-                    Set<Voice> list = tts.getVoices();
-                    Voice[] voices = tts.getVoices().toArray(new Voice[0]);
-                    tts.setVoice(voices[11]);
-
-
-
-                    speak(myTextToSpeech);
-
-                    if (tts.isSpeaking()) {
-                        tts.shutdown();
-                        tts = null;
-                    } else {
-                        speak(myTextToSpeech);
-                    }
-                }
-            });
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.voiceNav:
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainActivity, voiceView).commit();
+                return true;
+            case R.id.trainingsplanNav:
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainActivity, trainingsplanView).commit();
+                return true;
         }
-        else{
-            tts.shutdown();
-            tts = null;
-        }
-    }
-
-
-
-    private void speak(String speechText) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            tts.speak(speechText, TextToSpeech.QUEUE_FLUSH, null, null);
-        else
-            tts.speak(speechText, TextToSpeech.QUEUE_FLUSH, null);
+        return false;
     }
 }

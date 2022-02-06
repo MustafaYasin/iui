@@ -20,14 +20,14 @@ app.post('/spokenText', (req, res)=> {
     
    // console.log("req Body", req.body);
     //console.log("newspokentext", req.body.spokenText);
-    const test = "Test"
-    console.log(test)
+    // const test = "Test"
+    // console.log(test)
 
-    // ToDo: check input text, send right response
-    // response variable
-    if(req.body == "Hello"){
-        const response = "You are a maschine!!!"
-    }
+    // // ToDo: check input text, send right response
+    // // response variable
+    // if(req.body == "Hello"){
+    //     const response = "You are a maschine!!!"
+    // }
     const response = "Blubberdiblubb?"
 
     console.log("responde", response)
