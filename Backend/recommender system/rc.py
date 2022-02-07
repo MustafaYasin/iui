@@ -1,7 +1,6 @@
 from pymongo import MongoClient
 import pandas as pd
 import random
-import pprint
 client = MongoClient("mongodb+srv://mustafayasin:nisani2404@cluster0.oxj2y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = client['iui']
 
@@ -31,13 +30,13 @@ print(recommender_frame)
 ## recommending
 import sklearn.neighbors
 
-# use NearestNeighbour, get 3 nearest suggestions, falls mehr user kann man dann auf mehrheitsentscheidung umstellen
+# use NearestNeighbour, get 3 nearest suggestions, atm using only one (the nearest)
 model = sklearn.neighbors.NearestNeighbors(n_neighbors=3, algorithm='brute', metric='cosine')
 
-# fit model zu den beiden entscheidenden paramatern, erweiterbar bei mehr trainingsplaenen und mehr usern 
+# fit model to important features 
 model.fit(recommender_frame[["workouts","level"]])
 
-# example new person, richtige userdaten bekommt man von Frontend und filtert diese 2 features raus und macht preprocessing wie oben
+# example new person, get Data from App frontend, similiar structure, after preprocessing looks like this
 new_person = pd.DataFrame ({
     "workouts": [0.66],
     "level": [1],
@@ -66,15 +65,10 @@ uebungen = db['ubungen']
 # list of days to loop through areas and muscles
 days = [tp.day_1,tp.day_2,tp.day_3,tp.day_4,tp.day_5,tp.day_6,tp.day_7]
 
-
-
 # day_1
 for day in days:
     # save muscles and number of exercises per muscle 
     muscles = day.area
-
-    # helper for fixing writing inconsitency error shoulder
-    i=0
 
     # checking for Rest day
     if not (muscles.capitalize() == 'Rest') and not (muscles.capitalize() == 'Cardio'):
@@ -82,6 +76,7 @@ for day in days:
         muscles = muscles.split(", ")
 
         # fixing different shoulder spellings --> taking away: verify/ fixing different inputs as early and has hard as possible
+        i=0
         for muscle in muscles:
             if (muscle.capitalize() == 'Shoulder'):
                 muscles[i] = 'Shoulders'
@@ -117,7 +112,6 @@ for day in days:
            
 print(tp)
 print(df_chosen_exercises)
-print(pd.concat([tp.transpose(),df_chosen_exercises]))
 
 # todo's
 # database cardio
