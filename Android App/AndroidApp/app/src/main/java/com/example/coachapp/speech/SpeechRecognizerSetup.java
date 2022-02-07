@@ -12,6 +12,7 @@ import android.speech.SpeechRecognizer;
 import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -27,9 +28,9 @@ public class SpeechRecognizerSetup implements RecognitionListener {
     public final Integer RecordAudioRequestCode = 1;
     public SpeechRecognizer speechRecognizer;
     private final Activity activity;
-    private TextView speechToTextView;
-    private ImageButton voiceButton;
-    private Routes routes;
+    private final TextView speechToTextView;
+    private final ImageButton voiceButton;
+    private final Routes routes;
 
     public SpeechRecognizerSetup(Activity activity) {
         this.activity = activity;
@@ -114,18 +115,29 @@ public class SpeechRecognizerSetup implements RecognitionListener {
             case SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
                 message = "No speech input";
                 break;
+            case SpeechRecognizer.ERROR_LANGUAGE_NOT_SUPPORTED:
+                message = "Language not supported";
+                break;
+            case SpeechRecognizer.ERROR_LANGUAGE_UNAVAILABLE:
+                message = "Language unavailable";
+                break;
+            case SpeechRecognizer.ERROR_TOO_MANY_REQUESTS:
+                message = "Too many requests";
+                break;
+            case SpeechRecognizer.ERROR_SERVER_DISCONNECTED:
+                message = "Server disconnected";
+                break;
             default:
                 message = "Not recognised";
                 break;
         }
         Log.d(TAG, "onError code:" + error + " message: " + message);
+        Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
 
         if (restart) {
-            activity.runOnUiThread(new Runnable() {
-                public void run() {
-                    getSpeechRecognizer().cancel();
-                    startVoiceRecognitionCycle();
-                }
+            activity.runOnUiThread(() -> {
+                getSpeechRecognizer().cancel();
+                startVoiceRecognitionCycle();
             });
         }
     }
