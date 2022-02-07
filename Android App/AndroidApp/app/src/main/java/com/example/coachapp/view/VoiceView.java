@@ -10,13 +10,10 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.example.coachapp.R;
-import com.example.coachapp.connection.RetrofitInstance;
-import com.example.coachapp.model.RecyclerItem;
 import com.example.coachapp.speech.SpeechFromText;
 import com.example.coachapp.speech.TextFromSpeech;
+import com.example.coachapp.speech.VoiceFlow;
 import com.example.coachapp.speech.VoiceTexts;
-
-import java.util.List;
 
 public class VoiceView extends Fragment {
     //change IP adress in RetrofitInstance
@@ -24,9 +21,10 @@ public class VoiceView extends Fragment {
     // Todo: send settings
     // Todo: check if first time app started
 
-    private TextFromSpeech speechRecognizerSetup;
+    private TextFromSpeech textFromSpeech;
     private SpeechFromText speechFromText;
     private VoiceTexts voiceTexts = new VoiceTexts();
+    private VoiceFlow voiceFlow;
 
     private ImageButton voiceButton;
     private TextView speechToTextView;
@@ -52,17 +50,14 @@ public class VoiceView extends Fragment {
         speechToTextView = view.findViewById(R.id.speechToText);
         textToSpeechView = view.findViewById(R.id.textToSpeech);
         voiceButton = view.findViewById(R.id.voiceButton);
-        speechRecognizerSetup = new TextFromSpeech(getActivity());
-        speechFromText = new SpeechFromText(getActivity());
-        speechFromText.startTextToSpeech(voiceTexts.getVoice1());
-        new RetrofitInstance();
+        voiceFlow = new VoiceFlow(getActivity());
+//        voiceFlow.initialSettings();
 
         voiceButton.setOnClickListener(view1 -> {
+            voiceFlow.initialSettings();
             speechToTextView.setText("");
             speechToTextView.setVisibility(View.VISIBLE);
             textToSpeechView.setVisibility(View.INVISIBLE);
-            speechRecognizerSetup.startVoiceRecognitionCycle();
         });
     }
-
 }

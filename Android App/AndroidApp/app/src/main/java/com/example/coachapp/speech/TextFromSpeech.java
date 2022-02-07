@@ -31,6 +31,8 @@ public class TextFromSpeech implements RecognitionListener {
     private final TextView speechToTextView;
     private final ImageButton voiceButton;
     private final Routes routes;
+    private String spokenText = "";
+    private Boolean finishedResult = false;
 
     public TextFromSpeech(Activity activity) {
         this.activity = activity;
@@ -56,14 +58,14 @@ public class TextFromSpeech implements RecognitionListener {
 
     @Override
     public void onReadyForSpeech(Bundle bundle) {
-
+        voiceButton.setImageResource(R.mipmap.voice_recorder);
+        finishedResult = false;
     }
 
     @Override
     public void onBeginningOfSpeech() {
         Log.d(TAG, "onBeginningOfSpeech");
         speechToTextView.setHint("Listening...");
-        voiceButton.setImageResource(R.mipmap.voice_recorder);
     }
 
     @Override
@@ -79,6 +81,7 @@ public class TextFromSpeech implements RecognitionListener {
     @Override
     public void onEndOfSpeech() {
         voiceButton.setImageResource(R.mipmap.microphone);
+        Log.d(TAG, "onEndOfSpeech");
     }
 
     @Override
@@ -145,6 +148,9 @@ public class TextFromSpeech implements RecognitionListener {
     @Override
     public void onResults(Bundle bundle) {
         ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        spokenText = data.get(0);
+        finishedResult = true;
+        Log.d(TAG, "onResults " + spokenText);
         routes.sendSpokenText(data.get(0));
         speechToTextView.setText(data.get(0));
     }
@@ -165,5 +171,13 @@ public class TextFromSpeech implements RecognitionListener {
                 ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.RECORD_AUDIO}, RecordAudioRequestCode);
             }
         }
+    }
+
+    public String getSpokenText() {
+        return spokenText;
+    }
+
+    public Boolean getFinishedResult() {
+        return finishedResult;
     }
 }
