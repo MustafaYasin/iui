@@ -41,9 +41,10 @@ model = sklearn.neighbors.NearestNeighbors(n_neighbors=3, algorithm='brute', met
 model.fit(recommender_frame[["workouts","level"]])
 
 # example new person, get Data from App frontend, similiar structure, after preprocessing looks like this
+
 new_person = pd.DataFrame ({
     "workouts": [0.66],
-    "level": [1],
+    "level": [0],
 })
 
 # get distance and object of 3 closest neighbours
@@ -77,9 +78,15 @@ for day in days:
     if not (muscles.capitalize() == 'Rest') and not (muscles.capitalize() == 'Cardio'):
         num_ex = day.exercises
         muscles = muscles.split(", ")
-
+        #following if's are not nice, but better then restructure trainingplan and start again :)
+        if muscles[0] == 'upper body':
+            muscles = ['Shoulders','Chest','Arms']
+        if muscles[0] == 'lower body':
+            muscles = ['Legs','Core','Butt']
+        if muscles[0] == 'full body':
+            muscles = ['Shoulders','Chest','Arms','Legs','Core','Butt']
         # fixing different shoulder spellings --> taking away: verify/ fixing different inputs as early and has hard as possible
-
+        print(muscles)
         #muscles = ['Shoulders' if i.capitalize()=='Shoulder' else i for i in muscles]        
         for i, muscle in enumerate(muscles[:]):
             if (muscle.capitalize() == 'Shoulder'):
@@ -103,7 +110,7 @@ for day in days:
             
             # get number of exercises for specific muscle
             num_exercises = len(exercises_all)
-
+            print(num_exercises)
             # get num_ex random int in range of num_exercises
             exercises = random.sample(range(num_exercises), num_ex)
 
@@ -152,6 +159,13 @@ for key, value in json1.items():
             #print(value['exercises'])
             exercise_count = int(value['exercises'])
             areas = value['area'].split(',')
+            # following IF's are not nice, but better than restructure the trainnigsplan and start again :)
+            if value['area'] == 'upper body':
+                exercise_count=exercise_count*3
+            if value['area'] == 'lower body':
+                exercise_count=exercise_count*3
+            if value['area'] == 'full body':
+                exercise_count=exercise_count*6
             for area in areas:
                 lst = []
                 for i in range(count, exercise_count + count):
@@ -162,7 +176,7 @@ for key, value in json1.items():
                 count += exercise_count
 
 json_object = json.dumps(json1, indent = 4)
-  
+
 # Writing to sample.json
 with open("sample.json", "w") as outfile:
     outfile.write(json_object)
