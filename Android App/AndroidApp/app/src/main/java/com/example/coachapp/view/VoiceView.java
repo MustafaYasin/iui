@@ -11,9 +11,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.coachapp.R;
 import com.example.coachapp.connection.RetrofitInstance;
+import com.example.coachapp.model.RecyclerItem;
 import com.example.coachapp.speech.SpeechFromText;
-import com.example.coachapp.speech.SpeechRecognizerSetup;
+import com.example.coachapp.speech.TextFromSpeech;
 import com.example.coachapp.speech.VoiceTexts;
+
+import java.util.List;
 
 public class VoiceView extends Fragment {
     //change IP adress in RetrofitInstance
@@ -21,7 +24,7 @@ public class VoiceView extends Fragment {
     // Todo: send settings
     // Todo: check if first time app started
 
-    private SpeechRecognizerSetup speechRecognizerSetup;
+    private TextFromSpeech speechRecognizerSetup;
     private SpeechFromText speechFromText;
     private VoiceTexts voiceTexts = new VoiceTexts();
 
@@ -49,7 +52,7 @@ public class VoiceView extends Fragment {
         speechToTextView = view.findViewById(R.id.speechToText);
         textToSpeechView = view.findViewById(R.id.textToSpeech);
         voiceButton = view.findViewById(R.id.voiceButton);
-        speechRecognizerSetup = new SpeechRecognizerSetup(getActivity());
+        speechRecognizerSetup = new TextFromSpeech(getActivity());
         speechFromText = new SpeechFromText(getActivity());
         speechFromText.startTextToSpeech(voiceTexts.getVoice1());
         new RetrofitInstance();
@@ -61,4 +64,5 @@ public class VoiceView extends Fragment {
             speechRecognizerSetup.startVoiceRecognitionCycle();
         });
     }
+
 }

@@ -22,7 +22,7 @@ import com.example.coachapp.connection.Routes;
 
 import java.util.ArrayList;
 
-public class SpeechRecognizerSetup implements RecognitionListener {
+public class TextFromSpeech implements RecognitionListener {
 
     private static final String TAG = "SpeechRecognizerSetup";
     public final Integer RecordAudioRequestCode = 1;
@@ -32,7 +32,7 @@ public class SpeechRecognizerSetup implements RecognitionListener {
     private final ImageButton voiceButton;
     private final Routes routes;
 
-    public SpeechRecognizerSetup(Activity activity) {
+    public TextFromSpeech(Activity activity) {
         this.activity = activity;
         checkPermission();
         routes = new Routes(activity);

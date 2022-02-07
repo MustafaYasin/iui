@@ -3,8 +3,23 @@
     <string name="coach">"Hi I'm your coach!"</string>
     <string name="help_you">"How may I help you?"</string>
     <string name="voice">Voice</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="trainingsplan">Your Trainingsplan</string>
+    <string name="exerciseName">Exercise</string>
+    <string name="muscleGroup">Muscle</string>
+    <string name="set">Set:</string>
+    <string name="repetition">Repetition:</string>
+    <string name="level">Level:</string>
+    <string name="subset_muscle">Subset Muscle:</string>
+    <string name="muscle_description">Muscle Description:</string>
+    <string name="exercise_description">Exercise Description:</string>
+    <string name="day1">Day 1</string>
+    <string name="day2">Day 2</string>
+    <string name="day3">Day 3</string>
+    <string name="day4">Day 4</string>
+    <string name="day5">Day 5</string>
+    <string name="day6">Day 6</string>
+    <string name="day7">Day 7</string>
+    <string name="zero">0</string>
 
 
 </resources>
