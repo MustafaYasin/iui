@@ -58,6 +58,7 @@ trainingprogramms = db['trainingprogramm']
 tp = trainingprogramms.find_one({'title': recommended_plan})
 tp = pd.DataFrame.from_dict(tp)
 df_chosen_exercises = pd.DataFrame()
+exercise_frame = pd.Series()
 
 # find some exercises for the muscle groups for the days
 uebungen = db['ubungen']
@@ -109,14 +110,14 @@ for day in days:
 
             # select exercises 
             for exercise in exercises:
-                exercise_frame = exercises_all.iloc[exercise].to_frame()
-                df_chosen_exercises.append(exercise_frame)
-                print(exercises_all.iloc[exercise].to_frame())
-            # and store in output Structure for App
-            #"exerxise_execution"
-            #   "exercise_title"
+                # construct DataFrame with all exercises
+                df_exercise = exercises_all.iloc[exercise].to_frame()
+                df_exercise = df_exercise.transpose()
+                df_chosen_exercises = df_chosen_exercises.append(df_exercise)
+           
+print(tp)
 print(df_chosen_exercises)
-
+print(pd.concat([tp.transpose(),df_chosen_exercises]))
 
 # todo's
 # database cardio
