@@ -1,4 +1,4 @@
-package com.example.coachapp.view;
+package com.example.coachapp.view.recycler;
 
 import android.view.View;
 import android.widget.LinearLayout;

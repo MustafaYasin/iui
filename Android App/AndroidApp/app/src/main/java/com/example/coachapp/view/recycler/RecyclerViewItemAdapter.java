@@ -1,10 +1,8 @@
-package com.example.coachapp.view;
+package com.example.coachapp.view.recycler;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,14 +17,14 @@ public class RecyclerViewItemAdapter extends RecyclerView.Adapter<RecyclerViewHo
 
     private List<RecyclerItem> itemsList;
 
-    public RecyclerViewItemAdapter(List<RecyclerItem> mItemList){
+    public RecyclerViewItemAdapter(List<RecyclerItem> mItemList) {
         this.itemsList = mItemList;
     }
 
     @NonNull
     @Override
     public RecyclerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row, parent, false);
         return new RecyclerViewHolder(view);
     }
 
@@ -35,12 +33,14 @@ public class RecyclerViewItemAdapter extends RecyclerView.Adapter<RecyclerViewHo
         final RecyclerItem item = itemsList.get(position);
         holder.exerciseNameTV.setText(item.getExerciseName());
         holder.muscleNameTV.setText(String.valueOf(item.getMuscleName()));
+        holder.itemView.setOnClickListener(view -> {
+            // Todo: add detail view
+            System.out.println("Position = " + position);
+        });
     }
 
     @Override
     public int getItemCount() {
         return itemsList.size();
     }
-
-
 }
