@@ -109,9 +109,11 @@ for day in days:
                 df_exercise = exercises_all.iloc[exercise].to_frame()
                 df_exercise = df_exercise.transpose()
                 df_chosen_exercises = df_chosen_exercises.append(df_exercise)
-           
-print(tp)
-print(df_chosen_exercises)
+
+
+df_chosen_exercises.reset_index(drop=True, inplace=True)
+tp_json = tp.to_json(default_handler=str) 
+df_chosen_exercises_json = df_chosen_exercises.to_json(orient='columns',default_handler=str)
 
 # todo's
 # database cardio
