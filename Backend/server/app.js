@@ -29,7 +29,6 @@ app.post('/spokenText', (req, res)=> {
     //     const response = "You are a maschine!!!"
     // }
     const response = "Blubberdiblubb?"
-
     console.log("responde", response)
     res.status(200).send(JSON.stringify(response))
 })
