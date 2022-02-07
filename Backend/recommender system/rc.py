@@ -110,10 +110,12 @@ for day in days:
                 df_exercise = df_exercise.transpose()
                 df_chosen_exercises = df_chosen_exercises.append(df_exercise)
 
-
+# renew index of constructed Dataframe out of random excersises
 df_chosen_exercises.reset_index(drop=True, inplace=True)
+
+# convert dataframes to JSON
 tp_json = tp.to_json(default_handler=str) 
-df_chosen_exercises_json = df_chosen_exercises.to_json(orient='columns',default_handler=str)
+df_chosen_exercises_json = df_chosen_exercises.to_json(default_handler=str)
 
 # todo's
 # database cardio
