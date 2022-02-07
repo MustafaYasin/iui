@@ -1,6 +1,8 @@
 from pymongo import MongoClient
 import pandas as pd
 import random
+import json
+from pprint import pprint
 client = MongoClient("mongodb+srv://mustafayasin:nisani2404@cluster0.oxj2y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = client['iui']
 
@@ -19,12 +21,14 @@ df =  pd.DataFrame(list(users))
 recommender_frame = df[["workouts","level","trainingplan"]]
 
 # 3.1 normaliseren der features --> spalte [level]: beginner = 0 und [level] advanced =1. 
-recommender_frame.level[recommender_frame.level == 'beginner'] = 0
-recommender_frame.level[recommender_frame.level == 'advanced'] = 1
+
+recommender_frame.level = recommender_frame.level.apply(lambda x: int(x=='advanced')) 
+
+
 
 # 3.2 normaliseren der features --> spalte [workouts]: durch max_workouts (6) teilen
 recommender_frame.workouts = recommender_frame.workouts / max_workout_days
-print(recommender_frame)
+#print(recommender_frame)
 
 
 ## recommending
@@ -49,15 +53,14 @@ distances, suggestions = model.kneighbors(new_person)
 nearestNeighbour = recommender_frame.loc[suggestions[0,1]]
 recommended_plan = nearestNeighbour.trainingplan
 
-print(recommended_plan)
+#print(recommended_plan)
 
 # fetch recommended plan from db
 trainingprogramms = db['trainingprogramm']
 
-tp = trainingprogramms.find_one({'title': recommended_plan})
-tp = pd.DataFrame.from_dict(tp)
+tp_dict = trainingprogramms.find_one({'title': recommended_plan})
+tp = pd.DataFrame.from_dict(tp_dict)
 df_chosen_exercises = pd.DataFrame()
-exercise_frame = pd.Series()
 
 # find some exercises for the muscle groups for the days
 uebungen = db['ubungen']
@@ -76,11 +79,12 @@ for day in days:
         muscles = muscles.split(", ")
 
         # fixing different shoulder spellings --> taking away: verify/ fixing different inputs as early and has hard as possible
-        i=0
-        for muscle in muscles:
+
+        #muscles = ['Shoulders' if i.capitalize()=='Shoulder' else i for i in muscles]        
+        for i, muscle in enumerate(muscles[:]):
             if (muscle.capitalize() == 'Shoulder'):
-                muscles[i] = 'Shoulders'
-            i=i+1
+                muscles[i]= 'Shoulders'
+            
 
         # get random exercises for muscle
         for muscle in muscles:
@@ -101,7 +105,7 @@ for day in days:
             num_exercises = len(exercises_all)
 
             # get num_ex random int in range of num_exercises
-            exercises = random.sample(range(0, num_exercises), num_ex)
+            exercises = random.sample(range(num_exercises), num_ex)
 
             # select exercises 
             for exercise in exercises:
@@ -110,12 +114,55 @@ for day in days:
                 df_exercise = df_exercise.transpose()
                 df_chosen_exercises = df_chosen_exercises.append(df_exercise)
 
+#print(tp_dict)
+#print(df_chosen_exercises)
+
 # renew index of constructed Dataframe out of random excersises
 df_chosen_exercises.reset_index(drop=True, inplace=True)
 
 # convert dataframes to JSON
-tp_json = tp.to_json(default_handler=str) 
-df_chosen_exercises_json = df_chosen_exercises.to_json(default_handler=str)
+tp_dict.pop('_id')
+tp_json = json.dumps(tp_dict)
+df_chosen_exercises_json = df_chosen_exercises.to_json('json2.json',orient='index', default_handler=str)
 
-# todo's
-# database cardio
+# using Jsonsfor return and constructing final Json for frontend
+
+json1 = tp_dict
+json2 = json.load(open('json2.json', 'r'))
+
+
+filter_json2 = dict()
+
+for key, value in json2.items():
+    filt = {
+        'exercise_title': value['exercise_title'],
+        'exercise_execution': value['exercise_execution'],
+        'muscle_group': value['muscle_group'],
+        'subset_muscles': value['subset_muscles'],
+        'muscle_description': value['muscle_description']
+    }
+    filter_json2[key] = filt 
+
+count = 0
+
+for key, value in json1.items():
+    if 'day' in key:
+        if value['area']!='rest':
+            #print(key)
+            #print(value['exercises'])
+            exercise_count = int(value['exercises'])
+            areas = value['area'].split(',')
+            for area in areas:
+                lst = []
+                for i in range(count, exercise_count + count):
+                    lst.append(
+                        filter_json2[str(i)]
+                    )
+                json1[key]['exercise_{}'.format(area)] = lst
+                count += exercise_count
+
+json_object = json.dumps(json1, indent = 4)
+  
+# Writing to sample.json
+with open("sample.json", "w") as outfile:
+    outfile.write(json_object)
