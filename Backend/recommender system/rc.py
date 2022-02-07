@@ -42,7 +42,7 @@ new_person = pd.DataFrame ({
     "level": [1],
 })
 
-# liefert abstand und vorschlag der naechsten 3 neighbours
+# get distance and object of 3 closest neighbours
 distances, suggestions = model.kneighbors(new_person)
 
 # get closest user and save the trainingsplan title

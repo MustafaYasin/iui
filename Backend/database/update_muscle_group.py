@@ -1,3 +1,6 @@
+# after scraping and filling exercises to DB the value of key "muscle_group" was empty of most entries.
+# So use this file after Scraping for new exercises, to fill empty values of muscle_group
+
 from pymongo import MongoClient
 from bson.objectid import ObjectId 
 # Create connection to MongoDB
@@ -29,7 +32,7 @@ for exercise in empty_muscle_group:
         newvalues = { "$set": { "muscle_group": "Arms" } }
         collection.update_one(exercise,newvalues)
     elif exercise["subset_muscles"] in shoulder_subset_muscle:
-        newvalues = { "$set": { "muscle_group": "Shoulder" } }
+        newvalues = { "$set": { "muscle_group": "Shoulders" } }
         collection.update_one(exercise,newvalues)
     elif exercise["subset_muscles"] in chest_subset_muscle:
         newvalues = { "$set": { "muscle_group": "Chest" } }

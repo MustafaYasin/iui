@@ -1,3 +1,6 @@
+# this file is just for one-time use to setup inital DB users and trainingsplans.
+# only use again if Database is messed up, or deleted somehow
+
 from pymongo import MongoClient
 from trainingsplan import *
 from dummypersons import *
