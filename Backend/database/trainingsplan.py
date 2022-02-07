@@ -1,3 +1,6 @@
+from math import expm1
+
+
 trainingplan_1 = {
   "title":"tp_1",
   "trainings": 3,
@@ -94,7 +97,7 @@ trainingplan_3 = {
   "day_1":
     {
         "area": "back, biceps",
-        "exercises":3
+        "exercises":3,
       },
   "day_2": 
     {

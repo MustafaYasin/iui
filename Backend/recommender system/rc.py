@@ -57,41 +57,66 @@ trainingprogramms = db['trainingprogramm']
 
 tp = trainingprogramms.find_one({'title': recommended_plan})
 tp = pd.DataFrame.from_dict(tp)
-
+df_chosen_exercises = pd.DataFrame()
 
 # find some exercises for the muscle groups for the days
 uebungen = db['ubungen']
 
+# list of days to loop through areas and muscles
+days = [tp.day_1,tp.day_2,tp.day_3,tp.day_4,tp.day_5,tp.day_6,tp.day_7]
+
+
+
 # day_1
-# save muscles and number of exercises per muscle 
-muscles = tp.day_1.area
-num_ex = tp.day_1.exercises
-muscles = muscles.split(", ")
+for day in days:
+    # save muscles and number of exercises per muscle 
+    muscles = day.area
 
-# get random exercises for muscle
-for muscle in muscles:
-    print(muscle.capitalize())    
-    # find all exercises for specific muscle or muscle group --> depends on trainingsplan specifics
-    exercises_for_muscle = uebungen.find({ "subset_muscles" : muscle.capitalize()})
-    exercises_for_area = uebungen.find({ "muscle_group" : muscle.capitalize()})
+    # helper for fixing writing inconsitency error shoulder
+    i=0
 
-    # format pymongo cursor vektor to pandas dataframe
-    df_exercises_for_muscle =  pd.DataFrame(list(exercises_for_muscle))
-    df_exercises_for_area =  pd.DataFrame(list(exercises_for_area))
+    # checking for Rest day
+    if not (muscles.capitalize() == 'Rest') and not (muscles.capitalize() == 'Cardio'):
+        num_ex = day.exercises
+        muscles = muscles.split(", ")
 
-    # put all exercises in one Dataframe for specific muscle group
-    exercises_all = [df_exercises_for_area, df_exercises_for_muscle]
-    exercises_all = pd.concat(exercises_all)
-    
-    # get number of exercises for specific muscle
-    num_exercises = len(exercises_all)
+        # fixing different shoulder spellings --> taking away: verify/ fixing different inputs as early and has hard as possible
+        for muscle in muscles:
+            if (muscle.capitalize() == 'Shoulder'):
+                muscles[i] = 'Shoulders'
+            i=i+1
 
-    # get num_ex random int in range of num_exercises
-    exercises = random.sample(range(0, num_exercises), num_ex)
-    print(exercises_all[["exercise_title"]])
-    print(exercises)
-    # select exercises and store in output Structure for App
-    #"exerxise_execution"
-     #   "exercise_title"
+        # get random exercises for muscle
+        for muscle in muscles:
 
-# analog day_2 - 7
+            # find all exercises for specific muscle or muscle group --> depends on trainingsplan specifics
+            exercises_for_muscle = uebungen.find({ "subset_muscles" : muscle.capitalize()})
+            exercises_for_area = uebungen.find({ "muscle_group" : muscle.capitalize()})
+
+            # format pymongo cursor vektor to pandas dataframe
+            df_exercises_for_muscle =  pd.DataFrame(list(exercises_for_muscle))
+            df_exercises_for_area =  pd.DataFrame(list(exercises_for_area))
+
+            # put all exercises in one Dataframe for specific muscle group
+            exercises_all = [df_exercises_for_area, df_exercises_for_muscle]
+            exercises_all = pd.concat(exercises_all)
+            
+            # get number of exercises for specific muscle
+            num_exercises = len(exercises_all)
+
+            # get num_ex random int in range of num_exercises
+            exercises = random.sample(range(0, num_exercises), num_ex)
+
+            # select exercises 
+            for exercise in exercises:
+                exercise_frame = exercises_all.iloc[exercise].to_frame()
+                df_chosen_exercises.append(exercise_frame)
+                print(exercises_all.iloc[exercise].to_frame())
+            # and store in output Structure for App
+            #"exerxise_execution"
+            #   "exercise_title"
+print(df_chosen_exercises)
+
+
+# todo's
+# database cardio
