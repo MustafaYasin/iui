@@ -24,10 +24,17 @@
 
     <!-- Voice Flow -->
     <string name="voiceflow_greeting1">Hi I am Coach Sam. What is your name?</string>
-    <string name="voiceflow_greeting2">Hi nice to meet you. Thanks for using me as your coach. For your first use I have some questions for you.</string>
-    <string name="voiceflow_trainingsgoal">What is your trainingsgoal?</string>
+    <string name="voiceflow_greeting2">Hi nice to meet you %s. Thanks for using me as your coach. For your first use I have some questions for you.</string>
+    <string name="voiceflow_ageQ">How old are you?</string>
+    <string name="voiceflow_sexQ">Are you male or female?</string>
+    <string name="voiceflow_workoutsQ">How many days per week are you able to train?</string>
+    <string name="voiceflow_trainingsgoalQ">What is your trainingsgoal - be fit, reduce bodyfat, reduce, weight, gain muscles or better cardio?</string>
     <string name="voiceflow_levelQ">Are you a beginner, advanced or expert at sport in general</string>
     <string name="voiceflow_locationQ">Do you want to train at the gym, at home or outdoor?</string>
+
+    <string name="voiceflow_thx">Thank you! Let\'s set up your account.</string>
+    <string name="voiceflow_sorry">Sorry I did not get that.</string>
+
 
 
 </resources>

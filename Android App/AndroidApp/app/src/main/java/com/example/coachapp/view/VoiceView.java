@@ -13,7 +13,6 @@ import com.example.coachapp.R;
 import com.example.coachapp.speech.SpeechFromText;
 import com.example.coachapp.speech.TextFromSpeech;
 import com.example.coachapp.speech.VoiceFlow;
-import com.example.coachapp.speech.VoiceTexts;
 
 public class VoiceView extends Fragment {
     //change IP adress in RetrofitInstance
@@ -23,7 +22,6 @@ public class VoiceView extends Fragment {
 
     private TextFromSpeech textFromSpeech;
     private SpeechFromText speechFromText;
-    private VoiceTexts voiceTexts = new VoiceTexts();
     private VoiceFlow voiceFlow;
 
     private ImageButton voiceButton;

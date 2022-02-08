@@ -61,7 +61,7 @@ class Server(BaseHTTPRequestHandler):
         
         print("in user")
         postvars = self.parse_POST()
-        print(postvars)
+        # print(postvars)
         # @todo: db save
         user = json.dumps({
           "objectId": "61fe81456346143efeff9c89",
@@ -74,7 +74,19 @@ class Server(BaseHTTPRequestHandler):
           "trainingsGoal": postvars["trainingsGoal"][0],
           "trainingsLocation": postvars["trainingsLocation"][0]
         }).encode('utf-8')
-        self.wfile.write(user)
+
+        userjson = {
+          "id": postvars["name"][0],
+          "name" :postvars["name"][0],
+          "age": postvars["age"][0],
+          "gender": postvars["gender"][0],
+          "workouts": postvars["workouts"][0],
+          "experience": postvars["experience"][0],
+          "trainingsGoal": postvars["trainingsGoal"][0],
+          "trainingsLocation": postvars["trainingsLocation"][0]
+        }
+        print(json.dumps(userjson))
+        self.wfile.write(json.dumps(userjson).encode('utf-8'))
         print("in do_POST")
 
     return
