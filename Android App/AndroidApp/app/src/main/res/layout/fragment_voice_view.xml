@@ -7,15 +7,26 @@
     android:layout_height="match_parent"
     tools:context=".view.VoiceView">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="866dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/training_background_4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <TextView
         android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:text="@string/coach"
+        android:layout_marginTop="27dp"
+        android:text="@string/coach_greeting"
         android:textSize="24sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coachImage" />
 
@@ -24,55 +35,37 @@
         style="@style/Widget.AppCompat.ImageButton"
         android:layout_width="135dp"
         android:layout_height="122dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="35dp"
         android:backgroundTint="#00FFFFFF"
         android:contentDescription="@string/voice"
         android:scaleType="centerCrop"
-        android:src="@mipmap/microphone"
-        android:tint="#00FFFFFF"
+        android:src="@mipmap/microphone_circle_green"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/welcomeText" />
 
-
     <TextView
-        android:id="@+id/speechToText"
-        android:layout_width="212dp"
-        android:layout_height="95dp"
-        android:layout_marginTop="39dp"
-        android:text=""
-        android:textAlignment="center"
+        android:id="@+id/voiceTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/speak_with_me"
         android:textSize="16sp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/voiceButton" />
-
-    <TextView
-        android:id="@+id/textToSpeech"
-        android:layout_width="212dp"
-        android:layout_height="95dp"
-        android:layout_marginTop="39dp"
-        android:textAlignment="center"
-        android:textSize="16sp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/voiceButton" />
 
     <ImageView
         android:id="@+id/coachImage"
-        android:layout_width="198dp"
-        android:layout_height="157dp"
-        android:layout_marginTop="55dp"
-        android:contentDescription="@string/coach"
+        android:layout_width="195dp"
+        android:layout_height="158dp"
+        android:layout_marginTop="52dp"
+        android:contentDescription="@string/coach_greeting"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/coach_icon_2" />
+        app:srcCompat="@drawable/coach_icon_3"
+        tools:ignore="ImageContrastCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

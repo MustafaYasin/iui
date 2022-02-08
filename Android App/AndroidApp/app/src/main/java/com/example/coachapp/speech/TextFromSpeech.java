@@ -21,6 +21,8 @@ import com.example.coachapp.R;
 import com.example.coachapp.connection.Routes;
 import com.example.coachapp.model.User;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 public class TextFromSpeech implements RecognitionListener {
@@ -29,18 +31,18 @@ public class TextFromSpeech implements RecognitionListener {
     public final Integer RecordAudioRequestCode = 1;
     public SpeechRecognizer speechRecognizer;
     private final Activity activity;
-    private final TextView speechToTextView;
     private final ImageButton voiceButton;
     private final Routes routes;
     private String spokenText = "";
     private Boolean finishedResult = false;
+    private TextView voiceTV;
 
     public TextFromSpeech(Activity activity) {
         this.activity = activity;
         checkPermission();
         routes = new Routes(activity);
-        speechToTextView = activity.findViewById(R.id.speechToText);
         voiceButton = activity.findViewById(R.id.voiceButton);
+        voiceTV = activity.findViewById(R.id.voiceTV);
     }
 
     private SpeechRecognizer getSpeechRecognizer() {
@@ -65,14 +67,14 @@ public class TextFromSpeech implements RecognitionListener {
 
     @Override
     public void onReadyForSpeech(Bundle bundle) {
-        voiceButton.setImageResource(R.mipmap.voice_recorder);
+        voiceButton.setImageResource(R.mipmap.voice_recorder_circle_green);
         finishedResult = false;
     }
 
     @Override
     public void onBeginningOfSpeech() {
         Log.d(TAG, "onBeginningOfSpeech");
-        speechToTextView.setHint("Listening...");
+        voiceTV.setHint("Listening...");
     }
 
     @Override
@@ -161,8 +163,6 @@ public class TextFromSpeech implements RecognitionListener {
 
         finishedResult = true;
         Log.d(TAG, "onResults " + spokenText);
-        //routes.sendSpokenText(data.get(0));
-        speechToTextView.setText(data.get(0));
 
         User user = voiceFlow.getUser();
         if (user.isCompleted()) {

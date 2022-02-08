@@ -25,8 +25,6 @@ public class VoiceView extends Fragment {
     private VoiceFlow voiceFlow;
 
     private ImageButton voiceButton;
-    private TextView speechToTextView;
-    private TextView textToSpeechView;
 
     public VoiceView() {
         super(R.layout.fragment_voice_view);
@@ -45,8 +43,6 @@ public class VoiceView extends Fragment {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        speechToTextView = view.findViewById(R.id.speechToText);
-        textToSpeechView = view.findViewById(R.id.textToSpeech);
         voiceButton = view.findViewById(R.id.voiceButton);
         voiceFlow = VoiceFlow.getInstance();
         voiceFlow.setActivity(getActivity());
@@ -55,9 +51,6 @@ public class VoiceView extends Fragment {
 
         voiceButton.setOnClickListener(view1 -> {
             voiceFlow.initialSettings();
-            speechToTextView.setText("");
-            speechToTextView.setVisibility(View.VISIBLE);
-            textToSpeechView.setVisibility(View.INVISIBLE);
         });
     }
 }

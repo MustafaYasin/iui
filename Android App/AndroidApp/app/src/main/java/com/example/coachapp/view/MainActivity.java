@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     BottomNavigationView bottomNavigationView;
     VoiceView voiceView = new VoiceView();
     TrainingsplanView trainingsplanView = new TrainingsplanView();
+    MapsFragment mapsFragment = new MapsFragment();
 
     private GPSLocation gpsLocation;
 
@@ -58,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return true;
             case R.id.trainingsplanNav:
                 getSupportFragmentManager().beginTransaction().replace(R.id.mainActivity, trainingsplanView).commit();
+                return true;
+            case R.id.mapsNav:
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainActivity, mapsFragment).commit();
                 return true;
         }
         return false;

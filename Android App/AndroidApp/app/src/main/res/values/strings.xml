@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">CoachApp</string>
-    <string name="coach">"Hi I'm your coach!"</string>
+    <string name="coach_greeting">Hi I\'m your Coach Sam!</string>
+    <string name="speak_with_me">Speak with me!</string>
     <string name="help_you">"How may I help you?"</string>
     <string name="voice">Voice</string>
     <string name="trainingsplan">Your Trainingsplan</string>
+    <string name="maps">Maps</string>
     <string name="exerciseName">Exercise</string>
     <string name="muscleGroup">Muscle</string>
     <string name="set">Set:</string>

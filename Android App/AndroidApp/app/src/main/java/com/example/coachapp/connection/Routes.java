@@ -26,12 +26,10 @@ public class Routes {
     //private User user = new User();
     private TrainingsSettings trainingsSettings = new TrainingsSettings();
     private TrainingsPlanSettings trainingsPlanSettings = new TrainingsPlanSettings();
-    private TextView textToSpeech;
     private String myTextToSpeech;
 
     public Routes(Activity activity) {
         this.activity = activity;
-        textToSpeech = activity.findViewById(R.id.textToSpeech);
     }
 
     public void sendSpokenText(String speechToText) {
@@ -48,7 +46,6 @@ public class Routes {
                         e.printStackTrace();
                     }
                     Log.i("UNSERERROR",myTextToSpeech);
-                    textToSpeech.setText(myTextToSpeech);
                 } else {
                     Log.e(TAG, "Response was not successful");
                 }

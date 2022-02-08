@@ -3,11 +3,16 @@
 
     <item
         android:id="@+id/voiceNav"
-        android:title="Voice"
-        android:icon="@mipmap/voice_recorder"/>
+        android:title="@string/voice"
+        android:icon="@drawable/coach_icon_2"/>
     <item
         android:id="@+id/trainingsplanNav"
-        android:title="Trainingsplan"
-        android:icon="@mipmap/fitness"/>
+        android:title="@string/trainingsplan"
+        android:icon="@drawable/training_icon"/>
+
+    <item
+        android:id="@+id/mapsNav"
+        android:title="@string/maps"
+        android:icon="@drawable/maps_icon_2"/>
 
 </menu>
