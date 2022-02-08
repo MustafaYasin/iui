@@ -9,21 +9,19 @@ db = client['iui']
 collection = db['user']
 
 max_workout_days = 6
-users =  collection.find()
+users = collection.find()
 
 
 ## preprocessing
 
 # 1. dummypersons als Dataframe in Pandas einlesen
-df =  pd.DataFrame(list(users))
+df = pd.DataFrame(list(users))
 
 # 2. Dataframe auf benoetigte features reduzieren --> level, workouts,     Am Ende soll der trainningsplan zu der Person noch bekannt sein --> bezug behalten
 recommender_frame = df[["workouts","level","trainingplan"]]
 
-# 3.1 normaliseren der features --> spalte [level]: beginner = 0 und [level] advanced =1. 
-
+# 3.1 normalize the features --> column [level]: beginner = 0 and [level] advanced =1.
 recommender_frame.level = recommender_frame.level.apply(lambda x: int(x=='advanced')) 
-
 
 
 # 3.2 normaliseren der features --> spalte [workouts]: durch max_workouts (6) teilen
