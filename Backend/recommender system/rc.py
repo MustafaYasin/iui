@@ -5,6 +5,7 @@ import random
 import json
 from pprint import pprint
 import sklearn.neighbors
+from flask_restful import Resource, reqparse
 
 client = MongoClient("mongodb+srv://mustafayasin:nisani2404@cluster0.oxj2y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = client['iui']
@@ -14,18 +15,6 @@ uebungen = db['ubungen']
 trainingprogramms = db['trainingprogramm']
 
 max_workout_days = 6
-
-
-input_user  = {
-    "id": "Sandra",
-    "name": "Sandra",
-    "age": "22",
-    "gender": "male",
-    "workouts": "4",
-    "experience": "Beginner",
-    "trainingsGoal": "be fit",
-    "trainingsLocation": "Outdoor"
-}
 
 
 def preprocess_user(user):
@@ -68,7 +57,7 @@ def train_model(users):
 # example new person, get Data from App frontend, similiar structure, after preprocessing looks like this
 
 
-def build_jsons(input_user):
+def build_jsons(input_user, model, recommender_frame):
     new_person = preprocess_user(input_user)
 
     # get distance and object of 3 closest neighbours
@@ -199,18 +188,49 @@ def get_trainingplan(json1, json2):
     return json1
 
 
+def get_trainingplan_for_user(input_user):
+    users = list(collection.find())
+    model, recommender_frame = train_model(users)
 
-users = list(collection.find())
-model, recommender_frame = train_model(users)
+    json1, json2 = build_jsons(input_user, model, recommender_frame)
+    json1 = get_trainingplan(json1, json2)
+    return {'response': json1}, 200
 
-json1, json2 = build_jsons(input_user)
-json1 = get_trainingplan(json1, json2)
-json_object = json.dumps(json1, indent = 4)
+    '''
+    json_object = json.dumps(json1, indent = 4)
 
-# Writing to sample.json
-with open("sample2.json", "w") as outfile:
-    outfile.write(json_object)
-
-
+    # Writing to sample.json
+    with open("sample2.json", "w") as outfile:
+        outfile.write(json_object)
+    '''
 
 
+class Recommendation(Resource):
+    def post(self):
+        partner_feed_generator = reqparse.RequestParser()
+        partner_feed_generator.add_argument('id', help='This field cannot be blank',
+                                            required=True, type=str)
+        partner_feed_generator.add_argument('name', help='This field cannot be blank',
+                                    required=True, type=str)                           
+        partner_feed_generator.add_argument('age', help='This field cannot be blank',
+                                            required=True, type=int)
+        partner_feed_generator.add_argument('gender', help='This field cannot be blank',
+                                            required=True, type=str)
+        partner_feed_generator.add_argument('workouts', help='This field cannot be blank',
+                                            required=True, type=int)
+        partner_feed_generator.add_argument('experience', help='This field cannot be blank',
+                                            required=False, type=str)
+        partner_feed_generator.add_argument('trainingsGoal', help='This field cannot be blank',
+                                            required=False, type=str)
+        partner_feed_generator.add_argument('trainingsLocation', help='This field cannot be blank',
+                                            required=False, type=str)
+
+        input_user = partner_feed_generator.parse_args()
+
+
+        users = list(collection.find())
+        model, recommender_frame = train_model(users)
+
+        json1, json2 = build_jsons(input_user, model, recommender_frame)
+        json1 = get_trainingplan(json1, json2)
+        return {'response': json1}, 200
