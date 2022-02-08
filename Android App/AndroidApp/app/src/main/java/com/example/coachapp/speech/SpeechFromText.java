@@ -34,10 +34,10 @@ public class SpeechFromText implements TextToSpeech.OnInitListener {
 //                        Log.i("Voices", String.valueOf(tts.getVoices()));
 //                        Voice[] voices = tts.getVoices().toArray(new Voice[0]);
 //                        tts.setVoice(voices[11]);
-                if (tts.isSpeaking()) {
+                /*if (tts.isSpeaking()) {
                     tts.shutdown();
                     tts = null;
-                }
+                }*/
             }
         } else {
             Log.e(TAG, "Failed to Initialize");

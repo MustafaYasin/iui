@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat;
 
 import com.example.coachapp.R;
 import com.example.coachapp.connection.Routes;
+import com.example.coachapp.model.User;
 
 import java.util.ArrayList;
 
@@ -44,8 +45,14 @@ public class TextFromSpeech implements RecognitionListener {
 
     private SpeechRecognizer getSpeechRecognizer() {
         if (speechRecognizer == null) {
+            //speechRecognizer.
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "he");
+            intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{"he"});
             speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity);
             speechRecognizer.setRecognitionListener(this);
+            //intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.speech_prompt));
         }
         return speechRecognizer;
     }
@@ -149,10 +156,18 @@ public class TextFromSpeech implements RecognitionListener {
     public void onResults(Bundle bundle) {
         ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         spokenText = data.get(0);
+        VoiceFlow voiceFlow = VoiceFlow.getInstance();
+        voiceFlow.parseSpokenText(spokenText);
+
         finishedResult = true;
         Log.d(TAG, "onResults " + spokenText);
-        routes.sendSpokenText(data.get(0));
+        //routes.sendSpokenText(data.get(0));
         speechToTextView.setText(data.get(0));
+
+        User user = voiceFlow.getUser();
+        if (user.isCompleted()) {
+            routes.sendUser(user);
+        }
     }
 
     @Override

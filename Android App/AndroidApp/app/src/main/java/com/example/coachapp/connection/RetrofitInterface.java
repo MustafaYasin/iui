@@ -17,8 +17,20 @@ import retrofit2.http.Query;
 
 public interface RetrofitInterface {
 
+    @FormUrlEncoded
     @POST("/user")
-    Call<Void> sendUser(@Body HashMap<String, String> map);
+    Call<Void> sendUser(
+            @Field("name") String name,
+            @Field("age") int age,
+            @Field("gender") String gender,
+            @Field("workouts") int workouts,
+            @Field("experience") String experience,
+            @Field("trainingsGoal") String goal,
+            @Field("trainingsLocation") String trainingsLocation
+    );
+
+    @GET("/user")
+    Call<String> loadUser(@Field("objectId") String objectId);
 
     @POST("/trainingsSettings")
     Call<Void> sendTrainingsSettings(@Body HashMap<String, String> map);

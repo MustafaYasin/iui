@@ -50,7 +50,9 @@ public class VoiceView extends Fragment {
         speechToTextView = view.findViewById(R.id.speechToText);
         textToSpeechView = view.findViewById(R.id.textToSpeech);
         voiceButton = view.findViewById(R.id.voiceButton);
-        voiceFlow = new VoiceFlow(getActivity());
+        voiceFlow = VoiceFlow.getInstance();
+        voiceFlow.setActivity(getActivity());
+        //voiceFlow = new VoiceFlow(getActivity());
 //        voiceFlow.initialSettings();
 
         voiceButton.setOnClickListener(view1 -> {

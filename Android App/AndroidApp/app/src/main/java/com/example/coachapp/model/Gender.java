@@ -1,14 +1,14 @@
 package com.example.coachapp.model;
 
-public enum Experience {
-    BEGINNER("Beginner", 1),
-    ADVANCED("Advanced", 2),
-    EXPERT("Expert", 3);
+public enum Gender {
+    MALE("male", 1),
+    FEMALE("female", 2),
+    UNSURE("unsure", 3);
 
     private String stringValue;
     private int intValue;
 
-    private Experience(String toString, int value) {
+    private Gender(String toString, int value) {
         stringValue = toString;
         intValue = value;
     }

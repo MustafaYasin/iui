@@ -22,5 +22,12 @@
     <string name="day7">7</string>
     <string name="zero">0</string>
 
+    <!-- Voice Flow -->
+    <string name="voiceflow_greeting1">Hi I am Coach Sam. What is your name?</string>
+    <string name="voiceflow_greeting2">Hi nice to meet you. Thanks for using me as your coach. For your first use I have some questions for you.</string>
+    <string name="voiceflow_trainingsgoal">What is your trainingsgoal?</string>
+    <string name="voiceflow_levelQ">Are you a beginner, advanced or expert at sport in general</string>
+    <string name="voiceflow_locationQ">Do you want to train at the gym, at home or outdoor?</string>
+
 
 </resources>

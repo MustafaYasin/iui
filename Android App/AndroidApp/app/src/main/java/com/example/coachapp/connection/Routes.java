@@ -23,7 +23,7 @@ public class Routes {
 
     private static final String TAG = "Routes";
     private final Activity activity;
-    private User user = new User();
+    //private User user = new User();
     private TrainingsSettings trainingsSettings = new TrainingsSettings();
     private TrainingsPlanSettings trainingsPlanSettings = new TrainingsPlanSettings();
     private TextView textToSpeech;
@@ -80,16 +80,27 @@ public class Routes {
         });
     }
 
-    private void sendUser() {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("name", user.getName());
-        map.put("age", String.valueOf(user.getAge()));
-        map.put("weight", String.valueOf(user.getWeight()));
-        map.put("height", String.valueOf(user.getHeight()));
-        map.put("experience", String.valueOf(user.getExperience()));
-        map.put("trainingsGoal", user.getTrainingsGoal());
+    public void sendUser(User user) {
+        // HashMap<String, String> map = new HashMap<>();
+        // map.put("name", user.getName());
+        // map.put("age", String.valueOf(user.getAge()));
+        // map.put("gender", String.valueOf(user.getGender()));
+        // map.put("workouts", String.valueOf(user.getWorkouts()));
+        // //map.put("weight", String.valueOf(user.getWeight()));
+        // //map.put("height", String.valueOf(user.getHeight()));
+        // map.put("experience", String.valueOf(user.getExperience()));
+        // map.put("trainingsGoal", String.valueOf(user.getTrainingsGoal()));
+        // map.put("trainingsLocation", String.valueOf(user.getTrainingsLocation()));
 
-        Call<Void> call = RetrofitInstance.retrofitInterface.sendUser(map);
+        Call<Void> call = RetrofitInstance.retrofitInterface.sendUser(
+                user.getName(),
+                user.getAge(),
+                String.valueOf(user.getGender()),
+                user.getWorkouts(),
+                String.valueOf(user.getExperience()),
+                String.valueOf(user.getTrainingsGoal()),
+                String.valueOf(user.getTrainingsLocation())
+        );
         call.enqueue(new Callback<Void>() {
 
             @Override
