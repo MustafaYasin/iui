@@ -68,6 +68,7 @@ public class TextFromSpeech implements RecognitionListener {
     @Override
     public void onReadyForSpeech(Bundle bundle) {
         voiceButton.setImageResource(R.mipmap.voice_recorder_circle_green);
+        voiceTV.setHint("Listening...");
         finishedResult = false;
     }
 
@@ -89,7 +90,7 @@ public class TextFromSpeech implements RecognitionListener {
 
     @Override
     public void onEndOfSpeech() {
-        voiceButton.setImageResource(R.mipmap.microphone);
+        voiceButton.setImageResource(R.mipmap.microphone_circle_green);
         Log.d(TAG, "onEndOfSpeech");
     }
 
