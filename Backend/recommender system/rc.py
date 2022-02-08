@@ -155,17 +155,20 @@ count = 0
 for key, value in json1.items():
     if 'day' in key:
         if value['area']!='rest':
+
             #print(key)
             #print(value['exercises'])
+
             exercise_count = int(value['exercises'])
             areas = value['area'].split(',')
-            # following IF's are not nice, but better than restructure the trainnigsplan and start again :)
+            # following IF's are not nice, but better than restructure the trainnigplan and start again :)
             if value['area'] == 'upper body':
                 exercise_count=exercise_count*3
             if value['area'] == 'lower body':
                 exercise_count=exercise_count*3
             if value['area'] == 'full body':
                 exercise_count=exercise_count*6
+
             for area in areas:
                 lst = []
                 for i in range(count, exercise_count + count):
