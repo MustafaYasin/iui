@@ -3,6 +3,7 @@ package com.example.coachapp.view;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsFragment extends Fragment {
 
+    private ItemViewModel viewModel;
+    private LatLng currentLocation;
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -32,9 +36,11 @@ public class MapsFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            LatLng sydney = new LatLng(-34, 151);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            viewModel.getCurrentLocation().observe(requireActivity(), item -> {
+                currentLocation = new LatLng(item[0], item[1]);
+                googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Marker in Sydney"));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+            });
         }
     };
 
@@ -54,5 +60,8 @@ public class MapsFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+        viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
+//        gpsLocation = new GPSLocation(this);
+//        gpsLocation.getLastLocation();
     }
 }

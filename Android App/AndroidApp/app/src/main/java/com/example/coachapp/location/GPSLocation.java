@@ -14,47 +14,65 @@ import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 
+import com.example.coachapp.view.ItemViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 public class GPSLocation {
 
     private FusedLocationProviderClient fusedLocationProviderClient;
     private final int PERMISSION_ID = 44;
-    private final Activity activity;
+    private Activity activity;
     private Double longitude;
     private Double latitude;
-
+    private Double[] currentLocation;
 
     public GPSLocation(Activity activity) {
         this.activity = activity;
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity);
+        if (fusedLocationProviderClient == null) {
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity);
+        }
     }
 
     @SuppressLint("MissingPermission")
-    public void getLastLocation() {
+    public Double[] getLastLocation() {
         if (checkPermissions()) {
             if (isLocationEnabled()) {
-                getFusedLocationProviderClient().getLastLocation().addOnCompleteListener(task -> {
-                    Location location = task.getResult();
-                    if (location == null) {
-                        requestNewLocationData();
-                    } else {
-                        setLatitude(location.getLatitude());
-                        setLongitude(location.getLongitude());
+//                getFusedLocationProviderClient().getLastLocation().addOnCompleteListener(task -> {
+                fusedLocationProviderClient.getLastLocation().addOnSuccessListener(activity, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            latitude = location.getLatitude();
+                            longitude = location.getLongitude();
+                            currentLocation = new Double[]{latitude, longitude};
+                        } else {
+                            requestNewLocationData();
+                        }
                     }
                 });
+//                    Location location = task.getResult();
+//                    if (location == null) {
+//                        requestNewLocationData();
+//                    } else {
+//                        latitude = location.getLatitude();
+//                        longitude = location.getLongitude();
+//                        currentLocation = new Double[]{latitude, longitude};
+//                    }
+//                });
             } else {
-                Toast.makeText(activity, "Please turn on" + " your location...", Toast.LENGTH_LONG).show();
+                Toast.makeText(activity, "Please turn on your GPS...", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 activity.startActivity(intent);
             }
         } else {
             requestPermissions();
         }
+        return currentLocation;
     }
 
     @SuppressLint("MissingPermission")
@@ -73,8 +91,9 @@ public class GPSLocation {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             Location mLastLocation = locationResult.getLastLocation();
-            setLatitude(mLastLocation.getLatitude());
-            setLongitude(mLastLocation.getLongitude());
+            latitude = mLastLocation.getLatitude();
+            longitude = mLastLocation.getLongitude();
+            currentLocation = new Double[]{latitude, longitude};
         }
     };
 
@@ -107,15 +126,9 @@ public class GPSLocation {
         return longitude;
     }
 
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
     public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
+
 }
