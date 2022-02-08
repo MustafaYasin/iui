@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">CoachApp</string>
+    <string name="coach_greeting">Hi I\'m your Coach Sam!</string>
+    <string name="speak_with_me">Speak with me!</string>
+    <string name="help_you">"How may I help you?"</string>
+    <string name="voice">Voice</string>
+    <string name="trainingsplan">Your Trainingsplan</string>
+    <string name="maps">Maps</string>
+    <string name="exerciseName">Exercise</string>
+    <string name="muscleGroup">Muscle</string>
+    <string name="set">Set:</string>
+    <string name="repetition">Repetition:</string>
+    <string name="level">Level:</string>
+    <string name="subset_muscle">Subset Muscle:</string>
+    <string name="muscle_description">Muscle Description:</string>
+    <string name="exercise_description">Exercise Description:</string>
+    <string name="weekly_plan">Your weekly plan</string>
+    <string name="day1">1</string>
+    <string name="day2">2</string>
+    <string name="day3">3</string>
+    <string name="day4">4</string>
+    <string name="day5">5</string>
+    <string name="day6">6</string>
+    <string name="day7">7</string>
+    <string name="zero">0</string>
+
+    <!-- Voice Flow -->
+    <string name="voiceflow_greeting1">Hi I am Coach Sam. What is your name?</string>
+    <string name="voiceflow_greeting2">Hi nice to meet you %s. Thanks for using me as your coach. For your first use I have some questions for you.</string>
+    <string name="voiceflow_ageQ">How old are you?</string>
+    <string name="voiceflow_sexQ">Are you male or female?</string>
+    <string name="voiceflow_workoutsQ">How many days per week are you able to train?</string>
+    <string name="voiceflow_trainingsgoalQ">What is your trainingsgoal - be fit, reduce bodyfat, reduce, weight, gain muscles or better cardio?</string>
+    <string name="voiceflow_levelQ">Are you a beginner, advanced or expert at sport in general</string>
+    <string name="voiceflow_locationQ">Do you want to train at the gym, at home or outdoor?</string>
+
+    <string name="voiceflow_thx">Thank you! Let\'s set up your account.</string>
+    <string name="voiceflow_sorry">Sorry I did not get that.</string>
+
+
+
+</resources>
