@@ -140,7 +140,7 @@ def build_jsons(input_user, model, recommender_frame):
     tp_json = json.dumps(tp_dict)
     df_chosen_exercises_json = df_chosen_exercises.to_json('json2.json',orient='index', default_handler=str)
 
-    # using Jsonsfor return and constructing final Json for frontend
+    # using Jsons for return and constructing final Json for frontend
 
     json1 = tp_dict
     json2 = json.load(open('json2.json', 'r'))
@@ -149,7 +149,7 @@ def build_jsons(input_user, model, recommender_frame):
 
 def get_trainingplan(json1, json2):
     filter_json2 = dict()
-
+    # taking important values out of dict, for combined dict
     for key, value in json2.items():
         filt = {
             'exercise_title': value['exercise_title'],
@@ -161,14 +161,14 @@ def get_trainingplan(json1, json2):
         filter_json2[key] = filt 
 
     count = 0
-
+    # fitting Jsons together in desired output stucture
     for key, value in json1.items():
         if 'day' in key:
             if value['area']!='rest':
 
                 exercise_count = int(value['exercises'])
                 areas = value['area'].split(',')
-                # following IF's are not nice, but better than restructure the trainnigplan and start again :)
+                # following IF's are not nice, but better than restructure the trainnigplan and start again :), alternativ adapt dummypersons structure
                 if value['area'] == 'upper body':
                     exercise_count=exercise_count*3
                 if value['area'] == 'lower body':
@@ -176,6 +176,7 @@ def get_trainingplan(json1, json2):
                 if value['area'] == 'full body':
                     exercise_count=exercise_count*6
 
+                # filling No. of exersices to the muscle group in Trainingsplan
                 for area in areas:
                     lst = []
                     for i in range(count, exercise_count + count):
@@ -187,15 +188,16 @@ def get_trainingplan(json1, json2):
 
     return json1
 
-
+# fitting functions together, to call just 1 function
 def get_trainingplan_for_user(input_user):
     users = list(collection.find())
     model, recommender_frame = train_model(users)
 
     json1, json2 = build_jsons(input_user, model, recommender_frame)
     json1 = get_trainingplan(json1, json2)
-    return {'response': json1}, 200
+    return json1
 
+    # testing purposes
     '''
     json_object = json.dumps(json1, indent = 4)
 
@@ -204,33 +206,32 @@ def get_trainingplan_for_user(input_user):
         outfile.write(json_object)
     '''
 
-
+# for flask route
 class Recommendation(Resource):
+
+    # incoming arguments
     def post(self):
         partner_feed_generator = reqparse.RequestParser()
-        partner_feed_generator.add_argument('id', help='This field cannot be blank',
-                                            required=True, type=str)
-        partner_feed_generator.add_argument('name', help='This field cannot be blank',
-                                    required=True, type=str)                           
-        partner_feed_generator.add_argument('age', help='This field cannot be blank',
-                                            required=True, type=int)
-        partner_feed_generator.add_argument('gender', help='This field cannot be blank',
-                                            required=True, type=str)
-        partner_feed_generator.add_argument('workouts', help='This field cannot be blank',
-                                            required=True, type=int)
-        partner_feed_generator.add_argument('experience', help='This field cannot be blank',
-                                            required=False, type=str)
-        partner_feed_generator.add_argument('trainingsGoal', help='This field cannot be blank',
-                                            required=False, type=str)
-        partner_feed_generator.add_argument('trainingsLocation', help='This field cannot be blank',
-                                            required=False, type=str)
+        partner_feed_generator.add_argument('id', help='This field cannot be blank', required=True, type=str)
+        partner_feed_generator.add_argument('name', help='This field cannot be blank', required=True, type=str)                           
+        partner_feed_generator.add_argument('age', help='This field cannot be blank', required=True, type=int)
+        partner_feed_generator.add_argument('gender', help='This field cannot be blank', required=True, type=str)
+        partner_feed_generator.add_argument('workouts', help='This field cannot be blank', required=True, type=int)
+        partner_feed_generator.add_argument('experience', help='This field cannot be blank', required=False, type=str)
+        partner_feed_generator.add_argument('trainingsGoal', help='This field cannot be blank', required=False, type=str)
+        partner_feed_generator.add_argument('trainingsLocation', help='This field cannot be blank', required=False, type=str)
 
         input_user = partner_feed_generator.parse_args()
 
+        # calling function which calls other functions,...
+        result=get_trainingplan_for_user(input_user)
 
-        users = list(collection.find())
-        model, recommender_frame = train_model(users)
+        return {'response': result}, 200
 
-        json1, json2 = build_jsons(input_user, model, recommender_frame)
-        json1 = get_trainingplan(json1, json2)
-        return {'response': json1}, 200
+        # alternative if you want to use the functions independently, for not needing to train the model every time, if it gets larger, but need to work on other issues first :p (and deadline is ahead)
+        #users = list(collection.find())
+        #model, recommender_frame = train_model(users)
+
+        #json1, json2 = build_jsons(input_user, model, recommender_frame)
+        #json1 = get_trainingplan(json1, json2)
+        #return {'response': json1}, 200
