@@ -1,0 +1,211 @@
+{
+    "title": "tp_2",
+    "trainings": 4,
+    "level": "Beginner",
+    "split": 2,
+    "sets": 3,
+    "day_1": {
+        "area": "upper body",
+        "exercises": 2,
+        "exercise_upper body": [
+            {
+                "exercise_title": "Dumbbell Shoulder Press",
+                "exercise_execution": " As you exhale, lift the dumbbells up and bring them together above your head . Note that even in this exercise, the arms in the elbow joint are not fully stretched out .",
+                "muscle_group": "Shoulders",
+                "subset_muscles": "Front shoulder",
+                "muscle_description": " The dumbbell shoulder press is probably the most popular exercise for the shoulder muscles . The focus of this exercise is mainly on the middle part of the deltoid muscle (musculus deltoideus pars acromialis)"
+            },
+            {
+                "exercise_title": "Shoulder press",
+                "exercise_execution": " Sit upright on a bench raised by 80-85 degrees and lean your back against the back cushion . With your feet, you seek a firm stand on the floor to secure your body to the maximum .",
+                "muscle_group": "Shoulders",
+                "subset_muscles": "Front shoulder",
+                "muscle_description": " The classic way to train the shoulder is shoulder press . The lateral part of the deltoid muscle (musculus deltoideus pars acromialis) is always stressed . Lowering the barbell bar in front of or behind the head decides whether to strengthen the front or back of the shoulders ."
+            },
+            {
+                "exercise_title": "Flying on the incline bench",
+                "exercise_execution": " It's not the first time he's been spotted out and about in Los Angeles in recent weeks .",
+                "muscle_group": "Chest",
+                "subset_muscles": "Upper chest",
+                "muscle_description": " You need a set of dumbbells and a multi-functional bench where the back pad is inclined . Flying on the incline bench is an effective exercise for the upper chest ."
+            },
+            {
+                "exercise_title": "Negative bench press with dumbbells",
+                "exercise_execution": " It's not the first time he's been spotted out and about in Los Angeles in recent weeks .",
+                "muscle_group": "Chest",
+                "subset_muscles": "Lower chest",
+                "muscle_description": " If you have a negative bench without a barbell holder at your gym, you can train your lower chest in addition to different abdominal exercises . It requires a lot of body control and strength to get to the starting position and to leave the negative bench after the exercise ."
+            },
+            {
+                "exercise_title": "Triceps press above the head on cable pulley",
+                "exercise_execution": " Your lower back forms a slight hollow back to protect your intervertebral discs . Grasp the rope (or grip piece) in a neutral grip position and stand with your back to the cable control tower .",
+                "muscle_group": "Arms",
+                "subset_muscles": "Triceps",
+                "muscle_description": " Triceps press over the head with the back to the cable pull tower . Another version of the triceps press is the triceice press ."
+            },
+            {
+                "exercise_title": "Triceps Kickbacks with the Theraband",
+                "exercise_execution": " Wrap both hands with the theraband and stand about hip-width on the center piece of the band . Go slightly to your knees and tilt your upper body forward . Lower back is in a slight hollow cross position to relieve the intervertebral discs as much as possible .",
+                "muscle_group": "Arms",
+                "subset_muscles": "Triceps",
+                "muscle_description": " You don't have to do without one of the most effective triceps exercises . Kickbacks can also be done with the Theraband, i.e. without a set of dumbbells ."
+            }
+        ]
+    },
+    "day_2": {
+        "area": "lower body",
+        "exercises": 2,
+        "exercise_lower body": [
+            {
+                "exercise_title": "Donkey Calf Raise at the Multi Press",
+                "exercise_execution": " It's not the first time he's been spotted out and about in Los Angeles in recent weeks .",
+                "muscle_group": "Legs",
+                "subset_muscles": "Calf",
+                "muscle_description": " Most German gyms do not have Donkey-Calf-Raise device . If you want the pressure on the pelvis to come from above, create similar conditions on the rack or on the multi-press ."
+            },
+            {
+                "exercise_title": "Scissors strike",
+                "exercise_execution": " You spread your outstretched legs apart and inhale at the same time . Afterwards, you \"draw\" an invisible circle with your toes . By the mutual evasive movement of the legs up and down, the invisible circle is created .",
+                "muscle_group": "Legs",
+                "subset_muscles": "Thigh",
+                "muscle_description": " A more challenging exercise for the inside of the thighs is the scissor stroke . In this exercise, you train the adductors by alternately crossing the outstretched legs on top of each other . It does not require any equipment and can therefore also be done at home ."
+            },
+            {
+                "exercise_title": "Roll out",
+                "exercise_execution": " It's not the first time he's been spotted out and about in Los Angeles in recent weeks .",
+                "muscle_group": "Core",
+                "subset_muscles": "Lower abdominal muscles",
+                "muscle_description": " Rolling out with a dumbbell or barbell is a rather exotic exercise . It is rarely observed in the gym, but it is an effective way to train straight abdominal muscles (musculus rectus abdominis)"
+            },
+            {
+                "exercise_title": "Folding knife in lateral position",
+                "exercise_execution": " Exercise consists of two parts to be performed simultaneously . Bend your upper body sideways by lifting your shoulder belt and bringing your arms closer to your knees . At the same time pull your knees slightly so that they meet your arms a few centimetres apart .",
+                "muscle_group": "Core",
+                "subset_muscles": "Lateral abdominal muscles",
+                "muscle_description": " Folding knives in lateral position are a variant of folding knives . You train the lateral abdominal muscles . Equipment is not required for this exercise ."
+            },
+            {
+                "exercise_title": "Standing Hackenschmidt squats on the machine",
+                "exercise_execution": " It's not the first time he's been spotted out and about in Los Angeles in recent weeks .",
+                "muscle_group": "Butt",
+                "subset_muscles": "Gluteus Maximus",
+                "muscle_description": " The Hackenschmidt squat can also be done on the strength machine of the same name . The machine is also available in the more frequently found standing version ."
+            },
+            {
+                "exercise_title": "Leg lift on all fours",
+                "exercise_execution": " Walk on all fours so that your arms and thighs are at right angles to your upper body . Lower back is in a slight hollow cross position to relieve the intervertebral discs .",
+                "muscle_group": "Butt",
+                "subset_muscles": "Gluteus Maximus",
+                "muscle_description": " A popular exercise for exercising leg curls at home is leg lifting on all fours . As you kneel with your knee joints on the floor, it makes sense to use a training mat . If you don't have one, you can put a pillow, a folded towel or blanket under your knees ."
+            }
+        ]
+    },
+    "day_3": {
+        "area": "rest",
+        "exercises": 0
+    },
+    "day_4": {
+        "area": "upper body",
+        "exercises": 2,
+        "exercise_upper body": [
+            {
+                "exercise_title": "Sidelift on cable puller",
+                "exercise_execution": " You start the exercise by lifting the arm with the grip piece in an almost extended state from the body to the side . During the movement you exhale. At the highest point you hold the tension for a short moment . Afterwards you inhale and at the same time slowly lower the arm back down .",
+                "muscle_group": "Shoulders",
+                "subset_muscles": "Side Shoulder",
+                "muscle_description": " Side lifting on cable pulley is a good alternative to side lifting with dumbbells . Here, too, you train your delta muscles, especially the middle part of the shoulder ."
+            },
+            {
+                "exercise_title": "Inclined bench front lifting",
+                "exercise_execution": " With dumbbell in your hands, you lie with your chest on an inclined bench . Your arms hang down vertically with a slight bend in the elbow joint . With your feet you support yourself on the floor so that your upper body is relatively fixed and rigid .",
+                "muscle_group": "Shoulders",
+                "subset_muscles": "Front shoulder",
+                "muscle_description": " A rarely observed variant of front lifting is front lifting on an incline bench . By fixing the torso, falsification with the torso is hardly possible . This exercise is suitable for users who work with high weights ."
+            },
+            {
+                "exercise_title": "Triceps push-ups",
+                "exercise_execution": " Lie on the floor and position your hands approximately palm width apart at chest level and rotate inwards by 45 degrees (diamond shape) Your legs are completely stretched out and your toes stand directly next to each other .",
+                "muscle_group": "Chest",
+                "subset_muscles": "Mid-chest",
+                "muscle_description": " If the elbows are guided close to the body during movement, the front part of the deltoid muscle (musculus deltoideus pars clavicularis) is subjected to considerable strain . Those who do not have training equipment at their disposal can train both the triceps and the large pectoral muscle ."
+            },
+            {
+                "exercise_title": "Breast press",
+                "exercise_execution": " Your back is upright, your head extends the spine and your gaze is straight out . Make sure that you press your back fully into the cushion . The weight block should not sit up, but stay suspended in the air until the end of the exercise .",
+                "muscle_group": "Chest",
+                "subset_muscles": "Mid-chest",
+                "muscle_description": " The chest press is the most well-known device for exercising chest muscles . It can be found in almost every gym . We will explain how to use it correctly in the following ."
+            },
+            {
+                "exercise_title": "Hammer curls",
+                "exercise_execution": " Sit upright or sit on a flat bench or similar object . Your arms and dumbbells hang down at the sides of your body, but they are slightly bent and not straight . Now exhale and bend your forearms up to the maximum via the elbow joint . Afterwards, breathe in and simultaneously lower the dumbbell back to the starting position .",
+                "muscle_group": "Arms",
+                "subset_muscles": "Biceps",
+                "muscle_description": " Hammer curls are a very popular and therefore very common arm exercise in the gym . In contrast to biceps curls, the hammer curls hold dumbbells in a neutral grip . This grip technique makes the exercise very easy to do ."
+            },
+            {
+                "exercise_title": "Dumbbell triceps press (both arms)",
+                "exercise_execution": " The actual exercise starts now by lowering the dumbbell as far as possible by bending your forearms backwards in a controlled way during your inhalation . In the second phase of movement, exhale and simultaneously push the dumbb .",
+                "muscle_group": "Arms",
+                "subset_muscles": "Triceps",
+                "muscle_description": " A very well-known exercise for the three-headed triceps muscle is the dumbbell triceps press . In addition to the triceps, the cartilage muscle (musculus anconaeus) is also used in this exercise ."
+            }
+        ]
+    },
+    "day_5": {
+        "area": "lower body",
+        "exercises": 2,
+        "exercise_lower body": [
+            {
+                "exercise_title": "Vertical calf lift on the multi-press",
+                "exercise_execution": " It's not the first time he's been spotted out and about in Los Angeles in recent weeks .",
+                "muscle_group": "Legs",
+                "subset_muscles": "Calf",
+                "muscle_description": " Calf lifting while standing on the multi-press is especially suitable for gyms where there is no equipment of its own . This version is much safer to do and therefore preferable due to the securing possibilities and the guide rail ."
+            },
+            {
+                "exercise_title": "Standing calf lift on the machine",
+                "exercise_execution": " It's not the first time he's been spotted out and about in Los Angeles in recent weeks .",
+                "muscle_group": "Legs",
+                "subset_muscles": "Calf",
+                "muscle_description": " The calf can only be exercised to its full extent with (almost completely) stretched knees . In a seated position, only the clod muscle is addressed, the twin calf muscle remains relaxed and unstressed ."
+            },
+            {
+                "exercise_title": "Scissor kicks",
+                "exercise_execution": " Lie on the floor or a training mat and put your head down and don't lift it during the exercise . Arms are stretched out beside your body, palms are flat on floor . In your knees, maintain a very slight bend to protect your joints . Foot toes are stretched forward .",
+                "muscle_group": "Core",
+                "subset_muscles": "Lower abdominal muscles",
+                "muscle_description": " The Scissor Kicks are an exercise for the lower abdominal muscles . This exercise is known by various names, for example scissor kicks and scissors punching . We have chosen the English term because it is now the most common ."
+            },
+            {
+                "exercise_title": "Corkscrew",
+                "exercise_execution": " Move your feet to the left or right and return to the starting position after a circular movement . Draw your toes towards the knees and keep a minimum of flexion to relieve the joints .",
+                "muscle_group": "Core",
+                "subset_muscles": "Lower abdominal muscles",
+                "muscle_description": " The corkscrew is an exercise for the lower abdominal muscles . It is also known to many from club or team training . No equipment is required, so this exercise can also be done at home ."
+            },
+            {
+                "exercise_title": "Abductor leg lift",
+                "exercise_execution": " Abductor leg lifting can also be done lying sideways on a medicine ball . Make sure your leg is stretched out and your paws are tightened during the exercise . You can attach a weight cuff to the ankle to increase the workout load .",
+                "muscle_group": "Butt",
+                "subset_muscles": "Abductors",
+                "muscle_description": " World-famous in physiotherapy, pregnancy gymnastics and home training is the abductor leg lifting . This classic exercise for the buttocks trains completely isolated the abductors ."
+            },
+            {
+                "exercise_title": "Sliding leg bend",
+                "exercise_execution": " It's not the first time he's been spotted out and about in Los Angeles in recent weeks .",
+                "muscle_group": "Butt",
+                "subset_muscles": "Gluteus Maximus",
+                "muscle_description": " All you need are a few socks and the smoothest possible surface (parquet, laminate, PVC or tiles) One exercise that is perfect for doing at home is the sliding leg curl ."
+            }
+        ]
+    },
+    "day_6": {
+        "area": "rest",
+        "exercises": 0
+    },
+    "day_7": {
+        "area": "rest",
+        "exercises": 0
+    }
+}
