@@ -12,6 +12,8 @@ def get_exercise(exercise):
     exercise=exercise['exercise']
     exercise_dict = uebungen.find_one({'exercise_title': exercise})
     exercise_dict.pop('_id')
+    exercise_dict.pop('muscle_description_title')
+    exercise_dict.pop('exercise_execution_title')
     return exercise_dict
 
 
@@ -31,10 +33,8 @@ def clean_exercise(exercise_dict):
 
 data2 = {"exercise": "Hip rolls"}
 exercise_description=get_exercise(data2)
-cleaned_exercise_description = clean_exercise(exercise_description)
-
 # for flask route
-'''
+
 class Search_exercise(Resource):
 
     # incoming arguments
@@ -47,7 +47,5 @@ class Search_exercise(Resource):
 
         # calling function which calls other functions,...
         exercise_description=get_exercise(input_exercise)
-        cleaned_exercise_description = clean_exercise(exercise_description)
 
-        return {'response': cleaned_exercise_description}, 200
-'''
+        return {'response': exercise_description}, 200
