@@ -2,6 +2,7 @@ from cmath import log
 from pymongo import MongoClient
 import pandas as pd
 from flask_restful import Resource, reqparse
+import json
 
 client = MongoClient("mongodb+srv://mustafayasin:nisani2404@cluster0.oxj2y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = client['iui']
@@ -53,5 +54,7 @@ class Search_exercise(Resource):
 
         # calling function which calls other functions,...
         exercise_description=get_exercise(input_exercise)
+        exercise_description=json.dumps(exercise_description, indent=4)
+
         print("response", exercise_description)
         return {'response': exercise_description}, 200
