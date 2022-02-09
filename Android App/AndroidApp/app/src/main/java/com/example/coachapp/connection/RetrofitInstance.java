@@ -1,5 +1,9 @@
 package com.example.coachapp.connection;
 
+import com.example.coachapp.R;
+
+import java.io.FileInputStream;
+import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -12,6 +16,7 @@ public class RetrofitInstance {
 
     public static RetrofitInterface retrofitInterface;
     private static Retrofit retrofit = null;
+
     private final String device_url = "http://192.168.178.33";
     //private final String device_url = "http://192.168.0.34";
     //private final String device_url = "http://192.168.178.119";

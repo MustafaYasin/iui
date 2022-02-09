@@ -10,13 +10,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.coachapp.R;
+import com.example.coachapp.connection.Routes;
 import com.example.coachapp.speech.VoiceFlow;
 
 public class VoiceView extends Fragment {
 
     private VoiceFlow voiceFlow;
-
     private ImageButton voiceButton;
+    private Routes routes;
 
     public VoiceView() {
         super(R.layout.fragment_voice_view);
@@ -38,6 +39,8 @@ public class VoiceView extends Fragment {
         voiceButton = view.findViewById(R.id.voiceButton);
         voiceFlow = VoiceFlow.getInstance();
         voiceFlow.setActivity(getActivity());
+        routes = Routes.getInstance();
+        routes.setActivity(getActivity());
         ItemViewModel viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
 
         voiceButton.setOnClickListener(view1 -> {

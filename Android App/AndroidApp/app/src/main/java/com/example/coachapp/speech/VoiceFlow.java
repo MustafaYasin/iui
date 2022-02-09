@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.coachapp.R;
 import com.example.coachapp.connection.RetrofitInstance;
+import com.example.coachapp.connection.Routes;
 import com.example.coachapp.helper.Text2Double;
 import com.example.coachapp.location.GoogleMapsApp;
 import com.example.coachapp.model.Experience;
@@ -24,13 +25,15 @@ public class VoiceFlow {
     private User user = new User();
     private static VoiceFlow instance;
     private Boolean finished = false;
+    private Routes routes;
 
-    private enum Step {NAME, AGE, GENDER, WORKOUTS, GOAL, LEVEL, LOCATION, FINISHED}
+    private enum Step {NAME, AGE, GENDER, WORKOUTS, GOAL, LEVEL, LOCATION, FINISHED, EXPLANATION, LOCATIONNEARBY}
 
     private Step currentStep;
 
     public VoiceFlow() {
         new RetrofitInstance();
+        routes = Routes.getInstance();
     }
 
     public void setActivity(Activity activity) {
@@ -61,6 +64,9 @@ public class VoiceFlow {
     public void parseSpokenText(String text) {
         Log.i("Recognized text:", text);
         Text2Double textParser;
+        String exercise = "";
+        String locationNearby = "";
+        final boolean yes = text.contains("yes") || text.contains("Yes") || text.contains("right");
         switch (currentStep) {
             case NAME:
                 String name = text.replace("my name is ", "").replace("mein Name ist ", "");
@@ -166,7 +172,6 @@ public class VoiceFlow {
             case LOCATION:
                 text = text.toLowerCase(Locale.ROOT);
                 TrainingsLocation location = null;
-
                 if (text.contains("gym")) {
                     location = TrainingsLocation.GYM;
                 } else if (text.contains("home")) {
@@ -174,40 +179,83 @@ public class VoiceFlow {
                 } else if (text.contains("outdoor") || text.contains("auto")) {
                     location = TrainingsLocation.OUTDOOR;
                 }
-
                 if (location == null) {
                     errorHandler(getText(R.string.voiceflow_locationQ));
                     return;
                 }
-
                 user.setTrainingsLocation(location);
                 currentStep = Step.FINISHED;
                 finished = true;
                 speechFromText.speakOutAndRecord(getText(R.string.voiceflow_thx), false);
-                break;
-            case FINISHED:
-                if (text.contains("is the next")) {
-                    String place = text.split("next")[1];
-                    speechFromText.speakOutAndRecord("I have marked the nearby " + place + " in your Google Maps, which I will opened for you right now.", false);
-                    sleeper(6000);
-                    GoogleMapsApp googleMapsApp = new GoogleMapsApp(activity);
-                    googleMapsApp.searchNearby(place);
-                } else if (text.contains("execution")) {
-                    // How does the execution of ... works?
-                    String exercise = text.split("of")[1].split("works")[0];
-                    // Todo: get explanation from server
-                    speechFromText.speakOutAndRecord("", false);
+                sleeper(1000);
+                if (user.isCompleted()) {
+                    routes.sendUser(user);
                 }
                 break;
+            case FINISHED:
+                if (text == null) {
+                    errorHandler(getText(R.string.voiceflow_locationQ));
+                    return;
+                } else {
+                    if (text.contains("is the next")) {
+                        locationNearby = text.split("next")[1];
+                        if (locationNearby != null) {
+                            currentStep = Step.LOCATIONNEARBY;
+                            speechFromText.speakOutAndRecord("You want to know the nearby places of " + locationNearby + "?", true);
+                        } else {
+                            errorHandler(getText(R.string.voiceflow_sorry));
+                        }
+                    } else if (text.contains("execution") || text.contains("execute")) {
+                        // How is the right execution of ...?
+                        if (text.contains("execution")) {
+                            exercise = text.split("of")[1];
+                        } else if (text.contains("execute")) {
+                            exercise = text.split("execute")[0];
+                        }
+                        if (exercise != null) {
+                            currentStep = Step.EXPLANATION;
+                            speechFromText.speakOutAndRecord("You want to have an explanation of the exercise " + exercise + "?", true);
+                        } else {
+                            errorHandler(getText(R.string.voiceflow_sorry));
+                        }
+                    }
+                }
+                break;
+            case EXPLANATION:
+                currentStep = Step.FINISHED;
+                if (yes) {
+                    currentStep = Step.FINISHED;
+                    String explanation = routes.getExerciseExplanation(exercise);
+                    sleeper(6000);
+                    speechFromText.speakOutAndRecord(explanation, false);
+                } else {
+                    speechFromText.speakOutAndRecord("Please repeat", true);
+                }
+                break;
+            case LOCATIONNEARBY:
+                currentStep = Step.FINISHED;
+                if (yes) {
+                    speechFromText.speakOutAndRecord("I have marked the nearby " + locationNearby +
+                            " in your Google Maps, which I will opened for you right now.", false);
+                    sleeper(6000);
+                    GoogleMapsApp googleMapsApp = new GoogleMapsApp(activity);
+                    googleMapsApp.searchNearby(locationNearby);
+                } else {
+                    speechFromText.speakOutAndRecord("Please repeat", true);
+                }
+                break;
+            default:
+                errorHandler(getText(R.string.voiceflow_sorry));
+                Log.e("VoiceFlow", "No case step availaible");
         }
 
-        Log.i("USER_NAME", user.getName());
-        Log.i("USER_AGE", String.valueOf(user.getAge()));
-        Log.i("USER_WORKOUTS", String.valueOf(user.getWorkouts()));
-        Log.i("USER_Gender", String.valueOf(user.getGender()));
-        Log.i("USER_GOAL", String.valueOf(user.getTrainingsGoal()));
-        Log.i("USER_XP", String.valueOf(user.getExperience()));
-        Log.i("USER_LOCATION", String.valueOf(user.getTrainingsLocation()));
+//        Log.i("USER_NAME", user.getName());
+//        Log.i("USER_AGE", String.valueOf(user.getAge()));
+//        Log.i("USER_WORKOUTS", String.valueOf(user.getWorkouts()));
+//        Log.i("USER_Gender", String.valueOf(user.getGender()));
+//        Log.i("USER_GOAL", String.valueOf(user.getTrainingsGoal()));
+//        Log.i("USER_XP", String.valueOf(user.getExperience()));
+//        Log.i("USER_LOCATION", String.valueOf(user.getTrainingsLocation()));
     }
 
     private String getText(int stringnumber) {

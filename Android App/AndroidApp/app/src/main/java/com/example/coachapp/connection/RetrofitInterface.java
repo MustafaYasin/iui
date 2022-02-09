@@ -1,5 +1,7 @@
 package com.example.coachapp.connection;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -25,6 +27,9 @@ public interface RetrofitInterface {
 
     @GET("/user")
     Call<String> loadUser(@Field("objectId") String objectId);
+
+    @GET("/exerciseExplanation")
+    Call<JSONObject> getExerciseExplanation(@Field("exerciseName") String exercise);
 
     @FormUrlEncoded
     @POST("/spokenText")

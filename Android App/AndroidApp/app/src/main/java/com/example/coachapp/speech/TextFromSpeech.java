@@ -29,14 +29,14 @@ public class TextFromSpeech implements RecognitionListener {
     public final Integer RecordAudioRequestCode = 1;
     public SpeechRecognizer speechRecognizer;
     private final Activity activity;
-    private final ImageButton voiceButton;
-    private final Routes routes;
+    private ImageButton voiceButton;
+    private Routes routes;
     private TextView voiceTV;
 
     public TextFromSpeech(Activity activity) {
         this.activity = activity;
         checkPermission();
-        routes = new Routes(activity);
+
         voiceButton = activity.findViewById(R.id.voiceButton);
         voiceTV = activity.findViewById(R.id.voiceTV);
     }
@@ -154,10 +154,10 @@ public class TextFromSpeech implements RecognitionListener {
         voiceFlow.parseSpokenText(spokenText);
         Log.d(TAG, "onResults " + spokenText);
 
-        User user = voiceFlow.getUser();
-        if (user.isCompleted()) {
-            routes.sendUser(user);
-        }
+//        User user = voiceFlow.getUser();
+//        if (user.isCompleted()) {
+//            routes.sendUser(user);
+//        }
     }
 
     @Override

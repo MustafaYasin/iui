@@ -7,6 +7,11 @@ import android.widget.Toast;
 import com.example.coachapp.model.TrainingsPlanSettings;
 import com.example.coachapp.model.TrainingsSettings;
 import com.example.coachapp.model.User;
+import com.example.coachapp.speech.SpeechFromText;
+import com.example.coachapp.speech.TextFromSpeech;
+import com.example.coachapp.speech.VoiceFlow;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -17,14 +22,26 @@ import retrofit2.Response;
 public class Routes {
 
     private static final String TAG = "Routes";
-    private final Activity activity;
+    private Activity activity;
+    private Routes routes;
+    public static Routes instance;
     private TrainingsSettings trainingsSettings = new TrainingsSettings();
     private TrainingsPlanSettings trainingsPlanSettings = new TrainingsPlanSettings();
 
-    public Routes(Activity activity) {
+//    public Routes(Activity activity) {
+//        this.activity = activity;
+//    }
+
+    public void setActivity(Activity activity) {
         this.activity = activity;
     }
 
+    public static Routes getInstance() {
+        if (instance == null) {
+            instance = new Routes();
+        }
+        return instance;
+    }
 
     public void sendUser(User user) {
         Call<Void> call = RetrofitInstance.retrofitInterface.sendUser(
@@ -36,6 +53,8 @@ public class Routes {
                 String.valueOf(user.getTrainingsGoal()),
                 String.valueOf(user.getTrainingsLocation())
         );
+
+        System.out.println("User" + user.getName());
         call.enqueue(new Callback<Void>() {
 
             @Override
@@ -51,6 +70,24 @@ public class Routes {
                 Log.e(TAG, t.getMessage());
             }
         });
+    }
+
+    public String getExerciseExplanation(String exercise) {
+        final String[] explanation = {""};
+        Call<JSONObject> call = RetrofitInstance.retrofitInterface.getExerciseExplanation(exercise);
+        call.enqueue(new Callback<JSONObject>() {
+            @Override
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                JSONObject json = new JSONObject();
+                explanation[0] = "hi";
+            }
+
+            @Override
+            public void onFailure(Call<JSONObject> call, Throwable t) {
+                Log.e(TAG, "Can't get exercise explanation");
+            }
+        });
+        return explanation[0];
     }
 
 //
