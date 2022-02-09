@@ -14,24 +14,24 @@ real_user_db = db['real_user']
 
 def check_user_in_DB(input_user):
     # suche user mit id ... 
-    existence = real_user_db.find_one({'id': input_user.id})
+    existence = real_user_db.find_one({'id': input_user['id']})
 
     # wenn existiert True, else False
-
-    if existence == []:
+    try:
+        len(existence)
+        return True
+    except:
         return False
-    else:
-        return True 
+    
 
 def add_user_to_db(input_user):
 
     if check_user_in_DB(input_user):
-        done = 'user already exists in DB'
+        done = {'msg': 'user already exists in DB'}
     else:
-        real_user_db.insert(input_user)
-        done = 'user succesfully added to DB'
+        real_user_db.insert_one(input_user)
+        done = {'msg':'user succesfully added to DB'}
     return done
-
 
 
 # for flask route
@@ -51,7 +51,5 @@ class Add_user(Resource):
 
         input_user = partner_feed_generator.parse_args()
 
-        
         done = add_user_to_db(input_user)
-
         return {'response': done}, 200
