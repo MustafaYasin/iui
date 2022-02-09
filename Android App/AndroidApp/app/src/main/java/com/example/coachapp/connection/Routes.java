@@ -78,8 +78,14 @@ public class Routes {
         call.enqueue(new Callback<JSONObject>() {
             @Override
             public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-                JSONObject json = new JSONObject();
-                explanation[0] = "hi";
+                if (response.isSuccessful()) {
+                    System.out.println("Response exersice" + response.toString());
+                    JSONObject json = new JSONObject();
+                    explanation[0] = "hi";
+                } else {
+                    Log.e(TAG, "Response was not successful");
+                }
+
             }
 
             @Override

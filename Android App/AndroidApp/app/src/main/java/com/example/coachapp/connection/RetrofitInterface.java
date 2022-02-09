@@ -28,7 +28,7 @@ public interface RetrofitInterface {
     @GET("/user")
     Call<String> loadUser(@Field("objectId") String objectId);
 
-    @GET("/exerciseExplanation")
+    @GET("/search_ex")
     Call<JSONObject> getExerciseExplanation(@Field("exerciseName") String exercise);
 
     @FormUrlEncoded

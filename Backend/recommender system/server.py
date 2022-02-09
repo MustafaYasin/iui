@@ -12,7 +12,7 @@ api = Api(app)
 
 api.add_resource(Recommendation, '/recommend')
 api.add_resource(Add_user, '/user')
-api.add_resource(Add_user, '/search_ex')
+api.add_resource(Search_exercise, '/search_ex')
 
 
 if __name__ == "__main__":
