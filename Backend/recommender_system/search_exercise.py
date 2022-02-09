@@ -10,9 +10,11 @@ uebungen = db['ubungen']
 
 
 def get_exercise(exercise):
-    exercise=exercise['exercise']
-    exercise_dict = uebungen.find_one({'exercise_title': exercise})
     try:
+        exercise=exercise['exercise'].capitalize()
+        print(exercise)
+        exercise_dict = uebungen.find_one({'exercise_title': exercise})
+    
         exercise_dict.pop('_id')
         exercise_dict.pop('muscle_description_title')
         exercise_dict.pop('exercise_execution_title')
@@ -20,8 +22,7 @@ def get_exercise(exercise):
     except:
         return {'exercise_execution': 'Sorry there is no such exercise in my Database, please check your spelling'}
 
-test=get_exercise({'exercise': 'Squats'})
-print(test)
+
 
 def clean_exercise(exercise_dict):
     # taking important values out of dict, for combined dict

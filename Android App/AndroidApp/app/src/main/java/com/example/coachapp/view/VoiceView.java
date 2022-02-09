@@ -44,11 +44,11 @@ public class VoiceView extends Fragment {
         ItemViewModel viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
 
         voiceButton.setOnClickListener(view1 -> {
-            if (!voiceFlow.getFinished()) {
+      /*      if (!voiceFlow.getFinished()) {
                 voiceFlow.initialSettings();
-            } else {
+            } else {*/
                 voiceFlow.greeting();
-            }
+            //}
         });
     }
 }

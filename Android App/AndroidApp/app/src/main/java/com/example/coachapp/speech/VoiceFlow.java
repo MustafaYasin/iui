@@ -8,6 +8,7 @@ import com.example.coachapp.connection.RetrofitInstance;
 import com.example.coachapp.connection.Routes;
 import com.example.coachapp.helper.Text2Double;
 import com.example.coachapp.location.GoogleMapsApp;
+import com.example.coachapp.model.ExerciseExplanation;
 import com.example.coachapp.model.Experience;
 import com.example.coachapp.model.Gender;
 import com.example.coachapp.model.TrainingsGoal;
@@ -15,6 +16,7 @@ import com.example.coachapp.model.TrainingsLocation;
 import com.example.coachapp.model.User;
 
 import java.util.Locale;
+import java.util.UUID;
 
 
 public class VoiceFlow {
@@ -45,6 +47,7 @@ public class VoiceFlow {
     }
 
     public void initialSettings() {
+        user.setId(generateUUID());
         speechFromText.speakOutAndRecord(this.activity.getString(R.string.voiceflow_greeting1), true);
         currentStep = Step.NAME;
         finished = false;
@@ -196,14 +199,6 @@ public class VoiceFlow {
                 }
                 break;
             case FINISHED:
-
-                user.setName("Horst");
-                user.setAge(17);
-                user.setGender(Gender.MALE);
-                user.setWorkouts(3);
-                user.setTrainingsGoal(TrainingsGoal.REDUCE_WEIGHT);
-                user.setExperience(Experience.ADVANCED);
-                user.setTrainingsLocation(TrainingsLocation.OUTDOOR);
                 if (text == null) {
                     errorHandler(getText(R.string.voiceflow_sorry));
                     return;
@@ -230,13 +225,29 @@ public class VoiceFlow {
                             errorHandler(getText(R.string.voiceflow_sorry));
                         }
 
-                    } else if (text.contains("trainingsplan")) {
+                    } else if (text.contains("trainingsplan") || text.contains("training")) {
+                        user.setId(generateUUID());
+                        user.setName("Horst");
+                        user.setAge(17);
+                        user.setGender(Gender.MALE);
+                        user.setWorkouts(3);
+                        user.setTrainingsGoal(TrainingsGoal.REDUCE_WEIGHT);
+                        user.setExperience(Experience.ADVANCED);
+                        user.setTrainingsLocation(TrainingsLocation.OUTDOOR);
                         speechFromText.speakOutAndRecord("I will generate a trainingsplan. One moment please", false);
                         routes.loadTrainingsplan(user);
+                        //routes.getTrainingsplan();
                         sleeper(6000);
                         speechFromText.speakOutAndRecord("You can see your trainingsplan at the section trainingsplan on your bottom navigation", false);
                     } else {
-                        errorHandler(getText(R.string.voiceflow_sorry));
+                        //errorHandler(getText(R.string.voiceflow_sorry));
+                      /*  Log.i("USER_NAME", user.getName());
+                        Log.i("USER_AGE", String.valueOf(user.getAge()));
+                        Log.i("USER_WORKOUTS", String.valueOf(user.getWorkouts()));
+                        Log.i("USER_Gender", String.valueOf(user.getGender()));
+                        Log.i("USER_GOAL", String.valueOf(user.getTrainingsGoal()));
+                        Log.i("USER_XP", String.valueOf(user.getExperience()));
+                        Log.i("USER_LOCATION", String.valueOf(user.getTrainingsLocation()));*/
                     }
                 }
                 break;
@@ -244,9 +255,11 @@ public class VoiceFlow {
                 currentStep = Step.FINISHED;
                 if (yes) {
                     currentStep = Step.FINISHED;
-                    String explanation = routes.getExerciseExplanation(exercise);
-                    sleeper(6000);
-                    speechFromText.speakOutAndRecord(explanation, false);
+
+                    routes.getExerciseExplanation(exercise, speechFromText);
+                    //sleeper(6000);
+                    //System.out.println("ausgabe " + routes.exerciseExplanation.getExecution());
+                    //speechFromText.speakOutAndRecord(routes.exerciseExplanation.getExecution(),false);
                 } else {
                     speechFromText.speakOutAndRecord("Please repeat", true);
                 }
@@ -269,13 +282,7 @@ public class VoiceFlow {
                 break;
         }
 
-//        Log.i("USER_NAME", user.getName());
-//        Log.i("USER_AGE", String.valueOf(user.getAge()));
-//        Log.i("USER_WORKOUTS", String.valueOf(user.getWorkouts()));
-//        Log.i("USER_Gender", String.valueOf(user.getGender()));
-//        Log.i("USER_GOAL", String.valueOf(user.getTrainingsGoal()));
-//        Log.i("USER_XP", String.valueOf(user.getExperience()));
-//        Log.i("USER_LOCATION", String.valueOf(user.getTrainingsLocation()));
+
     }
 
     private String getText(int stringnumber) {
@@ -300,5 +307,10 @@ public class VoiceFlow {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public UUID generateUUID(){
+        UUID uuid = UUID.randomUUID();
+        return uuid;
     }
 }

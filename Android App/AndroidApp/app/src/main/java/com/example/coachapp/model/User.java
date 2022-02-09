@@ -1,6 +1,9 @@
 package com.example.coachapp.model;
 
+import java.util.UUID;
+
 public class User {
+    private UUID id;
     private String name;
     private int age;
     private Gender gender;
@@ -12,6 +15,14 @@ public class User {
     private TrainingsLocation trainingsLocation;
 
     public User() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getName() {
