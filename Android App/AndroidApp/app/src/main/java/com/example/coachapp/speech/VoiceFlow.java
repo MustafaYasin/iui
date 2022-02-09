@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.coachapp.R;
 import com.example.coachapp.connection.RetrofitInstance;
 import com.example.coachapp.helper.Text2Double;
+import com.example.coachapp.location.GoogleMapsApp;
 import com.example.coachapp.model.Experience;
 import com.example.coachapp.model.Gender;
 import com.example.coachapp.model.TrainingsGoal;
@@ -22,8 +23,11 @@ public class VoiceFlow {
     private SpeechFromText speechFromText;
     private User user = new User();
     private static VoiceFlow instance;
+    private Boolean finished = false;
 
-    private enum Step {NAME, AGE, GENDER, WORKOUTS, GOAL, LEVEL, LOCATION, FINISHED};
+    private enum Step {NAME, AGE, GENDER, WORKOUTS, GOAL, LEVEL, LOCATION, FINISHED}
+
+    ;
     private Step currentStep;
 
     //public VoiceFlow(Activity activity) {
@@ -45,15 +49,21 @@ public class VoiceFlow {
     }
 
     public void initialSettings() {
-        speechFromText.speakOut(this.activity.getString(R.string.voiceflow_greeting1));
+        speechFromText.speakOutAndRecord(this.activity.getString(R.string.voiceflow_greeting1), true);
         currentStep = Step.NAME;
+        finished = false;
+    }
+
+    public void greeting() {
+        currentStep = Step.FINISHED;
+        finished = true;
+        speechFromText.speakOutAndRecord(this.activity.getString(R.string.voiceflow_greeting3), true);
     }
 
     public static VoiceFlow getInstance() {
         if (instance == null) {
             instance = new VoiceFlow();
         }
-
         return instance;
     }
 
@@ -65,7 +75,8 @@ public class VoiceFlow {
                 String name = text.replace("my name is ", "").replace("mein Name ist ", "");
                 user.setName(name);
                 currentStep = Step.AGE;
-                speechFromText.speakOut(String.format(getText(R.string.voiceflow_greeting2), user.getName()) + " " + getText(R.string.voiceflow_ageQ));
+                speechFromText.speakOutAndRecord(String.format(
+                        getText(R.string.voiceflow_greeting2), user.getName()) + " " + getText(R.string.voiceflow_ageQ), true);
                 break;
             case AGE:
                 textParser = new Text2Double();
@@ -81,7 +92,7 @@ public class VoiceFlow {
                 }
                 user.setAge(age);
                 currentStep = Step.GENDER;
-                speechFromText.speakOut(getText(R.string.voiceflow_sexQ));
+                speechFromText.speakOutAndRecord(getText(R.string.voiceflow_sexQ), true);
                 break;
             case GENDER:
                 text = text.toLowerCase(Locale.ROOT);
@@ -98,10 +109,10 @@ public class VoiceFlow {
                 }
                 user.setGender(gender);
                 currentStep = Step.WORKOUTS;
-                speechFromText.speakOut(getText(R.string.voiceflow_workoutsQ));
+                speechFromText.speakOutAndRecord(getText(R.string.voiceflow_workoutsQ), true);
                 break;
             case WORKOUTS:
-                String days = text.replace("days", "").replace("day","").trim();
+                String days = text.replace("days", "").replace("day", "").trim();
                 textParser = new Text2Double();
                 int workouts;
                 try {
@@ -115,7 +126,7 @@ public class VoiceFlow {
                 }
                 user.setWorkouts(workouts);
                 currentStep = Step.GOAL;
-                speechFromText.speakOut(getText(R.string.voiceflow_trainingsgoalQ));
+                speechFromText.speakOutAndRecord(getText(R.string.voiceflow_trainingsgoalQ), true);
                 break;
             case GOAL:
                 text = text.toLowerCase(Locale.ROOT);
@@ -137,7 +148,7 @@ public class VoiceFlow {
                 }
 
                 user.setTrainingsGoal(goal);
-                speechFromText.speakOut(getText(R.string.voiceflow_levelQ));
+                speechFromText.speakOutAndRecord(getText(R.string.voiceflow_levelQ), true);
                 currentStep = Step.LEVEL;
                 break;
             case LEVEL:
@@ -159,7 +170,7 @@ public class VoiceFlow {
 
                 user.setExperience(xp);
                 currentStep = Step.LOCATION;
-                speechFromText.speakOut(getText(R.string.voiceflow_locationQ));
+                speechFromText.speakOutAndRecord(getText(R.string.voiceflow_locationQ), true);
                 break;
             case LOCATION:
                 text = text.toLowerCase(Locale.ROOT);
@@ -180,7 +191,17 @@ public class VoiceFlow {
 
                 user.setTrainingsLocation(location);
                 currentStep = Step.FINISHED;
-                speechFromText.speakOut(getText(R.string.voiceflow_thx));
+                finished = true;
+                speechFromText.speakOutAndRecord(getText(R.string.voiceflow_thx), false);
+                break;
+            case FINISHED:
+                if (text.contains("is the next")) {
+                    String place = text.split("next")[1];
+                    speechFromText.speakOutAndRecord("I have marked the nearby " + place + " in your Google Maps, which I will opened for you right now.", false);
+                    sleeper(6000);
+                    GoogleMapsApp googleMapsApp = new GoogleMapsApp(activity);
+                    googleMapsApp.searchNearby(place);
+                }
                 break;
         }
 
@@ -202,11 +223,22 @@ public class VoiceFlow {
     }
 
     private void errorHandler(String question) {
-        speechFromText.speakOut(getText(R.string.voiceflow_sorry) + "  " + question);
+        speechFromText.speakOutAndRecord(getText(R.string.voiceflow_sorry) + "  " + question, true);
     }
 
+    public Boolean getFinished() {
+        return finished;
+    }
 
-//    public void startVoice(String voiceTxt) {
+    public void sleeper(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //    public void startVoice(String voiceTxt) {
 //        try {
 //            speechFromText.speakOut(voiceTxt);
 //            Thread.sleep(5000);

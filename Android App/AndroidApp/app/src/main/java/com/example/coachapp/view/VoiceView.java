@@ -8,11 +8,15 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.coachapp.R;
 import com.example.coachapp.speech.SpeechFromText;
 import com.example.coachapp.speech.TextFromSpeech;
 import com.example.coachapp.speech.VoiceFlow;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class VoiceView extends Fragment {
     //change IP adress in RetrofitInstance
@@ -20,6 +24,7 @@ public class VoiceView extends Fragment {
     // Todo: send settings
     // Todo: check if first time app started
 
+    private ItemViewModel viewModel;
     private TextFromSpeech textFromSpeech;
     private SpeechFromText speechFromText;
     private VoiceFlow voiceFlow;
@@ -46,11 +51,17 @@ public class VoiceView extends Fragment {
         voiceButton = view.findViewById(R.id.voiceButton);
         voiceFlow = VoiceFlow.getInstance();
         voiceFlow.setActivity(getActivity());
+        viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
         //voiceFlow = new VoiceFlow(getActivity());
 //        voiceFlow.initialSettings();
 
         voiceButton.setOnClickListener(view1 -> {
-            voiceFlow.initialSettings();
-        });
+                if (!voiceFlow.getFinished()) {
+                    voiceFlow.initialSettings();
+                } else {
+                    voiceFlow.greeting();
+                }
+            });
+
     }
 }
