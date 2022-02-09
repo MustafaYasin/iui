@@ -27,6 +27,7 @@
     <!-- Voice Flow -->
     <string name="voiceflow_greeting1">Hi I am Coach Sam. What is your name?</string>
     <string name="voiceflow_greeting2">Hi nice to meet you %s. Thanks for using me as your coach. For your first use I have some questions for you.</string>
+    <string name="voiceflow_greeting3">Hi how may I help you?</string>
     <string name="voiceflow_ageQ">How old are you?</string>
     <string name="voiceflow_sexQ">Are you male or female?</string>
     <string name="voiceflow_workoutsQ">How many days per week are you able to train?</string>

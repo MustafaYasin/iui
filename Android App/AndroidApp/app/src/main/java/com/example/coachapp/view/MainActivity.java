@@ -11,9 +11,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.coachapp.R;
+import com.example.coachapp.location.CurrentLocation;
 import com.example.coachapp.location.GoogleMapsApp;
 import com.example.coachapp.location.NearbyPlaces;
-import com.example.coachapp.location.CurrentLocation;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 

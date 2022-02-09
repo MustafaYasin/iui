@@ -2,16 +2,19 @@ package com.example.coachapp.connection;
 
 import android.app.Activity;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coachapp.R;
 import com.example.coachapp.model.Exercise;
 import com.example.coachapp.model.TrainingsDay;
 import com.example.coachapp.model.TrainingsPlan;
+
 import com.example.coachapp.model.TrainingsPlanSettings;
 import com.example.coachapp.model.TrainingsSettings;
 import com.example.coachapp.model.User;
+import com.example.coachapp.speech.SpeechFromText;
+import com.example.coachapp.speech.TextFromSpeech;
+import com.example.coachapp.speech.VoiceFlow;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,73 +29,28 @@ import retrofit2.Response;
 public class Routes {
 
     private static final String TAG = "Routes";
-    private final Activity activity;
-    //private User user = new User();
-    //private TrainingsSettings trainingsSettings = new TrainingsSettings();
-    //private TrainingsPlanSettings trainingsPlanSettings = new TrainingsPlanSettings();
-    //private String myTextToSpeech;
+    private Activity activity;
+    private Routes routes;
+    public static Routes instance;
+    private TrainingsSettings trainingsSettings = new TrainingsSettings();
+    private TrainingsPlanSettings trainingsPlanSettings = new TrainingsPlanSettings();
 
-    public Routes(Activity activity) {
+//    public Routes(Activity activity) {
+//        this.activity = activity;
+//    }
+
+    public void setActivity(Activity activity) {
         this.activity = activity;
     }
 
-    // public void sendSpokenText(String speechToText) {
-    //     Call<String> call = RetrofitInstance.retrofitInterface.sendSpokenText(speechToText, "1");
-    //     call.enqueue(new Callback<String>() {
-    //         @Override
-    //         public void onResponse(Call<String> call, Response<String> response) {
-    //             if (response.isSuccessful()) {
-// //                   myTextToSpeech = response.body();
-    //                 try {
-    //                     JSONObject obj = new JSONObject(response.body());
-    //                     myTextToSpeech = obj.getString("key");
-    //                 } catch (JSONException e) {
-    //                     e.printStackTrace();
-    //                 }
-    //                 Log.i("UNSERERROR",myTextToSpeech);
-    //             } else {
-    //                 Log.e(TAG, "Response was not successful");
-    //             }
-    //         }
-//
-    //         @Override
-    //         public void onFailure(Call<String> call, Throwable t) {
-    //             Toast.makeText(activity, t.getMessage(), Toast.LENGTH_LONG).show();
-    //             Log.e(TAG, t.getMessage());
-    //         }
-    //     });
-    // }
-
-    ////test
-    //private void sendMyText() {
-    //    String post = "Das habe ich gesagt";
-    //    Call<String> call = RetrofitInstance.retrofitInterface.sendMyText(post);
-
-    //    call.enqueue(new Callback<String>() {
-    //        @Override
-    //        public void onResponse(Call<String> call, Response<String> response) {
-    //            String postResponse = response.body();
-    //        }
-
-    //        @Override
-    //        public void onFailure(Call<String> call, Throwable t) {
-
-    //        }
-    //    });
-    //}
+    public static Routes getInstance() {
+        if (instance == null) {
+            instance = new Routes();
+        }
+        return instance;
+    }
 
     public void sendUser(User user) {
-        // HashMap<String, String> map = new HashMap<>();
-        // map.put("name", user.getName());
-        // map.put("age", String.valueOf(user.getAge()));
-        // map.put("gender", String.valueOf(user.getGender()));
-        // map.put("workouts", String.valueOf(user.getWorkouts()));
-        // //map.put("weight", String.valueOf(user.getWeight()));
-        // //map.put("height", String.valueOf(user.getHeight()));
-        // map.put("experience", String.valueOf(user.getExperience()));
-        // map.put("trainingsGoal", String.valueOf(user.getTrainingsGoal()));
-        // map.put("trainingsLocation", String.valueOf(user.getTrainingsLocation()));
-
         Call<Void> call = RetrofitInstance.retrofitInterface.sendUser(
                 user.getName(),
                 user.getAge(),
@@ -102,6 +60,8 @@ public class Routes {
                 String.valueOf(user.getTrainingsGoal()),
                 String.valueOf(user.getTrainingsLocation())
         );
+
+        System.out.println("User" + user.getName());
         call.enqueue(new Callback<Void>() {
 
             @Override
@@ -119,6 +79,39 @@ public class Routes {
         });
     }
 
+    public String getExerciseExplanation(String exercise) {
+        if (exercise.contains("Squads")) {
+            exercise = "Squats";
+        }
+        final String[] explanation = {""};
+        JSONObject jsonEx = new JSONObject();
+        try {
+            jsonEx.put("exercise", exercise);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("exercise"+jsonEx);
+        Call<JSONObject> call = RetrofitInstance.retrofitInterface.getExerciseExplanation(jsonEx);
+        call.enqueue(new Callback<JSONObject>() {
+            @Override
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                if (response.isSuccessful()) {
+                    System.out.println("Response exersice" + response.toString());
+                    JSONObject json = new JSONObject();
+                    explanation[0] = "hi";
+                } else {
+                    Log.e(TAG, "Response was not successful");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<JSONObject> call, Throwable t) {
+                Log.e(TAG, "Can't get exercise explanation");
+            }
+        });
+        return explanation[0];
+    }
 
     public void loadTrainingsplan(User user) {
         Call<String> call = RetrofitInstance.retrofitInterface.loadTrainingsPlan(
