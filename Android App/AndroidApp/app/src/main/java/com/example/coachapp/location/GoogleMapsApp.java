@@ -1,28 +1,26 @@
 package com.example.coachapp.location;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 
 import com.example.coachapp.view.ItemViewModel;
 
 public class GoogleMapsApp {
 
-    ItemViewModel viewModel;
-
+    private ItemViewModel viewModel;
     private Activity activity;
 
+    public GoogleMapsApp(Activity activity) {
+        this.activity = activity;
+    }
 
     public GoogleMapsApp(Activity activity, ItemViewModel viewModel) {
         this.activity = activity;
         this.viewModel = viewModel;
     }
-
 
     public void openMapsWithCurrentLocation() {
         viewModel.getCurrentLocation().observe((LifecycleOwner) activity, item -> {

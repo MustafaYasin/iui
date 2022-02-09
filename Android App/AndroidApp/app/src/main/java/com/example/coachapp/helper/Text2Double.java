@@ -42,8 +42,7 @@ public class Text2Double {
         double current = 0;
         double result = 0;
 
-        for(String word : text.split("[ -]"))
-        {
+        for (String word : text.split("[ -]")) {
             ScaleIncrementPair scaleIncrement = numWord.get(word);
             current = current * scaleIncrement.scale + scaleIncrement.increment;
             if (scaleIncrement.scale > 100) {
@@ -55,13 +54,11 @@ public class Text2Double {
     }
 }
 
-class ScaleIncrementPair
-{
+class ScaleIncrementPair {
     public double scale;
     public int increment;
 
-    public ScaleIncrementPair(double s, int i)
-    {
+    public ScaleIncrementPair(double s, int i) {
         scale = s;
         increment = i;
     }

@@ -21,8 +21,6 @@ import com.example.coachapp.R;
 import com.example.coachapp.connection.Routes;
 import com.example.coachapp.model.User;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class TextFromSpeech implements RecognitionListener {
@@ -31,30 +29,26 @@ public class TextFromSpeech implements RecognitionListener {
     public final Integer RecordAudioRequestCode = 1;
     public SpeechRecognizer speechRecognizer;
     private final Activity activity;
-    private final ImageButton voiceButton;
-    private final Routes routes;
-    private String spokenText = "";
-    //private Boolean finishedResult = false;
+    private ImageButton voiceButton;
+    private Routes routes;
     private TextView voiceTV;
 
     public TextFromSpeech(Activity activity) {
         this.activity = activity;
         checkPermission();
-        routes = new Routes(activity);
+
         voiceButton = activity.findViewById(R.id.voiceButton);
         voiceTV = activity.findViewById(R.id.voiceTV);
     }
 
     private SpeechRecognizer getSpeechRecognizer() {
         if (speechRecognizer == null) {
-            //speechRecognizer.
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "he");
             intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{"he"});
             speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity);
             speechRecognizer.setRecognitionListener(this);
-            //intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.speech_prompt));
         }
         return speechRecognizer;
     }
@@ -62,30 +56,30 @@ public class TextFromSpeech implements RecognitionListener {
     public void startVoiceRecognitionCycle() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+//        voiceTV.setText("");
+//        voiceTV.setHint("Listening...");
         getSpeechRecognizer().startListening(intent);
     }
 
     @Override
     public void onReadyForSpeech(Bundle bundle) {
         voiceButton.setImageResource(R.mipmap.voice_recorder_circle_green);
+        voiceTV.setText("");
         voiceTV.setHint("Listening...");
-        //finishedResult = false;
     }
 
     @Override
     public void onBeginningOfSpeech() {
         Log.d(TAG, "onBeginningOfSpeech");
-        voiceTV.setHint("Listening...");
+//        voiceTV.setHint("Listening...");
     }
 
     @Override
     public void onRmsChanged(float v) {
-
     }
 
     @Override
     public void onBufferReceived(byte[] bytes) {
-
     }
 
     @Override
@@ -157,33 +151,31 @@ public class TextFromSpeech implements RecognitionListener {
 
     @Override
     public void onResults(Bundle bundle) {
+        voiceTV.setText(R.string.speak_with_me);
         ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        spokenText = data.get(0);
+        String spokenText = data.get(0);
         VoiceFlow voiceFlow = VoiceFlow.getInstance();
         voiceFlow.parseSpokenText(spokenText);
 
-
         Log.d(TAG, "onResults " + spokenText);
 
-        User user = voiceFlow.getUser();
-        if (user.isCompleted()) {
-            //finishedResult = true;
-            speechRecognizer.cancel();
-            speechRecognizer.stopListening();
-            speechRecognizer.destroy();
-            routes.sendUser(user);
-            routes.loadTrainingsplan(user);
-        }
+//        User user = voiceFlow.getUser();
+//        if (user.isCompleted()) {
+//            //finishedResult = true;
+//            speechRecognizer.cancel();
+//            speechRecognizer.stopListening();
+//            speechRecognizer.destroy();
+//            routes.sendUser(user);
+//            routes.loadTrainingsplan(user);
+//        }
     }
 
     @Override
     public void onPartialResults(Bundle bundle) {
-
     }
 
     @Override
     public void onEvent(int i, Bundle bundle) {
-
     }
 
     public void checkPermission() {
@@ -193,12 +185,4 @@ public class TextFromSpeech implements RecognitionListener {
             }
         }
     }
-
-    //public String getSpokenText() {
-    //    return spokenText;
-    //}
-//
-    //public Boolean getFinishedResult() {
-    //    return finishedResult;
-    //}
 }

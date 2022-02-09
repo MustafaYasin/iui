@@ -33,10 +33,6 @@ public class RecyclerViewItemAdapter extends RecyclerView.Adapter<RecyclerViewHo
         final RecyclerItem item = itemsList.get(position);
         holder.exerciseNameTV.setText(item.getExerciseName());
         holder.muscleNameTV.setText(String.valueOf(item.getMuscleName()));
-        holder.itemView.setOnClickListener(view -> {
-            // Todo: add detail view?
-            System.out.println("Position = " + position);
-        });
     }
 
     @Override

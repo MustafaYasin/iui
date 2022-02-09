@@ -5,7 +5,9 @@ import android.util.Log;
 
 import com.example.coachapp.R;
 import com.example.coachapp.connection.RetrofitInstance;
+import com.example.coachapp.connection.Routes;
 import com.example.coachapp.helper.Text2Double;
+import com.example.coachapp.location.GoogleMapsApp;
 import com.example.coachapp.model.Experience;
 import com.example.coachapp.model.Gender;
 import com.example.coachapp.model.TrainingsGoal;
@@ -22,22 +24,18 @@ public class VoiceFlow {
     private SpeechFromText speechFromText;
     private User user = new User();
     private static VoiceFlow instance;
+    private Boolean finished = false;
+    private Routes routes;
+    private String exercise;
+    private String nearbyLocation;
 
-    private enum Step {NAME, AGE, GENDER, WORKOUTS, GOAL, LEVEL, LOCATION, FINISHED}
+    private enum Step {NAME, AGE, GENDER, WORKOUTS, GOAL, LEVEL, LOCATION, FINISHED, EXPLANATION, LOCATIONNEARBY}
 
-    ;
     private Step currentStep;
 
-    //public VoiceFlow(Activity activity) {
     public VoiceFlow() {
-        //this.activity = activity;
-        //textFromSpeech = new TextFromSpeech(activity);
-        //speechFromText = new SpeechFromText(activity, textFromSpeech);
         new RetrofitInstance();
-    }
-
-    public Activity getActivity() {
-        return activity;
+        routes = Routes.getInstance();
     }
 
     public void setActivity(Activity activity) {
@@ -47,28 +45,35 @@ public class VoiceFlow {
     }
 
     public void initialSettings() {
-        speechFromText.speakOut(this.activity.getString(R.string.voiceflow_greeting1));
-        // currentStep = Step.NAME;
-         currentStep = Step.FINISHED;
+        speechFromText.speakOutAndRecord(this.activity.getString(R.string.voiceflow_greeting1), true);
+        currentStep = Step.NAME;
+        finished = false;
+    }
+
+    public void greeting() {
+        currentStep = Step.FINISHED;
+        finished = true;
+        speechFromText.speakOutAndRecord(this.activity.getString(R.string.voiceflow_greeting3), true);
     }
 
     public static VoiceFlow getInstance() {
         if (instance == null) {
             instance = new VoiceFlow();
         }
-
         return instance;
     }
 
     public void parseSpokenText(String text) {
         Log.i("Recognized text:", text);
         Text2Double textParser;
+        final boolean yes = text.contains("yes") || text.contains("Yes") || text.contains("right");
         switch (currentStep) {
             case NAME:
                 String name = text.replace("my name is ", "").replace("mein Name ist ", "");
                 user.setName(name);
                 currentStep = Step.AGE;
-                speechFromText.speakOut(String.format(getText(R.string.voiceflow_greeting2), user.getName()) + " " + getText(R.string.voiceflow_ageQ));
+                speechFromText.speakOutAndRecord(String.format(
+                        getText(R.string.voiceflow_greeting2), user.getName()) + " " + getText(R.string.voiceflow_ageQ), true);
                 break;
             case AGE:
                 textParser = new Text2Double();
@@ -84,7 +89,7 @@ public class VoiceFlow {
                 }
                 user.setAge(age);
                 currentStep = Step.GENDER;
-                speechFromText.speakOut(getText(R.string.voiceflow_sexQ));
+                speechFromText.speakOutAndRecord(getText(R.string.voiceflow_sexQ), true);
                 break;
             case GENDER:
                 text = text.toLowerCase(Locale.ROOT);
@@ -101,7 +106,7 @@ public class VoiceFlow {
                 }
                 user.setGender(gender);
                 currentStep = Step.WORKOUTS;
-                speechFromText.speakOut(getText(R.string.voiceflow_workoutsQ));
+                speechFromText.speakOutAndRecord(getText(R.string.voiceflow_workoutsQ), true);
                 break;
             case WORKOUTS:
                 String days = text.replace("days", "").replace("day", "").trim();
@@ -118,7 +123,7 @@ public class VoiceFlow {
                 }
                 user.setWorkouts(workouts);
                 currentStep = Step.GOAL;
-                speechFromText.speakOut(getText(R.string.voiceflow_trainingsgoalQ));
+                speechFromText.speakOutAndRecord(getText(R.string.voiceflow_trainingsgoalQ), true);
                 break;
             case GOAL:
                 text = text.toLowerCase(Locale.ROOT);
@@ -140,7 +145,7 @@ public class VoiceFlow {
                 }
 
                 user.setTrainingsGoal(goal);
-                speechFromText.speakOut(getText(R.string.voiceflow_levelQ));
+                speechFromText.speakOutAndRecord(getText(R.string.voiceflow_levelQ), true);
                 currentStep = Step.LEVEL;
                 break;
             case LEVEL:
@@ -162,12 +167,11 @@ public class VoiceFlow {
 
                 user.setExperience(xp);
                 currentStep = Step.LOCATION;
-                speechFromText.speakOut(getText(R.string.voiceflow_locationQ));
+                speechFromText.speakOutAndRecord(getText(R.string.voiceflow_locationQ), true);
                 break;
             case LOCATION:
                 text = text.toLowerCase(Locale.ROOT);
                 TrainingsLocation location = null;
-
                 if (text.contains("gym")) {
                     location = TrainingsLocation.GYM;
                 } else if (text.contains("home")) {
@@ -175,17 +179,26 @@ public class VoiceFlow {
                 } else if (text.contains("outdoor") || text.contains("auto")) {
                     location = TrainingsLocation.OUTDOOR;
                 }
-
                 if (location == null) {
                     errorHandler(getText(R.string.voiceflow_locationQ));
                     return;
                 }
-
                 user.setTrainingsLocation(location);
                 currentStep = Step.FINISHED;
-                speechFromText.speakOut(getText(R.string.voiceflow_thx));
+                finished = true;
+                speechFromText.speakOutAndRecord(getText(R.string.voiceflow_thx), false);
+                sleeper(1000);
+                if (user.isCompleted()) {
+                    //finishedResult = true;
+//                    speechRecognizer.cancel();
+//                    speechRecognizer.stopListening();
+//                    speechRecognizer.destroy();
+                    routes.sendUser(user);
+                    routes.loadTrainingsplan(user);
+                }
                 break;
             case FINISHED:
+
                 user.setName("Horst");
                 user.setAge(17);
                 user.setGender(Gender.MALE);
@@ -193,16 +206,72 @@ public class VoiceFlow {
                 user.setTrainingsGoal(TrainingsGoal.REDUCE_WEIGHT);
                 user.setExperience(Experience.ADVANCED);
                 user.setTrainingsLocation(TrainingsLocation.OUTDOOR);
+                if (text == null) {
+                    errorHandler(getText(R.string.voiceflow_locationQ));
+                    return;
+                } else {
+                    if (text.contains("is the next")) {
+                        nearbyLocation = text.split("next")[1];
+                        if (nearbyLocation != null) {
+                            currentStep = Step.LOCATIONNEARBY;
+                            speechFromText.speakOutAndRecord("You want to know the nearby places of " + nearbyLocation + "?", true);
+                        } else {
+                            errorHandler(getText(R.string.voiceflow_sorry));
+                        }
+                    } else if (text.contains("execution") || text.contains("execute")) {
+                        // How is the right execution of ...?
+                        if (text.contains("execution")) {
+                            exercise = text.split("of")[1];
+                        } else if (text.contains("execute")) {
+                            exercise = text.split("execute")[0];
+                        }
+                        if (exercise != null) {
+                            currentStep = Step.EXPLANATION;
+                            speechFromText.speakOutAndRecord("You want to have an explanation of the exercise " + exercise + "?", true);
+                        } else {
+                            errorHandler(getText(R.string.voiceflow_sorry));
+                        }
+
+                    } else {
+                        errorHandler(getText(R.string.voiceflow_sorry));
+                    }
+                }
                 break;
+            case EXPLANATION:
+                currentStep = Step.FINISHED;
+                if (yes) {
+                    currentStep = Step.FINISHED;
+                    String explanation = routes.getExerciseExplanation(exercise);
+                    sleeper(6000);
+                    speechFromText.speakOutAndRecord(explanation, false);
+                } else {
+                    speechFromText.speakOutAndRecord("Please repeat", true);
+                }
+                break;
+            case LOCATIONNEARBY:
+                currentStep = Step.FINISHED;
+                if (yes) {
+                    speechFromText.speakOutAndRecord("I have marked the nearby " + nearbyLocation +
+                            " in your Google Maps, which I will opened for you right now.", false);
+                    sleeper(6000);
+                    GoogleMapsApp googleMapsApp = new GoogleMapsApp(activity);
+                    googleMapsApp.searchNearby(nearbyLocation);
+                } else {
+                    speechFromText.speakOutAndRecord("Please repeat", true);
+                }
+                break;
+            default:
+                errorHandler(getText(R.string.voiceflow_sorry));
+                Log.e("VoiceFlow", "No case step availaible");
         }
 
-        Log.i("USER_NAME", user.getName());
-        Log.i("USER_AGE", String.valueOf(user.getAge()));
-        Log.i("USER_WORKOUTS", String.valueOf(user.getWorkouts()));
-        Log.i("USER_Gender", String.valueOf(user.getGender()));
-        Log.i("USER_GOAL", String.valueOf(user.getTrainingsGoal()));
-        Log.i("USER_XP", String.valueOf(user.getExperience()));
-        Log.i("USER_LOCATION", String.valueOf(user.getTrainingsLocation()));
+//        Log.i("USER_NAME", user.getName());
+//        Log.i("USER_AGE", String.valueOf(user.getAge()));
+//        Log.i("USER_WORKOUTS", String.valueOf(user.getWorkouts()));
+//        Log.i("USER_Gender", String.valueOf(user.getGender()));
+//        Log.i("USER_GOAL", String.valueOf(user.getTrainingsGoal()));
+//        Log.i("USER_XP", String.valueOf(user.getExperience()));
+//        Log.i("USER_LOCATION", String.valueOf(user.getTrainingsLocation()));
     }
 
     private String getText(int stringnumber) {
@@ -214,18 +283,18 @@ public class VoiceFlow {
     }
 
     private void errorHandler(String question) {
-        speechFromText.speakOut(getText(R.string.voiceflow_sorry) + "  " + question);
+        speechFromText.speakOutAndRecord(getText(R.string.voiceflow_sorry) + "  " + question, true);
     }
 
+    public Boolean getFinished() {
+        return finished;
+    }
 
-//    public void startVoice(String voiceTxt) {
-//        try {
-//            speechFromText.speakOut(voiceTxt);
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//            Log.e("VoiceFlow", "Can't sleep", e);
-//        }
-//    }
-
+    public void sleeper(int time) {
+        try {
+            Thread.sleep(time);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
