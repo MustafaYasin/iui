@@ -7,8 +7,6 @@ import android.speech.tts.UtteranceProgressListener;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.coachapp.location.GoogleMapsApp;
-
 import java.util.Locale;
 
 public class SpeechFromText implements TextToSpeech.OnInitListener {
@@ -51,34 +49,21 @@ public class SpeechFromText implements TextToSpeech.OnInitListener {
             @Override
             public void onStart(String s) {
                 final String keyword = s;
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d(TAG, "start running to speak");
-                    }
-                });
+                activity.runOnUiThread(() -> Log.d(TAG, "start running to speak"));
             }
 
             @Override
             public void onDone(String s) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (record) {
-                            textFromSpeech.startVoiceRecognitionCycle();
-                        }
+                activity.runOnUiThread(() -> {
+                    if (record) {
+                        textFromSpeech.startVoiceRecognitionCycle();
                     }
                 });
             }
 
             @Override
             public void onError(String s) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(activity, "Error ", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                activity.runOnUiThread(() -> Toast.makeText(activity, "Error ", Toast.LENGTH_SHORT).show());
             }
         });
 

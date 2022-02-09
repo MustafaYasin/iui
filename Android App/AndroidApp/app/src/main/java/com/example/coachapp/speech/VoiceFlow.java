@@ -27,19 +27,10 @@ public class VoiceFlow {
 
     private enum Step {NAME, AGE, GENDER, WORKOUTS, GOAL, LEVEL, LOCATION, FINISHED}
 
-    ;
     private Step currentStep;
 
-    //public VoiceFlow(Activity activity) {
     public VoiceFlow() {
-        //this.activity = activity;
-        //textFromSpeech = new TextFromSpeech(activity);
-        //speechFromText = new SpeechFromText(activity, textFromSpeech);
         new RetrofitInstance();
-    }
-
-    public Activity getActivity() {
-        return activity;
     }
 
     public void setActivity(Activity activity) {
@@ -201,8 +192,8 @@ public class VoiceFlow {
                     sleeper(6000);
                     GoogleMapsApp googleMapsApp = new GoogleMapsApp(activity);
                     googleMapsApp.searchNearby(place);
-                } else if (text.contains("execution")){
-                  // How does the execution of ... works?
+                } else if (text.contains("execution")) {
+                    // How does the execution of ... works?
                     String exercise = text.split("of")[1].split("works")[0];
                     // Todo: get explanation from server
                     speechFromText.speakOutAndRecord("", false);
@@ -242,15 +233,4 @@ public class VoiceFlow {
             e.printStackTrace();
         }
     }
-
-    //    public void startVoice(String voiceTxt) {
-//        try {
-//            speechFromText.speakOut(voiceTxt);
-//            Thread.sleep(5000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//            Log.e("VoiceFlow", "Can't sleep", e);
-//        }
-//    }
-
 }

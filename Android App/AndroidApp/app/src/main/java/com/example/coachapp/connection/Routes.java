@@ -2,16 +2,11 @@ package com.example.coachapp.connection;
 
 import android.app.Activity;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.coachapp.R;
 import com.example.coachapp.model.TrainingsPlanSettings;
 import com.example.coachapp.model.TrainingsSettings;
 import com.example.coachapp.model.User;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 
@@ -23,72 +18,15 @@ public class Routes {
 
     private static final String TAG = "Routes";
     private final Activity activity;
-    //private User user = new User();
     private TrainingsSettings trainingsSettings = new TrainingsSettings();
     private TrainingsPlanSettings trainingsPlanSettings = new TrainingsPlanSettings();
-    private String myTextToSpeech;
 
     public Routes(Activity activity) {
         this.activity = activity;
     }
 
-    public void sendSpokenText(String speechToText) {
-        Call<String> call = RetrofitInstance.retrofitInterface.sendSpokenText(speechToText, "1");
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if (response.isSuccessful()) {
-//                    myTextToSpeech = response.body();
-                    try {
-                        JSONObject obj = new JSONObject(response.body());
-                        myTextToSpeech = obj.getString("key");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    Log.i("UNSERERROR",myTextToSpeech);
-                } else {
-                    Log.e(TAG, "Response was not successful");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(activity, t.getMessage(), Toast.LENGTH_LONG).show();
-                Log.e(TAG, t.getMessage());
-            }
-        });
-    }
-
-    //test
-    private void sendMyText() {
-        String post = "Das habe ich gesagt";
-        Call<String> call = RetrofitInstance.retrofitInterface.sendMyText(post);
-
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String postResponse = response.body();
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-            }
-        });
-    }
 
     public void sendUser(User user) {
-        // HashMap<String, String> map = new HashMap<>();
-        // map.put("name", user.getName());
-        // map.put("age", String.valueOf(user.getAge()));
-        // map.put("gender", String.valueOf(user.getGender()));
-        // map.put("workouts", String.valueOf(user.getWorkouts()));
-        // //map.put("weight", String.valueOf(user.getWeight()));
-        // //map.put("height", String.valueOf(user.getHeight()));
-        // map.put("experience", String.valueOf(user.getExperience()));
-        // map.put("trainingsGoal", String.valueOf(user.getTrainingsGoal()));
-        // map.put("trainingsLocation", String.valueOf(user.getTrainingsLocation()));
-
         Call<Void> call = RetrofitInstance.retrofitInterface.sendUser(
                 user.getName(),
                 user.getAge(),
@@ -114,6 +52,33 @@ public class Routes {
             }
         });
     }
+
+//
+//    public void sendSpokenText(String speechToText) {
+//        Call<String> call = RetrofitInstance.retrofitInterface.sendSpokenText(speechToText, "1");
+//        call.enqueue(new Callback<String>() {
+//            @Override
+//            public void onResponse(Call<String> call, Response<String> response) {
+//                if (response.isSuccessful()) {
+//                    try {
+//                        JSONObject obj = new JSONObject(response.body());
+//                        myTextToSpeech = obj.getString("key");
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                    Log.i("UNSERERROR",myTextToSpeech);
+//                } else {
+//                    Log.e(TAG, "Response was not successful");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<String> call, Throwable t) {
+//                Toast.makeText(activity, t.getMessage(), Toast.LENGTH_LONG).show();
+//                Log.e(TAG, t.getMessage());
+//            }
+//        });
+//    }
 
     private void sendTrainingsPlanSettings() {
         HashMap<String, Integer> map = new HashMap<>();

@@ -1,15 +1,11 @@
 package com.example.coachapp.location;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 
 import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
 
-import com.example.coachapp.speech.VoiceFlow;
 import com.example.coachapp.view.ItemViewModel;
 
 public class GoogleMapsApp {
@@ -17,7 +13,7 @@ public class GoogleMapsApp {
     private ItemViewModel viewModel;
     private Activity activity;
 
-    public GoogleMapsApp(Activity activity){
+    public GoogleMapsApp(Activity activity) {
         this.activity = activity;
     }
 

@@ -21,8 +21,6 @@ import com.example.coachapp.R;
 import com.example.coachapp.connection.Routes;
 import com.example.coachapp.model.User;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 public class TextFromSpeech implements RecognitionListener {
@@ -33,8 +31,6 @@ public class TextFromSpeech implements RecognitionListener {
     private final Activity activity;
     private final ImageButton voiceButton;
     private final Routes routes;
-    private String spokenText = "";
-    private Boolean finishedResult = false;
     private TextView voiceTV;
 
     public TextFromSpeech(Activity activity) {
@@ -47,14 +43,12 @@ public class TextFromSpeech implements RecognitionListener {
 
     private SpeechRecognizer getSpeechRecognizer() {
         if (speechRecognizer == null) {
-            //speechRecognizer.
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "he");
             intent.putExtra("android.speech.extra.EXTRA_ADDITIONAL_LANGUAGES", new String[]{"he"});
             speechRecognizer = SpeechRecognizer.createSpeechRecognizer(activity);
             speechRecognizer.setRecognitionListener(this);
-            //intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.speech_prompt));
         }
         return speechRecognizer;
     }
@@ -69,7 +63,6 @@ public class TextFromSpeech implements RecognitionListener {
     public void onReadyForSpeech(Bundle bundle) {
         voiceButton.setImageResource(R.mipmap.voice_recorder_circle_green);
         voiceTV.setHint("Listening...");
-        finishedResult = false;
     }
 
     @Override
@@ -80,12 +73,10 @@ public class TextFromSpeech implements RecognitionListener {
 
     @Override
     public void onRmsChanged(float v) {
-
     }
 
     @Override
     public void onBufferReceived(byte[] bytes) {
-
     }
 
     @Override
@@ -158,11 +149,9 @@ public class TextFromSpeech implements RecognitionListener {
     @Override
     public void onResults(Bundle bundle) {
         ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-        spokenText = data.get(0);
+        String spokenText = data.get(0);
         VoiceFlow voiceFlow = VoiceFlow.getInstance();
         voiceFlow.parseSpokenText(spokenText);
-
-        finishedResult = true;
         Log.d(TAG, "onResults " + spokenText);
 
         User user = voiceFlow.getUser();
@@ -173,12 +162,10 @@ public class TextFromSpeech implements RecognitionListener {
 
     @Override
     public void onPartialResults(Bundle bundle) {
-
     }
 
     @Override
     public void onEvent(int i, Bundle bundle) {
-
     }
 
     public void checkPermission() {
@@ -187,13 +174,5 @@ public class TextFromSpeech implements RecognitionListener {
                 ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.RECORD_AUDIO}, RecordAudioRequestCode);
             }
         }
-    }
-
-    public String getSpokenText() {
-        return spokenText;
-    }
-
-    public Boolean getFinishedResult() {
-        return finishedResult;
     }
 }
