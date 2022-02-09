@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.coachapp.R;
+import com.example.coachapp.connection.Routes;
 import com.example.coachapp.model.RecyclerItem;
 import com.example.coachapp.view.recycler.RecyclerViewItemAdapter;
 
@@ -80,6 +81,13 @@ public class TrainingsplanView extends Fragment implements View.OnClickListener 
         lastClickedButton = day1;
         day1.setBackgroundTintMode(PorterDuff.Mode.DARKEN);
         setUpRecyclerViews(view, R.id.recyclerView1);
+
+        //fill trainingsplan
+        setCountTV.setText(String.valueOf(Routes.getMyTrainingsPlan().getSets()));
+        repCountTV.setText("8-12");
+        levelTV.setText(Routes.getMyTrainingsPlan().getLevel());
+
+
 //        setUpRecyclerViews(view, R.id.recyclerView2);
 //        setUpRecyclerViews(view, R.id.recyclerView3);
 //        setUpRecyclerViews(view, R.id.recyclerView4);
@@ -99,6 +107,8 @@ public class TrainingsplanView extends Fragment implements View.OnClickListener 
         switch (view.getId()) {
             case R.id.day1Button:
                 System.out.println("Button 1");
+                System.out.println(Routes.getMyTrainingsPlan());
+                System.out.println(Routes.getMyTrainingsPlan().getLevel());
                 lastClickedButton = day1;
                 day1.setBackgroundTintMode(PorterDuff.Mode.DARKEN);
                 lastClickedButton.setBackgroundTintMode(PorterDuff.Mode.CLEAR);

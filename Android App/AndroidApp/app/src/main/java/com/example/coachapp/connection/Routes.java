@@ -26,6 +26,7 @@ import retrofit2.Response;
 public class Routes {
 
     private static final String TAG = "Routes";
+    public static TrainingsPlan plan;
     private final Activity activity;
     //private User user = new User();
     //private TrainingsSettings trainingsSettings = new TrainingsSettings();
@@ -140,7 +141,8 @@ public class Routes {
 
                         JSONObject jsonPlan = new JSONObject(response.body());
 
-                        TrainingsPlan plan = new TrainingsPlan();
+                        //TrainingsPlan plan = new TrainingsPlan();
+                        plan = new TrainingsPlan();
                         plan.setTitle(jsonPlan.getString("title"));
                         plan.setTrainings(jsonPlan.getInt("trainings"));
                         plan.setLevel(jsonPlan.getString("level"));
@@ -171,7 +173,7 @@ public class Routes {
                            plan.addTrainingDay(day);
                        }
 
-                        trainingsPlanRaw = jsonPlan.getString("title");
+                        //trainingsPlanRaw = jsonPlan.getString("title");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -187,6 +189,10 @@ public class Routes {
                 Log.e(TAG, t.getMessage());
             }
         });
+    }
+
+    public static TrainingsPlan getMyTrainingsPlan() {
+        return plan;
     }
 
     //private void sendTrainingsPlanSettings() {
