@@ -1,6 +1,7 @@
 package com.example.coachapp.view;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,15 +15,16 @@ import com.example.coachapp.R;
 import com.example.coachapp.location.CurrentLocation;
 import com.example.coachapp.location.GoogleMapsApp;
 import com.example.coachapp.location.NearbyPlaces;
+import com.example.coachapp.view.recycler.ItemViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private BottomNavigationView bottomNavigationView;
-    private VoiceView voiceView = new VoiceView();
-    private TrainingsplanView trainingsplanView = new TrainingsplanView();
-    private MapsFragment mapsFragment = new MapsFragment();
+    private final VoiceView voiceView = new VoiceView();
+    private final TrainingsplanView trainingsplanView = new TrainingsplanView();
+    private final MapsFragment mapsFragment = new MapsFragment();
     private NearbyPlaces nearbyPlaces;
     private GoogleMapsApp googleMapsApp;
 
@@ -51,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         googleMapsApp = new GoogleMapsApp(this, viewModel);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {

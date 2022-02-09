@@ -1,4 +1,6 @@
-package com.example.coachapp.model;
+package com.example.coachapp.model.unused;
+
+import com.example.coachapp.model.enum_model.TrainingsLocation;
 
 public class TrainingsSettings {
 

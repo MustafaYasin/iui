@@ -13,19 +13,14 @@ public class SpeechFromText implements TextToSpeech.OnInitListener {
 
     private static final String TAG = "SpeechFromText";
 
-    private Activity activity;
-    private TextToSpeech tts;
-    private TextFromSpeech textFromSpeech;
-    private static TextFromSpeech instance;
+    private final Activity activity;
+    private final TextToSpeech tts;
+    private final TextFromSpeech textFromSpeech;
 
     public SpeechFromText(Activity activity, TextFromSpeech textFromSpeech) {
         this.activity = activity;
         this.textFromSpeech = textFromSpeech;
         tts = new TextToSpeech(activity, this);
-    }
-
-    public SpeechFromText(){
-
     }
 
     @Override
@@ -34,15 +29,6 @@ public class SpeechFromText implements TextToSpeech.OnInitListener {
             int result = tts.setLanguage(Locale.ENGLISH);
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
                 Log.e(TAG, "This Language is not supported");
-            } else {
-                //Todo: choose male voice
-//                        Log.i("Voices", String.valueOf(tts.getVoices()));
-//                        Voice[] voices = tts.getVoices().toArray(new Voice[0]);
-//                        tts.setVoice(voices[11]);
-                /*if (tts.isSpeaking()) {
-                    tts.shutdown();
-                    tts = null;
-                }*/
             }
         } else {
             Log.e(TAG, "Failed to Initialize");

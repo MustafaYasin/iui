@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.coachapp.R;
+import com.example.coachapp.view.recycler.ItemViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -23,10 +24,10 @@ public class MapsFragment extends Fragment {
     private ItemViewModel viewModel;
     private LatLng currentLocation;
 
-    private OnMapReadyCallback callback = new OnMapReadyCallback() {
+    private final OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
-        public void onMapReady(GoogleMap googleMap) {
+        public void onMapReady(@NonNull GoogleMap googleMap) {
             viewModel.getCurrentLocation().observe(requireActivity(), item -> {
                 currentLocation = new LatLng(item[0], item[1]);
                 googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Your current Location"));

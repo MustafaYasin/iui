@@ -6,12 +6,12 @@ import android.net.Uri;
 
 import androidx.lifecycle.LifecycleOwner;
 
-import com.example.coachapp.view.ItemViewModel;
+import com.example.coachapp.view.recycler.ItemViewModel;
 
 public class GoogleMapsApp {
 
     private ItemViewModel viewModel;
-    private Activity activity;
+    private final Activity activity;
 
     public GoogleMapsApp(Activity activity) {
         this.activity = activity;

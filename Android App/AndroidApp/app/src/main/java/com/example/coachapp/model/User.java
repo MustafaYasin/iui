@@ -1,5 +1,10 @@
 package com.example.coachapp.model;
 
+import com.example.coachapp.model.enum_model.Experience;
+import com.example.coachapp.model.enum_model.Gender;
+import com.example.coachapp.model.enum_model.TrainingsGoal;
+import com.example.coachapp.model.enum_model.TrainingsLocation;
+
 import java.util.UUID;
 
 public class User {

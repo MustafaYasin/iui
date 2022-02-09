@@ -11,7 +11,7 @@ import com.google.android.gms.location.LocationServices;
 public class CurrentLocation {
 
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private Context context;
+    private final Context context;
 
     public CurrentLocation(Context context) {
         this.context = context;

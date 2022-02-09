@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -28,7 +28,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyApLLSXl_Qss0hyL8S3VwMe5P5pU3cWRz0" />
-<!--            android:value="${MAPS_API_KEY}" />-->
+        <!--            android:value="${MAPS_API_KEY}" />-->
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -39,7 +39,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

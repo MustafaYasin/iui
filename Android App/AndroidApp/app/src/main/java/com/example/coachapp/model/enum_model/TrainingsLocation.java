@@ -1,4 +1,4 @@
-package com.example.coachapp.model;
+package com.example.coachapp.model.enum_model;
 
 public enum TrainingsLocation {
     GYM("Gym", 1),

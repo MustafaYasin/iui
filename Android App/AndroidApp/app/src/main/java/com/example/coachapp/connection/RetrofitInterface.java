@@ -1,17 +1,10 @@
 package com.example.coachapp.connection;
 
-import com.example.coachapp.model.TrainingsPlan;
-
-import org.json.JSONObject;
-
-import java.util.HashMap;
 import java.util.UUID;
 
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface RetrofitInterface {
@@ -42,17 +35,7 @@ public interface RetrofitInterface {
             @Field("trainingsLocation") String trainingsLocation
     );
 
-    @GET("/user")
-    Call<String> loadUser(@Field("uuId") String uuId);
-
     @FormUrlEncoded
-    @POST("/search_ex")//("/search_ex?exercise='Squats'")
+    @POST("/search_ex")
     Call<String> getExerciseExplanation(@Field("exercise") String ex);//@Body JSONObject exercise);
-
-    @FormUrlEncoded
-    @POST("/spokenText")
-    Call<String> sendSpokenText(@Field("mySpokenText") String mySpokenText, @Field("userId") String userId);
-
-    @POST("/trainingsSettings")
-    Call<Void> sendTrainingsSettings(@Body HashMap<String, String> map);
 }

@@ -1,4 +1,4 @@
-package com.example.coachapp.model;
+package com.example.coachapp.model.unused;
 
 public class TrainingsPlanSettings {
     private int weekLength;

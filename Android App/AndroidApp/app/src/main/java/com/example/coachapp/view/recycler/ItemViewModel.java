@@ -1,4 +1,4 @@
-package com.example.coachapp.view;
+package com.example.coachapp.view.recycler;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.coachapp.R;
 import com.example.coachapp.connection.Routes;
 import com.example.coachapp.speech.VoiceFlow;
+import com.example.coachapp.view.recycler.ItemViewModel;
 
 public class VoiceView extends Fragment {
 
@@ -44,11 +45,11 @@ public class VoiceView extends Fragment {
         ItemViewModel viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
 
         voiceButton.setOnClickListener(view1 -> {
-            /*if (!voiceFlow.getFinished()) {
+            if (!voiceFlow.getFinished()) {
                 voiceFlow.initialSettings();
-            } else {*/
+            } else {
                 voiceFlow.greeting();
-            //}
+            }
         });
     }
 }

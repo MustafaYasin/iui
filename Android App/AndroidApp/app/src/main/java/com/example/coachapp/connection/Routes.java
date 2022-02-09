@@ -1,19 +1,17 @@
 package com.example.coachapp.connection;
 
 import android.app.Activity;
-import android.icu.text.StringPrepParseException;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.example.coachapp.model.Exercise;
 import com.example.coachapp.model.ExerciseExplanation;
 import com.example.coachapp.model.TrainingsDay;
 import com.example.coachapp.model.TrainingsPlan;
-import com.example.coachapp.model.TrainingsPlanSettings;
-import com.example.coachapp.model.TrainingsSettings;
 import com.example.coachapp.model.User;
 import com.example.coachapp.speech.SpeechFromText;
-import com.example.coachapp.speech.VoiceFlow;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,15 +23,12 @@ import retrofit2.Response;
 
 public class Routes {
 
-    private static final String TAG = "Routes";
+    private static final String TAG = Routes.class.getSimpleName();
 
     public static TrainingsPlan plan;
-
     private Activity activity;
     public static Routes instance;
     public ExerciseExplanation exerciseExplanation;
-    public String explanation;
-    private SpeechFromText speechFromText;
 
     public void setActivity(Activity activity) {
         this.activity = activity;
@@ -60,15 +55,14 @@ public class Routes {
         call.enqueue(new Callback<Void>() {
 
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(activity, "Saved user data successfully", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(activity, t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                 Log.e(TAG, t.getMessage());
             }
         });
@@ -76,55 +70,39 @@ public class Routes {
 
     public void getExerciseExplanation(String exercise, SpeechFromText speechFromText) {
         exerciseExplanation = new ExerciseExplanation();
-        SpeechFromText speechFromText2 = speechFromText;
         if (exercise.contains("squads")) {
             exercise = "Squats";
         }
-        System.out.println("exercise: " + exercise);
-
         Call<String> call = RetrofitInstance.retrofitInterface.getExerciseExplanation(exercise);
-
         call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                System.out.println("Response exersice2" + response);
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                 if (response.isSuccessful()) {
-                   /* System.out.println("Response exersice" + response);
-                    JSONObject json = new JSONObject();
-                    explanation[0] = "hi";
-                } else {
-                    Log.e(TAG, "Response was not successful");
-                }*/
                     String exerciseRaw = response.body();
                     try {
-                        Log.i("Exercise", response.body());
-
+                        Log.i(TAG, "exercise explanation: " + response.body());
                         JSONObject jsonPlan = new JSONObject(response.body());
-                        //explanation[0] = jsonPlan.getString("exercise_execution");
-                        //exerciseExplanation.setTitle(jsonPlan.getString("exercise_title"));
+                        exerciseExplanation.setTitle(jsonPlan.getString("exercise_title"));
                         exerciseExplanation.setExecution(jsonPlan.getString("exercise_execution"));
-                        //exerciseExplanation.setMuscleDescription(jsonPlan.getString("muscle_description"));
-                        //exerciseExplanation.setMuscleGroup(jsonPlan.getString("muscle_group"));
-                        //exerciseExplanation.setSubsetMuscles(jsonPlan.getString("subset_muscles"));
-                        System.out.println("responde" + exerciseExplanation.getExecution());
-                        //speechFromText2.speakOutAndRecord(exerciseExplanation.getExecution(), false);
-
-                        //trainingsPlanRaw = jsonPlan.getString("title");
+                        exerciseExplanation.setMuscleDescription(jsonPlan.getString("muscle_description"));
+                        exerciseExplanation.setMuscleGroup(jsonPlan.getString("muscle_group"));
+                        exerciseExplanation.setSubsetMuscles(jsonPlan.getString("subset_muscles"));
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Log.e(TAG, "Can't get JSONObject", e);
                     }
-                    Log.i("UNSERERROR", exerciseRaw);
+                    Log.i(TAG, exerciseRaw);
                 }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.e(TAG, "Can't get exercise explanation");
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
+                Log.e(TAG, "Can't get exercise explanation", t);
             }
         });
     }
 
-    public void loadTrainingsplan(User user) {
+    public void loadTrainingsPlan(User user) {
         Call<String> call = RetrofitInstance.retrofitInterface.loadTrainingsPlan(
                 user.getId(),
                 user.getName(),
@@ -137,15 +115,12 @@ public class Routes {
         );
         call.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(@NonNull Call<String> call, @NonNull Response<String> response) {
                 if (response.isSuccessful()) {
                     String trainingsPlanRaw = response.body();
                     try {
-                        Log.i("TRAINING", response.body());
-
+                        Log.i(TAG, "trainings plan: " + response.body());
                         JSONObject jsonPlan = new JSONObject(response.body());
-
-                        //TrainingsPlan plan = new TrainingsPlan();
                         plan = new TrainingsPlan();
                         plan.setTitle(jsonPlan.getString("title"));
                         plan.setTrainings(jsonPlan.getInt("trainings"));
@@ -158,7 +133,6 @@ public class Routes {
                             TrainingsDay day = new TrainingsDay();
                             day.setArea(jsonDay.getString("area"));
                             day.setExerciseCount(jsonDay.getInt("exercises"));
-
                             if (jsonDay.getInt("exercises") > 0) {
                                 JSONArray arrayExercise = (JSONArray) jsonDay.get("exerciseDetails");
                                 for (int j = 0; j < arrayExercise.length(); j++) {
@@ -169,27 +143,24 @@ public class Routes {
                                     exercise.setMuscleGroup(obj.getString("muscle_group"));
                                     exercise.setSubsetMuscles(obj.getString("subset_muscles"));
                                     exercise.setMuscleDescription(obj.getString("muscle_description"));
-
                                     day.addExercise(exercise);
                                 }
                                 day.setExerciseCount(day.getExercises().size());
                             }
                             plan.addTrainingDay(day);
                         }
-
-                        //trainingsPlanRaw = jsonPlan.getString("title");
                     } catch (JSONException e) {
                         e.printStackTrace();
+                        Log.e(TAG, "Can't get exercise explanation", e);
                     }
-                    Log.i("UNSERERROR", trainingsPlanRaw);
+                    Log.i(TAG, "trainings plan JSON: " + trainingsPlanRaw);
                 } else {
                     Log.e(TAG, "Response was not successful");
                 }
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Toast.makeText(activity, t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onFailure(@NonNull Call<String> call, @NonNull Throwable t) {
                 Log.e(TAG, t.getMessage());
             }
         });

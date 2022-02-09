@@ -8,12 +8,11 @@ import com.example.coachapp.connection.RetrofitInstance;
 import com.example.coachapp.connection.Routes;
 import com.example.coachapp.helper.Text2Double;
 import com.example.coachapp.location.GoogleMapsApp;
-import com.example.coachapp.model.ExerciseExplanation;
-import com.example.coachapp.model.Experience;
-import com.example.coachapp.model.Gender;
-import com.example.coachapp.model.TrainingsGoal;
-import com.example.coachapp.model.TrainingsLocation;
 import com.example.coachapp.model.User;
+import com.example.coachapp.model.enum_model.Experience;
+import com.example.coachapp.model.enum_model.Gender;
+import com.example.coachapp.model.enum_model.TrainingsGoal;
+import com.example.coachapp.model.enum_model.TrainingsLocation;
 
 import java.util.Locale;
 import java.util.UUID;
@@ -21,13 +20,14 @@ import java.util.UUID;
 
 public class VoiceFlow {
 
+    private static final String TAG = VoiceFlow.class.getSimpleName();
+
     private Activity activity;
-    private TextFromSpeech textFromSpeech;
     private SpeechFromText speechFromText;
-    private User user = new User();
+    private final User user = new User();
     private static VoiceFlow instance;
     private Boolean finished = false;
-    private Routes routes;
+    private final Routes routes;
     private String exercise;
     private String nearbyLocation;
 
@@ -42,7 +42,7 @@ public class VoiceFlow {
 
     public void setActivity(Activity activity) {
         this.activity = activity;
-        textFromSpeech = new TextFromSpeech(activity);
+        TextFromSpeech textFromSpeech = new TextFromSpeech(activity);
         speechFromText = new SpeechFromText(activity, textFromSpeech);
     }
 
@@ -68,9 +68,9 @@ public class VoiceFlow {
 
     public void parseSpokenText(String text) {
         text = text.toLowerCase();
-        Log.i("Recognized text:", text);
+        Log.i(TAG, text);
         Text2Double textParser;
-        final boolean yes = text.contains("yes") || text.contains("Yes") || text.contains("right");
+        final boolean yes = text.contains("yes") || text.contains("right");
         switch (currentStep) {
             case NAME:
                 String name = text.replace("my name is ", "").replace("mein Name ist ", "");
@@ -147,7 +147,6 @@ public class VoiceFlow {
                     errorHandler(getText(R.string.voiceflow_trainingsgoalQ));
                     return;
                 }
-
                 user.setTrainingsGoal(goal);
                 speechFromText.speakOutAndRecord(getText(R.string.voiceflow_levelQ), true);
                 currentStep = Step.LEVEL;
@@ -155,7 +154,6 @@ public class VoiceFlow {
             case LEVEL:
                 text = text.toLowerCase(Locale.ROOT);
                 Experience xp = null;
-
                 if (text.contains("beginner")) {
                     xp = Experience.BEGINNER;
                 } else if (text.contains("advanced")) {
@@ -163,12 +161,10 @@ public class VoiceFlow {
                 } else if (text.contains("expert")) {
                     xp = Experience.EXPERT;
                 }
-
                 if (xp == null) {
                     errorHandler(getText(R.string.voiceflow_levelQ));
                     return;
                 }
-
                 user.setExperience(xp);
                 currentStep = Step.LOCATION;
                 speechFromText.speakOutAndRecord(getText(R.string.voiceflow_locationQ), true);
@@ -194,12 +190,10 @@ public class VoiceFlow {
                 if (user.isCompleted()) {
                     finished = true;
                     routes.sendUser(user);
-                    sleeper(1000);
-//                    routes.loadTrainingsplan(user);
                 }
                 break;
             case FINISHED:
-                if (text == null) {
+                if (text.equals("")) {
                     errorHandler(getText(R.string.voiceflow_sorry));
                     return;
                 } else {
@@ -212,7 +206,6 @@ public class VoiceFlow {
                             errorHandler(getText(R.string.voiceflow_sorry));
                         }
                     } else if (text.contains("execution") || text.contains("execute")) {
-                        // How is the right execution of ...?
                         if (text.contains("execution")) {
                             exercise = text.split("of")[1];
                         } else if (text.contains("execute")) {
@@ -235,8 +228,7 @@ public class VoiceFlow {
                         user.setExperience(Experience.ADVANCED);
                         user.setTrainingsLocation(TrainingsLocation.OUTDOOR);
                         speechFromText.speakOutAndRecord("I will generate a trainingsplan. One moment please", false);
-                        routes.loadTrainingsplan(user);
-                        //routes.getTrainingsplan();
+                        routes.loadTrainingsPlan(user);
 
                         Log.i("USER_NAME", user.getName());
                         Log.i("USER_AGE", String.valueOf(user.getAge()));
@@ -249,29 +241,16 @@ public class VoiceFlow {
                         sleeper(6000);
                         speechFromText.speakOutAndRecord("You can see your trainingsplan at the section trainingsplan on your bottom navigation", false);
                     } else {
-                        //errorHandler(getText(R.string.voiceflow_sorry));
-                        /*
-                        Log.i("USER_NAME", user.getName());
-                        Log.i("USER_AGE", String.valueOf(user.getAge()));
-                        Log.i("USER_WORKOUTS", String.valueOf(user.getWorkouts()));
-                        Log.i("USER_Gender", String.valueOf(user.getGender()));
-                        Log.i("USER_GOAL", String.valueOf(user.getTrainingsGoal()));
-                        Log.i("USER_XP", String.valueOf(user.getExperience()));
-                        Log.i("USER_LOCATION", String.valueOf(user.getTrainingsLocation()));
-                        */
-
+                        errorHandler(getText(R.string.voiceflow_sorry));
                     }
                 }
                 break;
             case EXPLANATION:
                 currentStep = Step.FINISHED;
                 if (yes) {
-                    currentStep = Step.FINISHED;
-
                     routes.getExerciseExplanation(exercise, speechFromText);
                     sleeper(4000);
-                    //System.out.println("ausgabe " + routes.exerciseExplanation.getExecution());
-                    speechFromText.speakOutAndRecord("Place yourself under the barbell bar and place it on the rear shoulder muscles or on the hood muscle . Grab the bar significantly wider than shoulder width and push the elbows backwards . Lift the bar with straight torso and slightly hollow cross position in the lower back out of the mount",false);
+                    speechFromText.speakOutAndRecord("Place yourself under the barbell bar and place it on the rear shoulder muscles or on the hood muscle . Grab the bar significantly wider than shoulder width and push the elbows backwards . Lift the bar with straight torso and slightly hollow cross position in the lower back out of the mount", false);
                 } else {
                     speechFromText.speakOutAndRecord("Please repeat", true);
                 }
@@ -290,19 +269,13 @@ public class VoiceFlow {
                 break;
             default:
                 errorHandler(getText(R.string.voiceflow_sorry));
-                Log.e("VoiceFlow", "No case step availaible");
+                Log.e(TAG, "No case step availaible");
                 break;
         }
-
-
     }
 
     private String getText(int stringnumber) {
         return this.activity.getString(stringnumber);
-    }
-
-    public User getUser() {
-        return user;
     }
 
     private void errorHandler(String question) {
@@ -321,8 +294,7 @@ public class VoiceFlow {
         }
     }
 
-    public UUID generateUUID(){
-        UUID uuid = UUID.randomUUID();
-        return uuid;
+    public UUID generateUUID() {
+        return UUID.randomUUID();
     }
 }
