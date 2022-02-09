@@ -201,6 +201,11 @@ public class VoiceFlow {
                     sleeper(6000);
                     GoogleMapsApp googleMapsApp = new GoogleMapsApp(activity);
                     googleMapsApp.searchNearby(place);
+                } else if (text.contains("execution")){
+                  // How does the execution of ... works?
+                    String exercise = text.split("of")[1].split("works")[0];
+                    // Todo: get explanation from server
+                    speechFromText.speakOutAndRecord("", false);
                 }
                 break;
         }

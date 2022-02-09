@@ -50,5 +50,4 @@ public interface RetrofitInterface {
 
     @POST("/myText")
     Call<String> sendMyText(@Body String post);
-
 }

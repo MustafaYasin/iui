@@ -36,27 +36,4 @@ public class RetrofitInstance {
 
         retrofitInterface = retrofit.create(RetrofitInterface.class);
     }
-
-    public static Retrofit getMapsCLient(){
-        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .readTimeout(6000, TimeUnit.SECONDS)
-                .connectTimeout(6000, TimeUnit.SECONDS)
-                .build();
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://maps.googleapis.com/maps/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient)
-                .build();
-        return retrofit;
-    }
-
-    //test
-    /*
-    public static Retrofit getRetrofit(){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-    }*/
 }
