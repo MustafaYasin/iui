@@ -1,14 +1,14 @@
 package com.example.coachapp.view;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.coachapp.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,20 +25,12 @@ public class MapsFragment extends Fragment {
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
         @Override
         public void onMapReady(GoogleMap googleMap) {
             viewModel.getCurrentLocation().observe(requireActivity(), item -> {
                 currentLocation = new LatLng(item[0], item[1]);
-                googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Marker in Sydney"));
+                googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Your current Location"));
+                googleMap.setMinZoomPreference(14.0f);
                 googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
             });
         }
@@ -61,7 +53,5 @@ public class MapsFragment extends Fragment {
             mapFragment.getMapAsync(callback);
         }
         viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
-//        gpsLocation = new GPSLocation(this);
-//        gpsLocation.getLastLocation();
     }
 }
