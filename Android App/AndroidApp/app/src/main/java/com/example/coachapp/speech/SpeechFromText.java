@@ -13,14 +13,19 @@ public class SpeechFromText implements TextToSpeech.OnInitListener {
 
     private static final String TAG = "SpeechFromText";
 
-    private final Activity activity;
+    private Activity activity;
     private TextToSpeech tts;
     private TextFromSpeech textFromSpeech;
+    private static TextFromSpeech instance;
 
     public SpeechFromText(Activity activity, TextFromSpeech textFromSpeech) {
         this.activity = activity;
         this.textFromSpeech = textFromSpeech;
         tts = new TextToSpeech(activity, this);
+    }
+
+    public SpeechFromText(){
+
     }
 
     @Override
