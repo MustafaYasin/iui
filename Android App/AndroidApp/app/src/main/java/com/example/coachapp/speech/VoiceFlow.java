@@ -197,13 +197,6 @@ public class VoiceFlow {
                 break;
             case FINISHED:
 
-                user.setName("Horst");
-                user.setAge(17);
-                user.setGender(Gender.MALE);
-                user.setWorkouts(3);
-                user.setTrainingsGoal(TrainingsGoal.REDUCE_WEIGHT);
-                user.setExperience(Experience.ADVANCED);
-                user.setTrainingsLocation(TrainingsLocation.OUTDOOR);
                 if (text == null) {
                     errorHandler(getText(R.string.voiceflow_sorry));
                     return;
@@ -231,6 +224,15 @@ public class VoiceFlow {
                         }
 
                     } else if (text.contains("trainingsplan")) {
+
+                        user.setName("Horst");
+                        user.setAge(17);
+                        user.setGender(Gender.MALE);
+                        user.setWorkouts(3);
+                        user.setTrainingsGoal(TrainingsGoal.REDUCE_WEIGHT);
+                        user.setExperience(Experience.ADVANCED);
+                        user.setTrainingsLocation(TrainingsLocation.OUTDOOR);
+
                         speechFromText.speakOutAndRecord("I will generate a trainingsplan. One moment please", false);
                         routes.loadTrainingsplan(user);
                         sleeper(6000);
@@ -269,13 +271,13 @@ public class VoiceFlow {
                 break;
         }
 
-//        Log.i("USER_NAME", user.getName());
-//        Log.i("USER_AGE", String.valueOf(user.getAge()));
-//        Log.i("USER_WORKOUTS", String.valueOf(user.getWorkouts()));
-//        Log.i("USER_Gender", String.valueOf(user.getGender()));
-//        Log.i("USER_GOAL", String.valueOf(user.getTrainingsGoal()));
-//        Log.i("USER_XP", String.valueOf(user.getExperience()));
-//        Log.i("USER_LOCATION", String.valueOf(user.getTrainingsLocation()));
+        /*Log.i("USER_NAME", user.getName());
+        Log.i("USER_AGE", String.valueOf(user.getAge()));
+        Log.i("USER_WORKOUTS", String.valueOf(user.getWorkouts()));
+        Log.i("USER_Gender", String.valueOf(user.getGender()));
+        Log.i("USER_GOAL", String.valueOf(user.getTrainingsGoal()));
+        Log.i("USER_XP", String.valueOf(user.getExperience()));
+        Log.i("USER_LOCATION", String.valueOf(user.getTrainingsLocation()));*/
     }
 
     private String getText(int stringnumber) {
