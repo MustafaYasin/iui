@@ -4,23 +4,16 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.example.coachapp.R;
 import com.example.coachapp.model.Exercise;
 import com.example.coachapp.model.TrainingsDay;
 import com.example.coachapp.model.TrainingsPlan;
-
 import com.example.coachapp.model.TrainingsPlanSettings;
 import com.example.coachapp.model.TrainingsSettings;
 import com.example.coachapp.model.User;
-import com.example.coachapp.speech.SpeechFromText;
-import com.example.coachapp.speech.TextFromSpeech;
-import com.example.coachapp.speech.VoiceFlow;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -90,7 +83,7 @@ public class Routes {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("exercise"+jsonEx);
+        System.out.println("exercise" + jsonEx);
         Call<JSONObject> call = RetrofitInstance.retrofitInterface.getExerciseExplanation(jsonEx);
         call.enqueue(new Callback<JSONObject>() {
             @Override
@@ -140,29 +133,29 @@ public class Routes {
                         plan.setSplit(jsonPlan.getInt("split"));
                         plan.setSets(jsonPlan.getInt("sets"));
 
-                       for (int i = 1; i < 8; i++) {
-                           JSONObject jsonDay = jsonPlan.getJSONObject("day_" + i);
-                           TrainingsDay day = new TrainingsDay();
-                           day.setArea(jsonDay.getString("area"));
-                           day.setExerciseCount(jsonDay.getInt("exercises"));
+                        for (int i = 1; i < 8; i++) {
+                            JSONObject jsonDay = jsonPlan.getJSONObject("day_" + i);
+                            TrainingsDay day = new TrainingsDay();
+                            day.setArea(jsonDay.getString("area"));
+                            day.setExerciseCount(jsonDay.getInt("exercises"));
 
-                           if (jsonDay.getInt("exercises") > 0) {
-                               JSONArray arrayExercise = (JSONArray) jsonDay.get("exerciseDetails");
-                               for (int j = 0; j < arrayExercise.length(); j++) {
-                                   Exercise exercise = new Exercise();
-                                   JSONObject obj = (JSONObject) arrayExercise.get(j);
-                                   exercise.setTitle(obj.getString("exercise_title"));
-                                   exercise.setExecution(obj.getString("exercise_execution"));
-                                   exercise.setMuscleGroup(obj.getString("muscle_group"));
-                                   exercise.setSubsetMuscles(obj.getString("subset_muscles"));
-                                   exercise.setMuscleDescription(obj.getString("muscle_description"));
+                            if (jsonDay.getInt("exercises") > 0) {
+                                JSONArray arrayExercise = (JSONArray) jsonDay.get("exerciseDetails");
+                                for (int j = 0; j < arrayExercise.length(); j++) {
+                                    Exercise exercise = new Exercise();
+                                    JSONObject obj = (JSONObject) arrayExercise.get(j);
+                                    exercise.setTitle(obj.getString("exercise_title"));
+                                    exercise.setExecution(obj.getString("exercise_execution"));
+                                    exercise.setMuscleGroup(obj.getString("muscle_group"));
+                                    exercise.setSubsetMuscles(obj.getString("subset_muscles"));
+                                    exercise.setMuscleDescription(obj.getString("muscle_description"));
 
-                                   day.addExercise(exercise);
-                               }
-                               day.setExerciseCount(day.getExercises().size());
-                           }
-                           plan.addTrainingDay(day);
-                       }
+                                    day.addExercise(exercise);
+                                }
+                                day.setExerciseCount(day.getExercises().size());
+                            }
+                            plan.addTrainingDay(day);
+                        }
 
                         trainingsPlanRaw = jsonPlan.getString("title");
                     } catch (JSONException e) {

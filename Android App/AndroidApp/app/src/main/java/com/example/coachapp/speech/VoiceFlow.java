@@ -30,6 +30,7 @@ public class VoiceFlow {
     private String nearbyLocation;
 
     private enum Step {NAME, AGE, GENDER, WORKOUTS, GOAL, LEVEL, LOCATION, FINISHED, EXPLANATION, LOCATIONNEARBY}
+
     private Step currentStep;
 
     public VoiceFlow() {
@@ -63,6 +64,7 @@ public class VoiceFlow {
     }
 
     public void parseSpokenText(String text) {
+        text = text.toLowerCase();
         Log.i("Recognized text:", text);
         Text2Double textParser;
         final boolean yes = text.contains("yes") || text.contains("Yes") || text.contains("right");
@@ -186,19 +188,16 @@ public class VoiceFlow {
                 currentStep = Step.FINISHED;
                 finished = true;
                 speechFromText.speakOutAndRecord(getText(R.string.voiceflow_thx), false);
-                sleeper(1000);
                 if (user.isCompleted()) {
-                    //finishedResult = true;
-//                    speechRecognizer.cancel();
-//                    speechRecognizer.stopListening();
-//                    speechRecognizer.destroy();
+                    finished = true;
                     routes.sendUser(user);
-                    routes.loadTrainingsplan(user);
+                    sleeper(1000);
+//                    routes.loadTrainingsplan(user);
                 }
                 break;
             case FINISHED:
                 if (text == null) {
-                    errorHandler(getText(R.string.voiceflow_locationQ));
+                    errorHandler(getText(R.string.voiceflow_sorry));
                     return;
                 } else {
                     if (text.contains("is the next")) {
@@ -223,6 +222,11 @@ public class VoiceFlow {
                             errorHandler(getText(R.string.voiceflow_sorry));
                         }
 
+                    } else if (text.contains("trainingsplan")) {
+                        speechFromText.speakOutAndRecord("I will generate a trainingsplan. One moment please", false);
+                        routes.loadTrainingsplan(user);
+                        sleeper(6000);
+                        speechFromText.speakOutAndRecord("You can see your trainingsplan at the section trainingsplan on your bottom navigation", false);
                     } else {
                         errorHandler(getText(R.string.voiceflow_sorry));
                     }
@@ -254,6 +258,7 @@ public class VoiceFlow {
             default:
                 errorHandler(getText(R.string.voiceflow_sorry));
                 Log.e("VoiceFlow", "No case step availaible");
+                break;
         }
 
 //        Log.i("USER_NAME", user.getName());
@@ -274,7 +279,7 @@ public class VoiceFlow {
     }
 
     private void errorHandler(String question) {
-        speechFromText.speakOutAndRecord(getText(R.string.voiceflow_sorry) + "  " + question, true);
+        speechFromText.speakOutAndRecord(question + "  " + question, true);
     }
 
     public Boolean getFinished() {
