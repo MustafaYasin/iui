@@ -29,8 +29,21 @@ public interface RetrofitInterface {
             @Field("trainingsLocation") String trainingsLocation
     );
 
+
+    @FormUrlEncoded
+    @POST("/trainingsPlan")
+    Call<String> loadTrainingsPlan(
+            @Field("name") String name,
+            @Field("age") int age,
+            @Field("gender") String gender,
+            @Field("workouts") int workouts,
+            @Field("experience") String experience,
+            @Field("trainingsGoal") String goal,
+            @Field("trainingsLocation") String trainingsLocation
+    );
+
     @GET("/user")
-    Call<String> loadUser(@Field("objectId") String objectId);
+    Call<String> loadUser(@Field("uuId") String uuId);
 
     @POST("/trainingsSettings")
     Call<Void> sendTrainingsSettings(@Body HashMap<String, String> map);
@@ -50,5 +63,6 @@ public interface RetrofitInterface {
 
     @POST("/myText")
     Call<String> sendMyText(@Body String post);
+
 
 }

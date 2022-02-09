@@ -23,7 +23,9 @@ public class VoiceFlow {
     private User user = new User();
     private static VoiceFlow instance;
 
-    private enum Step {NAME, AGE, GENDER, WORKOUTS, GOAL, LEVEL, LOCATION, FINISHED};
+    private enum Step {NAME, AGE, GENDER, WORKOUTS, GOAL, LEVEL, LOCATION, FINISHED}
+
+    ;
     private Step currentStep;
 
     //public VoiceFlow(Activity activity) {
@@ -47,6 +49,7 @@ public class VoiceFlow {
     public void initialSettings() {
         speechFromText.speakOut(this.activity.getString(R.string.voiceflow_greeting1));
         currentStep = Step.NAME;
+        // currentStep = Step.FINISHED;
     }
 
     public static VoiceFlow getInstance() {
@@ -101,7 +104,7 @@ public class VoiceFlow {
                 speechFromText.speakOut(getText(R.string.voiceflow_workoutsQ));
                 break;
             case WORKOUTS:
-                String days = text.replace("days", "").replace("day","").trim();
+                String days = text.replace("days", "").replace("day", "").trim();
                 textParser = new Text2Double();
                 int workouts;
                 try {
@@ -182,6 +185,15 @@ public class VoiceFlow {
                 currentStep = Step.FINISHED;
                 speechFromText.speakOut(getText(R.string.voiceflow_thx));
                 break;
+            //case FINISHED:
+            //    user.setName("Horst");
+            //    user.setAge(17);
+            //    user.setGender(Gender.MALE);
+            //    user.setWorkouts(3);
+            //    user.setTrainingsGoal(TrainingsGoal.REDUCE_WEIGHT);
+            //    user.setExperience(Experience.ADVANCED);
+            //    user.setTrainingsLocation(TrainingsLocation.OUTDOOR);
+            //    break;
         }
 
         Log.i("USER_NAME", user.getName());

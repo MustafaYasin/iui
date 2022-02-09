@@ -12,7 +12,6 @@ public class User {
     private TrainingsLocation trainingsLocation;
 
     public User() {
-        trainingsLocation = TrainingsLocation.GYM;
     }
 
     public String getName() {

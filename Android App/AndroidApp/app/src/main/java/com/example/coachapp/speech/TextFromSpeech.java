@@ -34,7 +34,7 @@ public class TextFromSpeech implements RecognitionListener {
     private final ImageButton voiceButton;
     private final Routes routes;
     private String spokenText = "";
-    private Boolean finishedResult = false;
+    //private Boolean finishedResult = false;
     private TextView voiceTV;
 
     public TextFromSpeech(Activity activity) {
@@ -69,7 +69,7 @@ public class TextFromSpeech implements RecognitionListener {
     public void onReadyForSpeech(Bundle bundle) {
         voiceButton.setImageResource(R.mipmap.voice_recorder_circle_green);
         voiceTV.setHint("Listening...");
-        finishedResult = false;
+        //finishedResult = false;
     }
 
     @Override
@@ -162,12 +162,17 @@ public class TextFromSpeech implements RecognitionListener {
         VoiceFlow voiceFlow = VoiceFlow.getInstance();
         voiceFlow.parseSpokenText(spokenText);
 
-        finishedResult = true;
+
         Log.d(TAG, "onResults " + spokenText);
 
         User user = voiceFlow.getUser();
         if (user.isCompleted()) {
+            //finishedResult = true;
+            speechRecognizer.cancel();
+            speechRecognizer.stopListening();
+            speechRecognizer.destroy();
             routes.sendUser(user);
+            routes.loadTrainingsplan(user);
         }
     }
 
@@ -189,11 +194,11 @@ public class TextFromSpeech implements RecognitionListener {
         }
     }
 
-    public String getSpokenText() {
-        return spokenText;
-    }
-
-    public Boolean getFinishedResult() {
-        return finishedResult;
-    }
+    //public String getSpokenText() {
+    //    return spokenText;
+    //}
+//
+    //public Boolean getFinishedResult() {
+    //    return finishedResult;
+    //}
 }

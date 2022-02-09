@@ -2,12 +2,15 @@ from http.server import BaseHTTPRequestHandler
 from routes import routes
 from cgi import parse_header, parse_multipart
 from urllib.parse import parse_qs, urlparse
+import sys
 import json
+from rc import *
+
+# from recommender_system import *
 
 class Server(BaseHTTPRequestHandler):
   def do_HEAD(self):
     return
-    
  # def do_GET(self):
  #   # self.respond()
  #   # if self.path == "/spokenText":
@@ -63,18 +66,6 @@ class Server(BaseHTTPRequestHandler):
         postvars = self.parse_POST()
         # print(postvars)
         # @todo: db save
-        user = json.dumps({
-          "objectId": "61fe81456346143efeff9c89",
-          "id": postvars["name"][0],
-          "name" :postvars["name"][0],
-          "age": postvars["age"][0],
-          "gender": postvars["gender"][0],
-          "workouts": postvars["workouts"][0],
-          "experience": postvars["experience"][0],
-          "trainingsGoal": postvars["trainingsGoal"][0],
-          "trainingsLocation": postvars["trainingsLocation"][0]
-        }).encode('utf-8')
-
         userjson = {
           "id": postvars["name"][0],
           "name" :postvars["name"][0],
@@ -87,7 +78,34 @@ class Server(BaseHTTPRequestHandler):
         }
         print(json.dumps(userjson))
         self.wfile.write(json.dumps(userjson).encode('utf-8'))
-        print("in do_POST")
+        #print("in do_POST")
+
+
+    if self.path == "/trainingsPlan":
+        self.send_response(200)
+        self.end_headers()
+        
+        print("in trainingsplan")
+        postvars = self.parse_POST()
+        # print(postvars)
+        # @todo: db save
+
+        userjson = {
+          "id": postvars["name"][0],
+          "name" :postvars["name"][0],
+          "age": postvars["age"][0],
+          "gender": postvars["gender"][0],
+          "workouts": postvars["workouts"][0],
+          "experience": postvars["experience"][0],
+          "trainingsGoal": postvars["trainingsGoal"][0],
+          "trainingsLocation": postvars["trainingsLocation"][0]
+        }
+
+        jsonReturn = get_trainingplan_for_user(userjson)
+
+
+        print(json.dumps(jsonReturn))
+        self.wfile.write(json.dumps(jsonReturn).encode('utf-8'))
 
     return
   
