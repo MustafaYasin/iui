@@ -26,6 +26,8 @@ public class VoiceFlow {
     private static VoiceFlow instance;
     private Boolean finished = false;
     private Routes routes;
+    private String exercise;
+    private String nearbyLocation;
 
     private enum Step {NAME, AGE, GENDER, WORKOUTS, GOAL, LEVEL, LOCATION, FINISHED, EXPLANATION, LOCATIONNEARBY}
 
@@ -64,8 +66,6 @@ public class VoiceFlow {
     public void parseSpokenText(String text) {
         Log.i("Recognized text:", text);
         Text2Double textParser;
-        String exercise = "";
-        String locationNearby = "";
         final boolean yes = text.contains("yes") || text.contains("Yes") || text.contains("right");
         switch (currentStep) {
             case NAME:
@@ -198,10 +198,10 @@ public class VoiceFlow {
                     return;
                 } else {
                     if (text.contains("is the next")) {
-                        locationNearby = text.split("next")[1];
-                        if (locationNearby != null) {
+                        nearbyLocation = text.split("next")[1];
+                        if (nearbyLocation != null) {
                             currentStep = Step.LOCATIONNEARBY;
-                            speechFromText.speakOutAndRecord("You want to know the nearby places of " + locationNearby + "?", true);
+                            speechFromText.speakOutAndRecord("You want to know the nearby places of " + nearbyLocation + "?", true);
                         } else {
                             errorHandler(getText(R.string.voiceflow_sorry));
                         }
@@ -218,6 +218,9 @@ public class VoiceFlow {
                         } else {
                             errorHandler(getText(R.string.voiceflow_sorry));
                         }
+
+                    } else {
+                        errorHandler(getText(R.string.voiceflow_sorry));
                     }
                 }
                 break;
@@ -235,11 +238,11 @@ public class VoiceFlow {
             case LOCATIONNEARBY:
                 currentStep = Step.FINISHED;
                 if (yes) {
-                    speechFromText.speakOutAndRecord("I have marked the nearby " + locationNearby +
+                    speechFromText.speakOutAndRecord("I have marked the nearby " + nearbyLocation +
                             " in your Google Maps, which I will opened for you right now.", false);
                     sleeper(6000);
                     GoogleMapsApp googleMapsApp = new GoogleMapsApp(activity);
-                    googleMapsApp.searchNearby(locationNearby);
+                    googleMapsApp.searchNearby(nearbyLocation);
                 } else {
                     speechFromText.speakOutAndRecord("Please repeat", true);
                 }

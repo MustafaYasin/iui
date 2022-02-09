@@ -11,6 +11,7 @@ import com.example.coachapp.speech.SpeechFromText;
 import com.example.coachapp.speech.TextFromSpeech;
 import com.example.coachapp.speech.VoiceFlow;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -73,8 +74,18 @@ public class Routes {
     }
 
     public String getExerciseExplanation(String exercise) {
+        if (exercise.contains("Squads")) {
+            exercise = "Squats";
+        }
         final String[] explanation = {""};
-        Call<JSONObject> call = RetrofitInstance.retrofitInterface.getExerciseExplanation(exercise);
+        JSONObject jsonEx = new JSONObject();
+        try {
+            jsonEx.put("exercise", exercise);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("exercise"+jsonEx);
+        Call<JSONObject> call = RetrofitInstance.retrofitInterface.getExerciseExplanation(jsonEx);
         call.enqueue(new Callback<JSONObject>() {
             @Override
             public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {

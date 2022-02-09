@@ -56,19 +56,22 @@ public class TextFromSpeech implements RecognitionListener {
     public void startVoiceRecognitionCycle() {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+//        voiceTV.setText("");
+//        voiceTV.setHint("Listening...");
         getSpeechRecognizer().startListening(intent);
     }
 
     @Override
     public void onReadyForSpeech(Bundle bundle) {
         voiceButton.setImageResource(R.mipmap.voice_recorder_circle_green);
+        voiceTV.setText("");
         voiceTV.setHint("Listening...");
     }
 
     @Override
     public void onBeginningOfSpeech() {
         Log.d(TAG, "onBeginningOfSpeech");
-        voiceTV.setHint("Listening...");
+//        voiceTV.setHint("Listening...");
     }
 
     @Override
@@ -148,11 +151,11 @@ public class TextFromSpeech implements RecognitionListener {
 
     @Override
     public void onResults(Bundle bundle) {
+        voiceTV.setText(R.string.speak_with_me);
         ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         String spokenText = data.get(0);
         VoiceFlow voiceFlow = VoiceFlow.getInstance();
         voiceFlow.parseSpokenText(spokenText);
-        Log.d(TAG, "onResults " + spokenText);
 
 //        User user = voiceFlow.getUser();
 //        if (user.isCompleted()) {

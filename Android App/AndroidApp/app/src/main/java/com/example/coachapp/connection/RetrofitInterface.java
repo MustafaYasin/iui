@@ -28,8 +28,8 @@ public interface RetrofitInterface {
     @GET("/user")
     Call<String> loadUser(@Field("objectId") String objectId);
 
-    @GET("/search_ex")
-    Call<JSONObject> getExerciseExplanation(@Field("exerciseName") String exercise);
+    @POST("/search_ex")
+    Call<JSONObject> getExerciseExplanation(@Body JSONObject exercise);
 
     @FormUrlEncoded
     @POST("/spokenText")

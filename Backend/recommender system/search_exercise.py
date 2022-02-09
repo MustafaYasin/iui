@@ -1,3 +1,4 @@
+from cmath import log
 from pymongo import MongoClient
 import pandas as pd
 from flask_restful import Resource, reqparse
@@ -37,6 +38,7 @@ class Search_exercise(Resource):
 
     # incoming arguments
     def post(self):
+        print("post", self)
         partner_feed_generator = reqparse.RequestParser()
         partner_feed_generator.add_argument('exercise', help='This field cannot be blank', required=True, type=str)
        
@@ -45,5 +47,5 @@ class Search_exercise(Resource):
 
         # calling function which calls other functions,...
         exercise_description=get_exercise(input_exercise)
-
+        print("response", exercise_description)
         return {'response': exercise_description}, 200
