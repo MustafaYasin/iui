@@ -157,9 +157,16 @@ public class TextFromSpeech implements RecognitionListener {
         VoiceFlow voiceFlow = VoiceFlow.getInstance();
         voiceFlow.parseSpokenText(spokenText);
 
+        Log.d(TAG, "onResults " + spokenText);
+
 //        User user = voiceFlow.getUser();
 //        if (user.isCompleted()) {
+//            //finishedResult = true;
+//            speechRecognizer.cancel();
+//            speechRecognizer.stopListening();
+//            speechRecognizer.destroy();
 //            routes.sendUser(user);
+//            routes.loadTrainingsplan(user);
 //        }
     }
 

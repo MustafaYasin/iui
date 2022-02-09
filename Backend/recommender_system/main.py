@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import time
 from http.server import HTTPServer
-from server import Server
+from server2 import Server
 
 HOST_NAME = '0.0.0.0'
 PORT_NUMBER = 3000

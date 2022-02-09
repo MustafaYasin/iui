@@ -30,7 +30,6 @@ public class VoiceFlow {
     private String nearbyLocation;
 
     private enum Step {NAME, AGE, GENDER, WORKOUTS, GOAL, LEVEL, LOCATION, FINISHED, EXPLANATION, LOCATIONNEARBY}
-
     private Step currentStep;
 
     public VoiceFlow() {
@@ -189,7 +188,12 @@ public class VoiceFlow {
                 speechFromText.speakOutAndRecord(getText(R.string.voiceflow_thx), false);
                 sleeper(1000);
                 if (user.isCompleted()) {
+                    //finishedResult = true;
+//                    speechRecognizer.cancel();
+//                    speechRecognizer.stopListening();
+//                    speechRecognizer.destroy();
                     routes.sendUser(user);
+                    routes.loadTrainingsplan(user);
                 }
                 break;
             case FINISHED:
