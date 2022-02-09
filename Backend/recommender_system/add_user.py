@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 import pandas as pd
 from flask_restful import Resource, reqparse
-
+import json
 
 
 client = MongoClient("mongodb+srv://mustafayasin:nisani2404@cluster0.oxj2y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
@@ -52,4 +52,5 @@ class Add_user(Resource):
         input_user = partner_feed_generator.parse_args()
 
         done = add_user_to_db(input_user)
+        done = json.dumps(done, indent=4)
         return {'response': done}, 200
