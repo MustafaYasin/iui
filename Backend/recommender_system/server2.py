@@ -81,17 +81,17 @@ class Server(BaseHTTPRequestHandler):
         #print("in do_POST")
 
 
-    if self.path == "/trainingsPlan":
+    if self.path == "/recommend":
         self.send_response(200)
         self.end_headers()
         
-        print("in trainingsplan")
+        print("in recommend")
         postvars = self.parse_POST()
         # print(postvars)
         # @todo: db save
 
         userjson = {
-          "id": postvars["name"][0],
+          "id": postvars["id"][0],
           "name" :postvars["name"][0],
           "age": postvars["age"][0],
           "gender": postvars["gender"][0],

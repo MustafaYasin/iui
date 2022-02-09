@@ -223,23 +223,21 @@ public class TrainingsplanView extends Fragment implements View.OnClickListener 
             case 1:
                 ArrayList<Exercise> exerciseList = trainingsdays.get(0).getExercises();
                 for (int i = 0; i < exerciseList.size(); i++) {
-                    RecyclerItem items = new RecyclerItem(exerciseList.get(i).getTitle(), "muscle" + i);
+                    RecyclerItem items = new RecyclerItem(exerciseList.get(i).getTitle(), exerciseList.get(i).getMuscleGroup());
                     itemsList.add(items);
                 }
                 break;
             case 2:
                 ArrayList<Exercise> exerciseList2 = trainingsdays.get(1).getExercises();
                 for (int i = 0; i < exerciseList2.size(); i++) {
-                    RecyclerItem items = new RecyclerItem(exerciseList2.get(i).getTitle(), "muscle" + i);
+                    RecyclerItem items = new RecyclerItem(exerciseList2.get(i).getTitle(), exerciseList2.get(i).getMuscleGroup());
                     itemsList2.add(items);
                 }
-
-
                 break;
             case 3:
                 ArrayList<Exercise> exerciseList3 = trainingsdays.get(2).getExercises();
                 for (int i = 0; i < exerciseList3.size(); i++) {
-                    RecyclerItem items = new RecyclerItem(exerciseList3.get(i).getTitle(), "muscle" + i);
+                    RecyclerItem items = new RecyclerItem(exerciseList3.get(i).getTitle(), "muscle");
                     itemsList3.add(items);
                 }
 
@@ -247,28 +245,28 @@ public class TrainingsplanView extends Fragment implements View.OnClickListener 
             case 4:
                 ArrayList<Exercise> exerciseList4 = trainingsdays.get(3).getExercises();
                 for (int i = 0; i < exerciseList4.size(); i++) {
-                    RecyclerItem items = new RecyclerItem(exerciseList4.get(i).getTitle(), "muscle" + i);
+                    RecyclerItem items = new RecyclerItem(exerciseList4.get(i).getTitle(), exerciseList4.get(i).getMuscleGroup());
                     itemsList4.add(items);
                 }
                 break;
             case 5:
                 ArrayList<Exercise> exerciseList5 = trainingsdays.get(4).getExercises();
                 for (int i = 0; i < exerciseList5.size(); i++) {
-                    RecyclerItem items = new RecyclerItem(exerciseList5.get(i).getTitle(), "muscle" + i);
+                    RecyclerItem items = new RecyclerItem(exerciseList5.get(i).getTitle(), exerciseList5.get(i).getMuscleGroup());
                     itemsList5.add(items);
                 }
                 break;
             case 6:
                 ArrayList<Exercise> exerciseList6 = trainingsdays.get(5).getExercises();
                 for (int i = 0; i < exerciseList6.size(); i++) {
-                    RecyclerItem items = new RecyclerItem(exerciseList6.get(i).getTitle(), "muscle" + i);
+                    RecyclerItem items = new RecyclerItem(exerciseList6.get(i).getTitle(), "muscle");
                     itemsList6.add(items);
                 }
                 break;
             case 7:
                 ArrayList<Exercise> exerciseList7 = trainingsdays.get(6).getExercises();
                 for (int i = 0; i < exerciseList7.size(); i++) {
-                    RecyclerItem items = new RecyclerItem(exerciseList7.get(i).getTitle(), "muscle" + i);
+                    RecyclerItem items = new RecyclerItem(exerciseList7.get(i).getTitle(), "muscle");
                     itemsList7.add(items);
                 }
                 break;
