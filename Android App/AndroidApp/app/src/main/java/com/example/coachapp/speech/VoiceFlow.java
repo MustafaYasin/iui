@@ -237,17 +237,29 @@ public class VoiceFlow {
                         speechFromText.speakOutAndRecord("I will generate a trainingsplan. One moment please", false);
                         routes.loadTrainingsplan(user);
                         //routes.getTrainingsplan();
-                        sleeper(6000);
-                        speechFromText.speakOutAndRecord("You can see your trainingsplan at the section trainingsplan on your bottom navigation", false);
-                    } else {
-                        //errorHandler(getText(R.string.voiceflow_sorry));
-                      /*  Log.i("USER_NAME", user.getName());
+
+                        Log.i("USER_NAME", user.getName());
                         Log.i("USER_AGE", String.valueOf(user.getAge()));
                         Log.i("USER_WORKOUTS", String.valueOf(user.getWorkouts()));
                         Log.i("USER_Gender", String.valueOf(user.getGender()));
                         Log.i("USER_GOAL", String.valueOf(user.getTrainingsGoal()));
                         Log.i("USER_XP", String.valueOf(user.getExperience()));
-                        Log.i("USER_LOCATION", String.valueOf(user.getTrainingsLocation()));*/
+                        Log.i("USER_LOCATION", String.valueOf(user.getTrainingsLocation()));
+
+                        sleeper(6000);
+                        speechFromText.speakOutAndRecord("You can see your trainingsplan at the section trainingsplan on your bottom navigation", false);
+                    } else {
+                        //errorHandler(getText(R.string.voiceflow_sorry));
+                        /*
+                        Log.i("USER_NAME", user.getName());
+                        Log.i("USER_AGE", String.valueOf(user.getAge()));
+                        Log.i("USER_WORKOUTS", String.valueOf(user.getWorkouts()));
+                        Log.i("USER_Gender", String.valueOf(user.getGender()));
+                        Log.i("USER_GOAL", String.valueOf(user.getTrainingsGoal()));
+                        Log.i("USER_XP", String.valueOf(user.getExperience()));
+                        Log.i("USER_LOCATION", String.valueOf(user.getTrainingsLocation()));
+                        */
+
                     }
                 }
                 break;
