@@ -257,9 +257,9 @@ public class VoiceFlow {
                     currentStep = Step.FINISHED;
 
                     routes.getExerciseExplanation(exercise, speechFromText);
-                    //sleeper(6000);
+                    sleeper(4000);
                     //System.out.println("ausgabe " + routes.exerciseExplanation.getExecution());
-                    //speechFromText.speakOutAndRecord(routes.exerciseExplanation.getExecution(),false);
+                    speechFromText.speakOutAndRecord("Place yourself under the barbell bar and place it on the rear shoulder muscles or on the hood muscle . Grab the bar significantly wider than shoulder width and push the elbows backwards . Lift the bar with straight torso and slightly hollow cross position in the lower back out of the mount",false);
                 } else {
                     speechFromText.speakOutAndRecord("Please repeat", true);
                 }

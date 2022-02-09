@@ -107,7 +107,7 @@ public class Routes {
                         //exerciseExplanation.setMuscleGroup(jsonPlan.getString("muscle_group"));
                         //exerciseExplanation.setSubsetMuscles(jsonPlan.getString("subset_muscles"));
                         System.out.println("responde" + exerciseExplanation.getExecution());
-                        speechFromText2.speakOutAndRecord(exerciseExplanation.getExecution(), false);
+                        //speechFromText2.speakOutAndRecord(exerciseExplanation.getExecution(), false);
 
                         //trainingsPlanRaw = jsonPlan.getString("title");
                     } catch (JSONException e) {
