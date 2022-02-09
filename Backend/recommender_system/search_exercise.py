@@ -2,6 +2,7 @@ from cmath import log
 from pymongo import MongoClient
 import pandas as pd
 from flask_restful import Resource, reqparse
+import json
 
 client = MongoClient("mongodb+srv://mustafayasin:nisani2404@cluster0.oxj2y.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
 db = client['iui']
@@ -10,9 +11,11 @@ uebungen = db['ubungen']
 
 
 def get_exercise(exercise):
-    exercise=exercise['exercise']
-    exercise_dict = uebungen.find_one({'exercise_title': exercise})
     try:
+        exercise=exercise['exercise'].capitalize()
+        print(exercise)
+        exercise_dict = uebungen.find_one({'exercise_title': exercise})
+    
         exercise_dict.pop('_id')
         exercise_dict.pop('muscle_description_title')
         exercise_dict.pop('exercise_execution_title')
@@ -20,8 +23,7 @@ def get_exercise(exercise):
     except:
         return {'exercise_execution': 'Sorry there is no such exercise in my Database, please check your spelling'}
 
-test=get_exercise({'exercise': 'Squats'})
-print(test)
+
 
 def clean_exercise(exercise_dict):
     # taking important values out of dict, for combined dict
@@ -52,5 +54,7 @@ class Search_exercise(Resource):
 
         # calling function which calls other functions,...
         exercise_description=get_exercise(input_exercise)
+        exercise_description=json.dumps(exercise_description, indent=4)
+
         print("response", exercise_description)
         return {'response': exercise_description}, 200

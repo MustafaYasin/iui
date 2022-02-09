@@ -1,0 +1,127 @@
+{
+    "title": "tp_3",
+    "trainings": 4,
+    "level": "advanced",
+    "split": 4,
+    "sets": 4,
+    "day_1": {
+        "area": "back, biceps",
+        "exercises": 3,
+        "exerciseDetails": [
+            {
+                "exercise_title": "Barbell curls",
+                "exercise_execution": " The SZ bar is located in front of your thighs on the almost extended arms, which are close to your torso . A slight bend in the elbow joint guarantees you a gentle movement .",
+                "muscle_group": "Arms",
+                "subset_muscles": "Biceps",
+                "muscle_description": " A very popular biceps exercise are the barbell curls . This exercise can be done with a straight bar as well as with an SZ bar ."
+            },
+            {
+                "exercise_title": "Biceps curls on the deep block",
+                "exercise_execution": " You hold a curl bar, a straight bar or a rope with both hands in the lower grip . Your body is upright, your gaze is directed towards the pull tower and your lower back forms a slight hollow back . Your shoulders are behind, your chest is pushed forward and your abdominal muscles are tensed .",
+                "muscle_group": "Arms",
+                "subset_muscles": "Biceps",
+                "muscle_description": " Biceps curls on the deep block are a very well-known biceps exercise on cable pulls . There are many different variations of the exercise . Move the curl bar while standing with a view of the pull tower ."
+            },
+            {
+                "exercise_title": "Biceps curls on the incline bench",
+                "exercise_execution": " Take a dumbbell in each hand and lie on the incline bench . Place your feet in front of you so that your upper and lower legs form an angle of 90 degrees . Your arms hang vertically from your shoulders, but are not fully stretched out to protect the elbow joints .",
+                "muscle_group": "Arms",
+                "subset_muscles": "Biceps",
+                "muscle_description": " The biceps curls on the incline bench are a rather exotic exercise . By tilting the torso backwards, the exercise becomes considerably more demanding . The exercise can be trained even better because it becomes harder to counterfeit ."
+            }
+        ]
+    },
+    "day_2": {
+        "area": "chest, triceps",
+        "exercises": 3,
+        "exerciseDetails": [
+            {
+                "exercise_title": "One-arm triceps press on cable pulley",
+                "exercise_execution": " Stand upright with your shoulders pulled backwards and chest stretched forward . Make a slight hollow back in your lower back and flex your abdominal muscles . Support your passive arm at your hip and lower your active arm with the grip piece up so that your upper arm is placed right next to your ear .",
+                "muscle_group": "Arms",
+                "subset_muscles": "Triceps",
+                "muscle_description": " Those who are looking for a diversion from one-armed triceps press with dumbbell can also do the same exercise on the cable pull tower ."
+            },
+            {
+                "exercise_title": "One-armed triceps press",
+                "exercise_execution": " Take a dumbbell in your hand and stand hip-width and upright . Stretch your arm vertically upward with the dumbbell . Make sure that the arm is not fully extended, but that there is still a small angle between upper and forearm .",
+                "muscle_group": "Arms",
+                "subset_muscles": "Triceps",
+                "muscle_description": " The low degree of difficulty and quick learning of the exercise makes it the first choice for beginners . All three heads of the triceps (lateral, long, medial) are trained equally, as well as the cartilage muscle ."
+            },
+            {
+                "exercise_title": "Triceps press above the head on cable pulley",
+                "exercise_execution": " Your lower back forms a slight hollow back to protect your intervertebral discs . Grasp the rope (or grip piece) in a neutral grip position and stand with your back to the cable control tower .",
+                "muscle_group": "Arms",
+                "subset_muscles": "Triceps",
+                "muscle_description": " Triceps press over the head with the back to the cable pull tower . Another version of the triceps press is the triceice press ."
+            }
+        ]
+    },
+    "day_3": {
+        "area": "rest",
+        "exercises": 0
+    },
+    "day_4": {
+        "area": "legs",
+        "exercises": 2,
+        "exerciseDetails": [
+            {
+                "exercise_title": "Standing calf lift with the Theraband",
+                "exercise_execution": " It's not the first time he's been spotted out and about in Los Angeles in recent weeks .",
+                "muscle_group": "Legs",
+                "subset_muscles": "Calf",
+                "muscle_description": " If you want to exercise your calves at home in your own home, it is relatively easy to do so without expensive fitness equipment . A proper calf training can even be done with a theraband and a door ."
+            },
+            {
+                "exercise_title": "Seated calf lift with barbell",
+                "exercise_execution": " It's not the first time he's been spotted out and about in Los Angeles in recent weeks .",
+                "muscle_group": "Legs",
+                "subset_muscles": "Calf",
+                "muscle_description": " Sitting calf lifting with a barbell bar or an SZ bar tends to be less common in the gym . However, those who do not have this device at their disposal can easily simulate the movement with a flat bench ."
+            }
+        ]
+    },
+    "day_5": {
+        "area": "shoulder",
+        "exercises": 4,
+        "exerciseDetails": [
+            {
+                "exercise_title": "Arnold Press",
+                "exercise_execution": " Sit on the floor and grab a dumbbell in the lower grip . Bend your arm and thereby pull the dumbbell beside your shoulder . Your upper body is upright and your lower back is in a slight hollow cross position to relieve the intervertebral discs .",
+                "muscle_group": "Shoulders",
+                "subset_muscles": "Front shoulder",
+                "muscle_description": " The Arnold Press Exercise is a variant of shoulder press that no less than Arnold Schwarzenegger has come up with . This exercise can be done standing, sitting on a flat bench or sitting on the floor ."
+            },
+            {
+                "exercise_title": "Reverse flys on the cable pull",
+                "exercise_execution": " As you exhale, slowly bring your almost outstretched arms parallel to the floor . As you inhale, bring your arms forward again until they cross again . Make sure that your entire body, with the exception of the shoulder and neck muscles, remains rigid and unchanged .",
+                "muscle_group": "Shoulders",
+                "subset_muscles": "Posterior shoulder",
+                "muscle_description": " The reverse flys are an exercise not infrequently observed in the fitness center . The exercise mainly trains the rear shoulder area and the neck ."
+            },
+            {
+                "exercise_title": "Upright dumbbell rowing",
+                "exercise_execution": " As you exhale, pull both elbows up slowly and in a controlled way . If the elbow and shoulder joints form an imagined horizontal straight line, you have reached the end point . Lower the dumbbells back down to the starting position .",
+                "muscle_group": "Shoulders",
+                "subset_muscles": "Side Shoulder",
+                "muscle_description": " The upright rowing with dumbbells is rarely seen in the gym . This variation is especially suitable at home when no other equipment is available . This exercise is an effective training for the shoulder and neck muscles ."
+            },
+            {
+                "exercise_title": "Shoulder press",
+                "exercise_execution": " Sit upright on a bench raised by 80-85 degrees and lean your back against the back cushion . With your feet, you seek a firm stand on the floor to secure your body to the maximum .",
+                "muscle_group": "Shoulders",
+                "subset_muscles": "Front shoulder",
+                "muscle_description": " The classic way to train the shoulder is shoulder press . The lateral part of the deltoid muscle (musculus deltoideus pars acromialis) is always stressed . Lowering the barbell bar in front of or behind the head decides whether to strengthen the front or back of the shoulders ."
+            }
+        ]
+    },
+    "day_6": {
+        "area": "rest",
+        "exercises": 0
+    },
+    "day_7": {
+        "area": "rest",
+        "exercises": 0
+    }
+}

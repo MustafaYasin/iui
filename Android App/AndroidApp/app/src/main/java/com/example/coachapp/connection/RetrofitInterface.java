@@ -5,6 +5,7 @@ import com.example.coachapp.model.TrainingsPlan;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -18,6 +19,7 @@ public interface RetrofitInterface {
     @FormUrlEncoded
     @POST("/user")
     Call<Void> sendUser(
+            @Field("id") UUID id,
             @Field("name") String name,
             @Field("age") int age,
             @Field("gender") String gender,
@@ -27,10 +29,10 @@ public interface RetrofitInterface {
             @Field("trainingsLocation") String trainingsLocation
     );
 
-
     @FormUrlEncoded
-    @POST("/trainingsPlan")
+    @POST("/recommend")
     Call<String> loadTrainingsPlan(
+            @Field("id") UUID id,
             @Field("name") String name,
             @Field("age") int age,
             @Field("gender") String gender,
@@ -43,8 +45,9 @@ public interface RetrofitInterface {
     @GET("/user")
     Call<String> loadUser(@Field("uuId") String uuId);
 
-    @POST("/search_ex")
-    Call<JSONObject> getExerciseExplanation(@Body JSONObject exercise);
+    @FormUrlEncoded
+    @POST("/search_ex")//("/search_ex?exercise='Squats'")
+    Call<String> getExerciseExplanation(@Field("exercise") String ex);//@Body JSONObject exercise);
 
     @FormUrlEncoded
     @POST("/spokenText")

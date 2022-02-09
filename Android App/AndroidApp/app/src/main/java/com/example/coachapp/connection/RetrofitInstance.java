@@ -16,11 +16,10 @@ public class RetrofitInstance {
 
     public static RetrofitInterface retrofitInterface;
     private static Retrofit retrofit = null;
-    private final String device_url = "http://192.168.178.33";
-//    private final String device_url = "http://192.168.0.196";
-    //private final String device_url = "http://192.168.178.119";
+
+    private final String device_url = "http://10.181.144.26";
     private final String emulator_url = "http://10.0.2.2";
-    private final String port = "5001";
+    private final String port = "3000";
     String BASE_URL = device_url + ":" + port;
 
     public RetrofitInstance() {

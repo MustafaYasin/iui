@@ -226,7 +226,7 @@ class Recommendation(Resource):
 
         # calling function which calls other functions,...
         result=get_trainingplan_for_user(input_user)
-
+        result=json.dumps(result, indent=4)
         return {'response': result}, 200
 
         # alternative if you want to use the functions independently, for not needing to train the model every time, if it gets larger, but need to work on other issues first :p (and deadline is ahead)
