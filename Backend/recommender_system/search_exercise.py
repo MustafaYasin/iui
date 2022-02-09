@@ -18,7 +18,7 @@ def get_exercise(exercise):
         exercise_dict.pop('exercise_execution_title')
         return exercise_dict
     except:
-        return 'No such exercise'
+        return {'exercise_execution': 'Sorry there is no such exercise in my Database, please check your spelling'}
 
 test=get_exercise({'exercise': 'Squats'})
 print(test)
