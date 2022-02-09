@@ -6,7 +6,7 @@ Coach is an app which recommends you a workout plan and location based on your p
 
 ## Screenshots
 
-![App Screenshot](https://github.com/MustafaYasin/iui/tree/main/Interface)
+![App Screenshot](https://github.com/MustafaYasin/iui/blob/main/Interface/photo_2022-02-09%2016.06.37.jpeg)
 
 
 ## Documentation
