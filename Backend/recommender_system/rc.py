@@ -183,7 +183,8 @@ def get_trainingplan(json1, json2):
                         lst.append(
                             filter_json2[str(i)]
                         )
-                    json1[key]['exercise_{}'.format(area)] = lst
+                    #json1[key]['exercise_{}'.format(area)] = lst
+                    json1[key]['exerciseDetails'] = lst
                     count += exercise_count
 
     return json1

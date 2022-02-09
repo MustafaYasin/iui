@@ -5,26 +5,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.coachapp.R;
-import com.example.coachapp.speech.SpeechFromText;
-import com.example.coachapp.speech.TextFromSpeech;
+import com.example.coachapp.connection.Routes;
 import com.example.coachapp.speech.VoiceFlow;
 
 public class VoiceView extends Fragment {
-    //change IP adress in RetrofitInstance
-    // start server with node app.js via terminal
-    // Todo: send settings
-    // Todo: check if first time app started
 
-    private TextFromSpeech textFromSpeech;
-    private SpeechFromText speechFromText;
     private VoiceFlow voiceFlow;
-
     private ImageButton voiceButton;
+    private Routes routes;
 
     public VoiceView() {
         super(R.layout.fragment_voice_view);
@@ -46,11 +39,16 @@ public class VoiceView extends Fragment {
         voiceButton = view.findViewById(R.id.voiceButton);
         voiceFlow = VoiceFlow.getInstance();
         voiceFlow.setActivity(getActivity());
-        //voiceFlow = new VoiceFlow(getActivity());
-//        voiceFlow.initialSettings();
+        routes = Routes.getInstance();
+        routes.setActivity(getActivity());
+        ItemViewModel viewModel = new ViewModelProvider(requireActivity()).get(ItemViewModel.class);
 
         voiceButton.setOnClickListener(view1 -> {
-            voiceFlow.initialSettings();
+            if (!voiceFlow.getFinished()) {
+                voiceFlow.initialSettings();
+            } else {
+                voiceFlow.greeting();
+            }
         });
     }
 }

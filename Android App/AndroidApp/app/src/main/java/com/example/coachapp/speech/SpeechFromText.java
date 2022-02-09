@@ -44,24 +44,18 @@ public class SpeechFromText implements TextToSpeech.OnInitListener {
         }
     }
 
-    public void speakOut(String myTextToSpeech) {
+    public void speakOutAndRecord(String myTextToSpeech, Boolean record) {
         tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
             @Override
             public void onStart(String s) {
                 final String keyword = s;
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Log.d(TAG, "start running to speak");
-                    }
-                });
+                activity.runOnUiThread(() -> Log.d(TAG, "start running to speak"));
             }
 
             @Override
             public void onDone(String s) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                activity.runOnUiThread(() -> {
+                    if (record) {
                         textFromSpeech.startVoiceRecognitionCycle();
                     }
                 });
@@ -69,12 +63,7 @@ public class SpeechFromText implements TextToSpeech.OnInitListener {
 
             @Override
             public void onError(String s) {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(activity, "Error ", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                activity.runOnUiThread(() -> Toast.makeText(activity, "Error ", Toast.LENGTH_SHORT).show());
             }
         });
 
