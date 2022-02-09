@@ -1,5 +1,7 @@
 package com.example.coachapp.connection;
 
+import com.example.coachapp.model.TrainingsPlan;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
