@@ -31,8 +31,6 @@ def clean_exercise(exercise_dict):
         print(exercise_dict)
         return exercise_dict
 
-data2 = {"exercise": "Hip rolls"}
-exercise_description=get_exercise(data2)
 # for flask route
 
 class Search_exercise(Resource):
