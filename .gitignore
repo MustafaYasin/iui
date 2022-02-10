@@ -340,4 +340,6 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
+#for the node app
+node_modules
 
